@@ -29,7 +29,6 @@ export default function CreateQuizModal({ show, setShow }: CreateQuizModal) {
   const setQuizOptions = <T extends keyof Quiz>(id: string, value: Quiz[T]) => {
     setQuiz(prev => ({ ...prev, [id]: value }));
   };
-
   return (
     <Modal show={show} size="lg">
       <Modal.Header closeButton onClick={setShow}>
