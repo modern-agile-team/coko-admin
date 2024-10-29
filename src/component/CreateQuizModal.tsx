@@ -8,38 +8,47 @@ interface CreateQuizModal {
 export default function CreateQuizModal({ show, setShow }: CreateQuizModal) {
   const [quiz, setQuiz] = useState<Quiz>({
     part: '',
-    sectionId: 0,
+    sectionId: null,
     title: '',
     question: '',
-    answer: [],
-    category: 'MULTIPLE_CHOICE',
-    answerChoice: [],
+    answer: '',
+    category: null,
+    answerChoice: '',
   });
   const resetQuizState = () => {
     setQuiz({
       part: '',
-      sectionId: 0,
+      sectionId: null,
       title: '',
       question: '',
-      answer: [],
-      category: 'MULTIPLE_CHOICE',
-      answerChoice: [],
+      answer: '',
+      category: null,
+      answerChoice: '',
     });
   };
-  const setQuizOptions = <T extends keyof Quiz>(id: string, value: Quiz[T]) => {
+  const setQuizOptions = (
+    e: React.ChangeEvent<
+      HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement
+    >
+  ) => {
+    const { id, value } = e.target;
+
     setQuiz(prev => ({ ...prev, [id]: value }));
   };
   return (
     <Modal show={show} size="lg">
-      <Modal.Header closeButton onClick={setShow}>
+      <Modal.Header>
         <Modal.Title>퀴즈 생성</Modal.Title>
+        <Button
+          size="lg"
+          variant="close"
+          onClick={setShow}
+          aria-label="Close lg"
+        />
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Form.Group
-            className="d-flex justify-content-between"
-            controlId="exampleForm.ControlInput2"
-          >
+          <Form.Group className="d-flex justify-content-between">
             <Form.Select aria-label="Default select example" className="mx-2">
               <option>섹션 선택</option>
               <option value="1">One</option>
@@ -53,42 +62,34 @@ export default function CreateQuizModal({ show, setShow }: CreateQuizModal) {
               <option value="2">Two</option>
               <option value="3">Three</option>
             </Form.Select>
-
-            <Form.Select aria-label="Default select example" className="mx-2">
+            <Form.Select
+              aria-label="Default select example"
+              className="mx-2"
+              id="category"
+              onChange={setQuizOptions}
+            >
               <option>문제 유형 선택</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-              <option value="3">Three</option>
+              <option value="COMBINATION">COMBINATION</option>
+              <option value="MULTIPLE_CHOICE">MULTIPLE_CHOICE</option>
+              <option value="OX_SELECTOR">OX_SELECTOR</option>
+              <option value="SHORT_ANSWER">SHORT_ANSWER</option>
             </Form.Select>
           </Form.Group>
-          <Form.Group
-            className="mb-3 mt-4"
-            controlId="exampleForm.ControlTextarea1"
-          >
-            <FloatingLabel
-              controlId="floatingTextarea"
-              label="타이틀"
-              className="mx-2"
-            >
-              <Form.Control size="sm" type="text" placeholder="다음 중..." />
+          <Form.Group className="mb-3 mt-4">
+            <FloatingLabel label="타이틀" className="mx-2">
+              <Form.Control size="sm" type="text" />
             </FloatingLabel>
+
             <FloatingLabel
-              controlId="floatingTextarea"
-              label="문제"
+              label="문제 (조합형의 경우 빈칸은 #empty# / ex : #empty# a = 10)"
               className="mx-2 mt-4"
             >
-              <Form.Control
-                as="textarea"
-                style={{ height: '150px' }}
-                placeholder="Leave a comment here"
-              />
+              <Form.Control as="textarea" style={{ height: '170px' }} />
             </FloatingLabel>
           </Form.Group>
           <Form.Group className="d-flex">
             <FloatingLabel
-              controlId="floatingTextarea"
-              label="정답"
+              label="정답 (,로 구분해서 작성 / ex : a,b...)"
               className="mx-2 mt-4 w-50"
             >
               <Form.Control
@@ -96,27 +97,22 @@ export default function CreateQuizModal({ show, setShow }: CreateQuizModal) {
                 as="textarea"
                 size="sm"
                 type="text"
-                placeholder="다음 중..."
-                style={{ height: '100px' }}
-                onChange={e =>
-                  setQuizOptions<'answer'>(e.target.id, [e.target.value])
-                }
+                style={{ height: '150px' }}
+                onChange={setQuizOptions}
               />
             </FloatingLabel>
-            <FloatingLabel
-              controlId="floatingTextarea"
-              label="보기"
-              className="mx-2 mt-4 w-50"
-            >
-              <Form.Control
-                size="sm"
-                type="text"
-                as="textarea"
-                defaultValue={quiz.answer[0]}
-                style={{ height: '100px' }}
-                placeholder="다음 중..."
-              />
-            </FloatingLabel>
+            {(quiz.category === 'COMBINATION' ||
+              quiz.category === 'MULTIPLE_CHOICE') && (
+              <FloatingLabel label="보기" className="mx-2 mt-4 w-50">
+                <Form.Control
+                  size="sm"
+                  type="text"
+                  as="textarea"
+                  defaultValue={quiz.answer}
+                  style={{ height: '150px' }}
+                />
+              </FloatingLabel>
+            )}
           </Form.Group>
         </Form>
       </Modal.Body>
@@ -130,7 +126,9 @@ export default function CreateQuizModal({ show, setShow }: CreateQuizModal) {
         >
           Close
         </Button>
-        <Button variant="primary">Save Changes</Button>
+        <Button variant="primary" onClick={() => console.log(quiz)}>
+          Submit
+        </Button>
       </Modal.Footer>
     </Modal>
   );

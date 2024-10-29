@@ -1,16 +1,13 @@
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import { useState } from 'react';
-import CreateQuizModal from '../component/CreateQuizModal';
 
-export default function Quiz() {
+export default function Section() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const handleModal = () => {
     setShowModal(prev => !prev);
   };
   return (
     <>
-      <CreateQuizModal show={showModal} setShow={handleModal}></CreateQuizModal>
-
       <Container>
         <Row className="justify-content-end mt-3 mb-2">
           <Col xs="auto">
