@@ -1,14 +1,20 @@
-import { ReactNode } from 'react';
+import { PropsWithChildren } from 'react';
 import ModalPortal from '../ModalPortal';
 import { Button, Modal as Overray } from 'react-bootstrap';
-import useModal from '../store/useModal';
+
 interface ModalProps {
+  isShow: boolean;
+  closeModal: () => void;
   title: string;
-  children: ReactNode;
   submitEvnet?: () => void;
 }
-export default function Modal({ title, children, submitEvnet }: ModalProps) {
-  const { isShow, closeModal } = useModal();
+export default function Modal({
+  isShow,
+  closeModal,
+  title,
+  children,
+  submitEvnet,
+}: PropsWithChildren<ModalProps>) {
   return (
     <ModalPortal>
       <Overray show={isShow} size="lg">

@@ -3,40 +3,45 @@ import { Link, useLocation } from 'react-router-dom';
 
 export default function Header() {
   const location = useLocation(); // 현재 경로를 가져옴
+  const headerItems = [
+    {
+      id: 1,
+      to: '/quiz',
+      label: 'quiz',
+      isActive: location.pathname === '/quiz' ? 'active' : '',
+    },
+    {
+      id: 2,
+      to: '/section',
+      label: 'section',
+      isActive: location.pathname === '/section' ? 'active' : '',
+    },
+    {
+      id: 3,
+      to: '/part',
+      label: 'part',
+      isActive: location.pathname === '/part' ? 'active' : '',
+    },
+  ];
   return (
     <>
-      <Navbar bg="primary" data-bs-theme="dark">
+      <Navbar expand="lg" className="bg-primary">
         <Container>
-          <Navbar.Brand
-            as={Link}
-            to="/"
-            className={location.pathname === '/' ? 'active' : ''}
-          >
-            coko admin
-          </Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link
-              as={Link}
-              to="/quiz"
-              className={location.pathname === '/quiz' ? 'active' : ''}
-            >
-              quiz
-            </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to="/section"
-              className={location.pathname === '/section' ? 'active' : ''}
-            >
-              section
-            </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to="/part"
-              className={location.pathname === '/part' ? 'active' : ''}
-            >
-              part
-            </Nav.Link>
-          </Nav>
+          <Navbar.Brand href="/">coko Admin</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              {headerItems.map(headerItem => (
+                <Nav.Link
+                  as={Link}
+                  to={headerItem.to}
+                  className={headerItem.isActive}
+                >
+                  {headerItem.label}
+                </Nav.Link>
+              ))}
+            </Nav>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
     </>

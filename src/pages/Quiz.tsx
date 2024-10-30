@@ -7,33 +7,23 @@ import {
   Row,
   Table,
 } from 'react-bootstrap';
-import Modal from '../component/Modal';
-import useModal from '../store/useModal';
 import { useState } from 'react';
 import type Quiz from '../types/Quiz';
+import useModal from '../hooks/useModal';
 export default function Quiz() {
-  const { openModal } = useModal();
-  const [quiz, setQuiz] = useState<Quiz>({
-    part: '',
-    sectionId: null,
-    title: '',
-    question: '',
-    answer: '',
-    category: null,
-    answerChoice: '',
-  });
+  const { isShow, closeModal, openModal, Modal } = useModal();
+  const [quiz, setQuiz] = useState<Partial<Quiz>>({});
   const setQuizOptions = (
     e: React.ChangeEvent<
       HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement
     >
   ) => {
     const { id, value } = e.target;
-
     setQuiz(prev => ({ ...prev, [id]: value }));
   };
   return (
     <>
-      <Modal title="퀴즈 생성">
+      <Modal isShow={isShow} closeModal={closeModal} title="퀴즈 생성">
         <Form>
           <Form.Group className="d-flex justify-content-between">
             <Form.Select aria-label="Default select example" className="mx-2">
@@ -88,14 +78,14 @@ export default function Quiz() {
                 onChange={setQuizOptions}
               />
             </FloatingLabel>
-            {(quiz.category === 'COMBINATION' ||
-              quiz.category === 'MULTIPLE_CHOICE') && (
+            {(quiz?.category === 'COMBINATION' ||
+              quiz?.category === 'MULTIPLE_CHOICE') && (
               <FloatingLabel label="보기" className="mx-2 mt-4 w-50">
                 <Form.Control
                   size="sm"
                   type="text"
                   as="textarea"
-                  defaultValue={quiz.answer}
+                  defaultValue={quiz?.answer}
                   style={{ height: '150px' }}
                 />
               </FloatingLabel>
@@ -107,7 +97,7 @@ export default function Quiz() {
       <Container>
         <Row className="justify-content-end mt-3 mb-2">
           <Col xs="auto">
-            <Form.Select aria-label="Default select example" className="mx-2">
+            <Form.Select aria-label="Default select example" className="mx-1">
               <option>섹션</option>
               <option value="1">One</option>
               <option value="2">Two</option>
@@ -116,7 +106,7 @@ export default function Quiz() {
             </Form.Select>
           </Col>
           <Col xs="auto">
-            <Form.Select aria-label="Default select example" className="mx-2">
+            <Form.Select aria-label="Default select example" className="mx-1">
               <option>파트</option>
               <option value="1">One</option>
               <option value="2">Two</option>

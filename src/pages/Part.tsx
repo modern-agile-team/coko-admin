@@ -7,15 +7,13 @@ import {
   Row,
   Table,
 } from 'react-bootstrap';
-import useModal from '../store/useModal';
-import Modal from '../component/Modal';
+import useMoadl from '../hooks/useModal';
 
 export default function Part() {
-  const { openModal } = useModal();
-
+  const { isShow, openModal, closeModal, Modal } = useMoadl();
   return (
     <>
-      <Modal title="파트 추가">
+      <Modal title="파트 추가" isShow={isShow} closeModal={closeModal}>
         <Form.Select className="mb-3">
           <option>섹션 선택</option>
           <option value="1">One</option>

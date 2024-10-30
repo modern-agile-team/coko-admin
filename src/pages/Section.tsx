@@ -7,15 +7,12 @@ import {
   Row,
   Table,
 } from 'react-bootstrap';
-import useModal from '../store/useModal';
-import Modal from '../component/Modal';
-
+import useMoadl from '../hooks/useModal';
 export default function Section() {
-  const { openModal } = useModal();
-
+  const { isShow, closeModal, openModal, Modal } = useMoadl();
   return (
     <>
-      <Modal title="섹션 추가">
+      <Modal isShow={isShow} closeModal={closeModal} title="섹션 추가">
         <FloatingLabel label="섹션 입력" className="mx-2">
           <Form.Control size="sm" type="text" />
         </FloatingLabel>
