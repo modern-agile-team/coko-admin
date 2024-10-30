@@ -8,8 +8,10 @@ import {
   Table,
 } from 'react-bootstrap';
 import useMoadl from '../hooks/useModal';
+import sectionApis from '../apis/section';
 export default function Section() {
   const { isShow, closeModal, openModal, Modal } = useMoadl();
+  const { data: sections } = sectionApis.get();
   return (
     <>
       <Modal isShow={isShow} closeModal={closeModal} title="섹션 추가">
@@ -44,10 +46,12 @@ export default function Section() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>variable</td>
-              </tr>
+              {sections?.map(section => (
+                <tr key={section.id}>
+                  <td>{section.id}</td>
+                  <td>{section.name}</td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         </Row>

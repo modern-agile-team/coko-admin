@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Modal from '../component/Modal';
+import Modal from '../common/Modal';
 
 const useMoadl = () => {
   const [isShow, setIsShow] = useState<boolean>(false);

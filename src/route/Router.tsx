@@ -1,6 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Quiz from '../pages/Quiz';
-import Header from '../component/Header';
+import Header from '../common/Header';
 import Section from '../pages/Section';
 import Part from '../pages/Part';
 export default function Router() {
