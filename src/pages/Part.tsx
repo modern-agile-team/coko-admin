@@ -10,13 +10,19 @@ import {
 import useModal from '../store/useModal';
 import Modal from '../component/Modal';
 
-export default function Section() {
+export default function Part() {
   const { openModal } = useModal();
 
   return (
     <>
-      <Modal title="섹션 추가">
-        <FloatingLabel label="섹션 입력" className="mx-2">
+      <Modal title="파트 추가">
+        <Form.Select className="mb-3">
+          <option>섹션 선택</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </Form.Select>
+        <FloatingLabel label="파트 입력">
           <Form.Control size="sm" type="text" />
         </FloatingLabel>
       </Modal>
@@ -34,7 +40,7 @@ export default function Section() {
           </Col>
           <Col xs="auto">
             <Button type="button" onClick={openModal}>
-              + 섹션 추가
+              + 파트 추가
             </Button>
           </Col>
         </Row>
@@ -44,12 +50,14 @@ export default function Section() {
               <tr>
                 <th>id</th>
                 <th>section</th>
+                <th>part</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>1</td>
                 <td>variable</td>
+                <td>let</td>
               </tr>
             </tbody>
           </Table>
