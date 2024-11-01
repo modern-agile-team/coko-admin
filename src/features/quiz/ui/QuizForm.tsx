@@ -14,7 +14,6 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
     'OX_SELECTOR',
     'SHORT_ANSWER',
   ];
-  console.log(quiz);
   return (
     <Form>
       <Form.Group className="d-flex justify-content-between">
@@ -37,7 +36,12 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
           className="mx-2"
           id="category"
           value={prevQuiz?.category}
-          onChange={e => pushQuiz(e.target.id as keyof Quiz, e.target.value)}
+          onChange={e =>
+            pushQuiz(
+              e.target.id as 'category',
+              e.target.value as Quiz['category']
+            )
+          }
         >
           <option>문제 유형 선택</option>
           {categorys.map((category, index) => (
@@ -54,7 +58,7 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
             size="sm"
             type="text"
             defaultValue={prevQuiz?.title}
-            onChange={e => pushQuiz(e.target.id as keyof Quiz, e.target.value)}
+            onChange={e => pushQuiz(e.target.id as 'title', e.target.value)}
           />
         </FloatingLabel>
         <FloatingLabel
@@ -66,7 +70,7 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
             as="textarea"
             style={{ height: '170px' }}
             defaultValue={prevQuiz?.question}
-            onChange={e => pushQuiz(e.target.id as keyof Quiz, e.target.value)}
+            onChange={e => pushQuiz(e.target.id as 'question', e.target.value)}
           />
         </FloatingLabel>
       </Form.Group>
@@ -83,7 +87,7 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
             style={{ height: '150px' }}
             defaultValue={prevQuiz?.answer}
             onChange={e =>
-              pushQuiz(e.target.id as keyof Quiz, e.target.value.split(','))
+              pushQuiz(e.target.id as 'answer', e.target.value.split(','))
             }
           />
         </FloatingLabel>
@@ -98,7 +102,10 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
               defaultValue={quiz?.answer}
               style={{ height: '150px' }}
               onChange={e =>
-                pushQuiz(e.target.id as keyof Quiz, e.target.value.split(','))
+                pushQuiz(
+                  e.target.id as 'answerChoice',
+                  e.target.value.split(',')
+                )
               }
             />
           </FloatingLabel>
