@@ -33,6 +33,7 @@ export default function Header() {
             <Nav className="me-auto">
               {headerItems.map(headerItem => (
                 <Nav.Link
+                  key={headerItem.id}
                   as={Link}
                   to={headerItem.to}
                   className={headerItem.isActive}

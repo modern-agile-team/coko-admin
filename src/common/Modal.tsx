@@ -7,6 +7,7 @@ interface ModalProps {
   closeModal: () => void;
   title: string;
   submitEvnet?: () => void;
+  closeEvent?: () => void;
 }
 export default function Modal({
   isShow,
@@ -14,6 +15,7 @@ export default function Modal({
   title,
   children,
   submitEvnet,
+  closeEvent,
 }: PropsWithChildren<ModalProps>) {
   return (
     <ModalPortal>
@@ -23,7 +25,10 @@ export default function Modal({
           <Button
             size="lg"
             variant="close"
-            onClick={closeModal}
+            onClick={() => {
+              closeEvent && closeEvent();
+              closeModal();
+            }}
             aria-label="Close lg"
           />
         </Overray.Header>

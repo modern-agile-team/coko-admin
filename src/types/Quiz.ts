@@ -1,7 +1,8 @@
+import Part from './Part';
+
 export default interface Quiz {
-  id: number;
-  part: string;
-  sectionId: number;
+  id?: number;
+  partId: Part['id'];
   title: string;
   question: string;
   answer: string[];
