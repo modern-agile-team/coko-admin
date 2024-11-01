@@ -99,7 +99,7 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
               size="sm"
               type="text"
               as="textarea"
-              defaultValue={quiz?.answer}
+              defaultValue={prevQuiz?.answerChoice}
               style={{ height: '150px' }}
               onChange={e =>
                 pushQuiz(
