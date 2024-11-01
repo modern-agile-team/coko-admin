@@ -1,11 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import api from './axios/instance';
 import Section from '../types/Section';
 interface Params {
   parms: Record<string, any>;
 }
 const sectionApis = {
-  get: (params: Params | undefined = undefined) => {
+  read: (params: Params | undefined = undefined) => {
     return useQuery<Section[]>({
       queryKey: params ? ['sections', params] : ['sections'],
       queryFn: () =>
@@ -20,5 +20,20 @@ const sectionApis = {
       staleTime: 1 * 60 * 1000,
     });
   },
+  create: () =>
+    useMutation({
+      mutationFn: (data: Section) => api.post('/sections', data),
+    }),
+  update: () =>
+    useMutation({
+      mutationFn: (section: Section) => {
+        const { id, ...rest } = section;
+        return api.patch(`/sections/${id}`, rest);
+      },
+    }),
+  delete: () =>
+    useMutation({
+      mutationFn: (id: number) => api.delete(`/sections/${id}`),
+    }),
 };
 export default sectionApis;

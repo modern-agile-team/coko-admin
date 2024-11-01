@@ -1,7 +1,6 @@
 import {
   Button,
   ButtonGroup,
-  CloseButton,
   Col,
   Container,
   Form,
@@ -15,19 +14,18 @@ import partApis from '../apis/part';
 import sectionApis from '../apis/section';
 import { QuizForm } from '../features/quiz/ui/QuizForm';
 import useQuizStore from '../store/useQuizStore';
-import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
 export default function Quiz() {
-  const { data: quizzes } = quizApis.get();
+  const { data: quizzes } = quizApis.read();
   const { data: parts } = partApis.get();
-  const { data: sections } = sectionApis.get();
-  const { mutate } = useMutation({
-    mutationFn: quizApis.create,
-    onSuccess: () => {
-      console.log('성송');
-    },
-  });
+  const { data: sections } = sectionApis.read();
+  const createMutation = quizApis.create();
+  const updateMutation = quizApis.update();
+  const deleteMutation = quizApis.delete();
+  const [mod, setMod] = useState<'create' | 'update'>();
   const { isShow, closeModal, openModal, Modal } = useModal();
-  const { quiz, resetQuiz } = useQuizStore();
+  const { quiz, resetQuiz, setQuiz } = useQuizStore();
+
   return (
     <>
       <Modal
@@ -36,11 +34,18 @@ export default function Quiz() {
         title="퀴즈 생성"
         closeEvent={resetQuiz}
         submitEvnet={() => {
-          mutate(quiz);
+          switch (mod) {
+            case 'create':
+              createMutation.mutate(quiz as Quiz);
+              break;
+            case 'update':
+              updateMutation.mutate(quiz as Quiz);
+          }
+
           resetQuiz();
         }}
       >
-        <QuizForm sections={sections ?? []} parts={parts ?? []} />
+        <QuizForm prevQuiz={quiz} />
       </Modal>
 
       <Container>
@@ -76,7 +81,13 @@ export default function Quiz() {
             <Button type="button">검색</Button>
           </Col>
           <Col xs="auto">
-            <Button type="button" onClick={openModal}>
+            <Button
+              type="button"
+              onClick={() => {
+                setMod('create');
+                openModal();
+              }}
+            >
               + 퀴즈 추가
             </Button>
           </Col>
@@ -104,8 +115,35 @@ export default function Quiz() {
                       className="w-100"
                       aria-label="Basic example"
                     >
-                      <Button variant="secondary">수정</Button>
-                      <Button variant="secondary">삭제</Button>
+                      <Button
+                        variant="secondary"
+                        onClick={() => {
+                          setMod('update');
+                          setQuiz({
+                            id: quiz.id,
+                            sectionId: quiz.sectionId,
+                            part: quiz.part,
+                            title: quiz.title,
+                            question: quiz.question,
+                            answer: quiz.answer,
+                            category: quiz.category,
+                            answerChoice: quiz.answerChoice,
+                          });
+                          openModal();
+                        }}
+                      >
+                        수정
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        onClick={() => {
+                          if (confirm('삭제 하시겠습니까?')) {
+                            deleteMutation.mutate(Number(quiz.id));
+                          }
+                        }}
+                      >
+                        삭제
+                      </Button>
                     </ButtonGroup>
                   </td>
                 </tr>

@@ -1,15 +1,19 @@
 import { FloatingLabel, Form } from 'react-bootstrap';
 import useQuizStore from '../../../store/useQuizStore';
 import Quiz from '../../../types/Quiz';
-import Section from '../../../types/Section';
-import Part from '../../../types/Part';
-interface QuizForm {
-  sections: Section[];
-  parts: Part[];
-  prevQuiz?: Quiz;
+import partApis from '../../../apis/part';
+import sectionApis from '../../../apis/section';
+interface QuizFormProps {
+  prevQuiz?: Partial<Quiz>;
 }
-export function QuizForm({ sections, parts, prevQuiz }: QuizForm) {
-  const { quiz, setQuiz } = useQuizStore();
+export function QuizForm({ prevQuiz }: QuizFormProps) {
+  const { quiz, pushQuiz } = useQuizStore();
+  // const { data: parts } = partApis.get();
+  const parts = [
+    { id: 0, name: 'EASY' },
+    { id: 1, name: 'NORMAL' },
+  ];
+  const { data: sections } = sectionApis.read();
   const categorys = [
     'COMBINATION',
     'MULTIPLE_CHOICE',
@@ -23,7 +27,9 @@ export function QuizForm({ sections, parts, prevQuiz }: QuizForm) {
           id="sectionId"
           className="mx-2"
           value={prevQuiz?.sectionId}
-          onChange={e => setQuiz(e.target.id as keyof Quiz, e.target.value)}
+          onChange={e =>
+            pushQuiz(e.target.id as 'sectionId', Number(e.target.value))
+          }
         >
           <option>섹션 선택</option>
           {sections?.map(section => (
@@ -37,11 +43,11 @@ export function QuizForm({ sections, parts, prevQuiz }: QuizForm) {
           id="part"
           className="mx-2"
           value={prevQuiz?.part}
-          onChange={e => setQuiz(e.target.id as keyof Quiz, e.target.value)}
+          onChange={e => pushQuiz(e.target.id as 'part', e.target.value)}
         >
           <option>파트 선택</option>
           {parts?.map(part => (
-            <option key={part.id} value={part.id}>
+            <option key={part.id} value={part.name}>
               {part.name}
             </option>
           ))}
@@ -50,7 +56,7 @@ export function QuizForm({ sections, parts, prevQuiz }: QuizForm) {
           className="mx-2"
           id="category"
           value={prevQuiz?.category}
-          onChange={e => setQuiz(e.target.id as keyof Quiz, e.target.value)}
+          onChange={e => pushQuiz(e.target.id as keyof Quiz, e.target.value)}
         >
           <option>문제 유형 선택</option>
           {categorys.map((category, index) => (
@@ -67,7 +73,7 @@ export function QuizForm({ sections, parts, prevQuiz }: QuizForm) {
             size="sm"
             type="text"
             defaultValue={prevQuiz?.title}
-            onChange={e => setQuiz(e.target.id as keyof Quiz, e.target.value)}
+            onChange={e => pushQuiz(e.target.id as keyof Quiz, e.target.value)}
           />
         </FloatingLabel>
         <FloatingLabel
@@ -79,7 +85,7 @@ export function QuizForm({ sections, parts, prevQuiz }: QuizForm) {
             as="textarea"
             style={{ height: '170px' }}
             defaultValue={prevQuiz?.question}
-            onChange={e => setQuiz(e.target.id as keyof Quiz, e.target.value)}
+            onChange={e => pushQuiz(e.target.id as keyof Quiz, e.target.value)}
           />
         </FloatingLabel>
       </Form.Group>
@@ -95,7 +101,9 @@ export function QuizForm({ sections, parts, prevQuiz }: QuizForm) {
             type="text"
             style={{ height: '150px' }}
             defaultValue={prevQuiz?.answer}
-            onChange={e => setQuiz(e.target.id as keyof Quiz, e.target.value)}
+            onChange={e =>
+              pushQuiz(e.target.id as keyof Quiz, e.target.value.split(','))
+            }
           />
         </FloatingLabel>
         {(quiz?.category === 'COMBINATION' ||
@@ -106,9 +114,11 @@ export function QuizForm({ sections, parts, prevQuiz }: QuizForm) {
               size="sm"
               type="text"
               as="textarea"
-              defaultValue={prevQuiz?.answerChoice || quiz?.answer}
+              defaultValue={quiz?.answer}
               style={{ height: '150px' }}
-              onChange={e => setQuiz(e.target.id as keyof Quiz, e.target.value)}
+              onChange={e =>
+                pushQuiz(e.target.id as keyof Quiz, e.target.value.split(','))
+              }
             />
           </FloatingLabel>
         )}
