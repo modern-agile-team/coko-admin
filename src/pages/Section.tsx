@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap';
 import useMoadl from '../hooks/useModal';
 import sectionApis from '../apis/section';
-import SectionForm from '../features/section/ui/sectionForm';
+import SectionForm from '../features/section/ui/SectionForm';
 import { useState } from 'react';
 import useSectionStore from '../store/useSectionStore';
 import type Section from '../types/Section';
@@ -68,7 +68,7 @@ export default function Section() {
                 <tr key={section.id}>
                   <td>{section.id}</td>
                   <td>{section.name}</td>
-                  <td className="d-flex justify-content-between">
+                  <td className="d-flex justify-content-end">
                     <ButtonGroup size="sm" aria-label="Basic example">
                       <Button
                         variant="secondary"

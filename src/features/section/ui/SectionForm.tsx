@@ -3,7 +3,6 @@ import useSectionStore from '../../../store/useSectionStore';
 
 export default function SectionForm() {
   const { section, pushSection } = useSectionStore();
-  console.log(section);
   return (
     <FloatingLabel label="섹션 입력" className="mx-2">
       <Form.Control

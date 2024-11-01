@@ -2,52 +2,33 @@ import { FloatingLabel, Form } from 'react-bootstrap';
 import useQuizStore from '../../../store/useQuizStore';
 import Quiz from '../../../types/Quiz';
 import partApis from '../../../apis/part';
-import sectionApis from '../../../apis/section';
 interface QuizFormProps {
   prevQuiz?: Partial<Quiz>;
 }
 export function QuizForm({ prevQuiz }: QuizFormProps) {
   const { quiz, pushQuiz } = useQuizStore();
-  // const { data: parts } = partApis.get();
-  const parts = [
-    { id: 0, name: 'EASY' },
-    { id: 1, name: 'NORMAL' },
-  ];
-  const { data: sections } = sectionApis.read();
+  const { data: parts } = partApis.get();
   const categorys = [
     'COMBINATION',
     'MULTIPLE_CHOICE',
     'OX_SELECTOR',
     'SHORT_ANSWER',
   ];
+  console.log(quiz);
   return (
     <Form>
       <Form.Group className="d-flex justify-content-between">
         <Form.Select
-          id="sectionId"
+          id="partId"
           className="mx-2"
-          value={prevQuiz?.sectionId}
+          value={prevQuiz?.partId}
           onChange={e =>
-            pushQuiz(e.target.id as 'sectionId', Number(e.target.value))
+            pushQuiz(e.target.id as 'partId', Number(e.target.value))
           }
-        >
-          <option>섹션 선택</option>
-          {sections?.map(section => (
-            <option key={section.id} value={section.id}>
-              {section.name}
-            </option>
-          ))}
-        </Form.Select>
-
-        <Form.Select
-          id="part"
-          className="mx-2"
-          value={prevQuiz?.part}
-          onChange={e => pushQuiz(e.target.id as 'part', e.target.value)}
         >
           <option>파트 선택</option>
           {parts?.map(part => (
-            <option key={part.id} value={part.name}>
+            <option key={part.id} value={part.id}>
               {part.name}
             </option>
           ))}

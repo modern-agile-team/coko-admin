@@ -1,17 +1,18 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import api from './axios/instance';
 import Quiz from '../types/Quiz';
 const quizApis = {
-  read: (params: Record<string, any> | undefined = undefined) => {
+  read: (params?: Record<string, any>) => {
     return useQuery<Quiz[]>({
-      queryKey: params ? ['quizzes', params] : ['quizzes'],
-      queryFn: ({ queryKey }) => {
+      queryKey: ['quizzes', params],
+      queryFn: async ({ queryKey }) => {
         const [_, queryParams] = queryKey;
-        return api({
+        const response = await api({
           method: 'GET',
           url: '/quizzes',
           params: queryParams,
-        }).then(response => response.data);
+        });
+        return response.data;
       },
       //gcTime : 캐시에 남아있는 시간 5분
       gcTime: 5 * 60 * 1000,
@@ -19,20 +20,42 @@ const quizApis = {
       staleTime: 1 * 60 * 1000,
     });
   },
-  create: () =>
-    useMutation({
-      mutationFn: (data: Quiz) => api.post('/quizzes', data),
-    }),
-  update: () =>
-    useMutation({
+  create: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: (quiz: Quiz) => api.post('/quizzes', quiz),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['quizzes'],
+        });
+      },
+    });
+  },
+  update: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationFn: (quiz: Quiz) => {
         const { id, ...rest } = quiz;
         return api.put(`/quizzes/${id}`, rest);
       },
-    }),
-  delete: () =>
-    useMutation({
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['quizzes'],
+        });
+      },
+    });
+  },
+  delete: () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
       mutationFn: (id: number) => api.delete(`/quizzes/${id}`),
-    }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['quizzes'],
+        });
+      },
+    });
+  },
 };
 export default quizApis;

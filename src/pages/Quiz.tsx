@@ -3,22 +3,19 @@ import {
   ButtonGroup,
   Col,
   Container,
-  Form,
   Row,
   Table,
 } from 'react-bootstrap';
 import type Quiz from '../types/Quiz';
 import useModal from '../hooks/useModal';
 import quizApis from '../apis/quiz';
-import partApis from '../apis/part';
-import sectionApis from '../apis/section';
 import { QuizForm } from '../features/quiz/ui/QuizForm';
 import useQuizStore from '../store/useQuizStore';
 import { useState } from 'react';
+import QuizSearchBar from '../features/quiz/ui/QuizSearchBar';
 export default function Quiz() {
-  const { data: quizzes } = quizApis.read();
-  const { data: parts } = partApis.get();
-  const { data: sections } = sectionApis.read();
+  const [querys, setquerys] = useState<Record<string, any>>({});
+  const { data: quizzes } = quizApis.read(querys);
   const createMutation = quizApis.create();
   const updateMutation = quizApis.update();
   const deleteMutation = quizApis.delete();
@@ -47,39 +44,9 @@ export default function Quiz() {
       >
         <QuizForm prevQuiz={quiz} />
       </Modal>
-
       <Container>
         <Row className="justify-content-end mt-3 mb-2">
-          <Col xs="auto">
-            <Form.Select aria-label="Default select example" className="mx-1">
-              <option>섹션</option>
-              {sections?.map(section => (
-                <option key={section.id} value={section.id}>
-                  {section.name}
-                </option>
-              ))}
-            </Form.Select>
-          </Col>
-          <Col xs="auto">
-            <Form.Select aria-label="Default select example" className="mx-1">
-              <option>파트</option>
-              {parts?.map(part => (
-                <option key={part.id} value={part.id}>
-                  {part.name}
-                </option>
-              ))}
-            </Form.Select>
-          </Col>
-          <Col xs="auto">
-            <Form.Control
-              type="text"
-              placeholder="검색안됩니다"
-              className=" mr-sm-2"
-            />
-          </Col>
-          <Col xs="auto">
-            <Button type="button">검색</Button>
-          </Col>
+          <QuizSearchBar setquerys={setquerys}></QuizSearchBar>
           <Col xs="auto">
             <Button
               type="button"
@@ -97,8 +64,7 @@ export default function Quiz() {
             <thead>
               <tr>
                 <th>id</th>
-                <th>sectionID</th>
-                <th>part</th>
+                <th>partId</th>
                 <th>question</th>
               </tr>
             </thead>
@@ -106,8 +72,7 @@ export default function Quiz() {
               {quizzes?.map(quiz => (
                 <tr key={quiz.id}>
                   <td>{quiz.id}</td>
-                  <td>{quiz.sectionId}</td>
-                  <td>{quiz.part}</td>
+                  <td>{quiz.partId}</td>
                   <td>{quiz.question}</td>
                   <td className="d-flex justify-content-between w-100">
                     <ButtonGroup
@@ -121,8 +86,7 @@ export default function Quiz() {
                           setMod('update');
                           setQuiz({
                             id: quiz.id,
-                            sectionId: quiz.sectionId,
-                            part: quiz.part,
+                            partId: quiz.partId,
                             title: quiz.title,
                             question: quiz.question,
                             answer: quiz.answer,

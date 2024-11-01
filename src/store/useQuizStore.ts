@@ -8,8 +8,7 @@ interface UseQuizState {
 }
 const useQuizStore = create<UseQuizState>(set => ({
   quiz: {
-    sectionId: undefined,
-    part: undefined,
+    partId: undefined,
     title: undefined,
     question: undefined,
     answer: [],
@@ -19,6 +18,16 @@ const useQuizStore = create<UseQuizState>(set => ({
   pushQuiz: (id, value) =>
     set(state => ({ quiz: { ...state.quiz, [id]: value } })),
   setQuiz: quiz => set(() => ({ quiz })),
-  resetQuiz: () => set(() => ({ quiz: {} })),
+  resetQuiz: () =>
+    set(() => ({
+      quiz: {
+        partId: undefined,
+        title: undefined,
+        question: undefined,
+        answer: [],
+        category: undefined,
+        answerChoice: [],
+      },
+    })),
 }));
 export default useQuizStore;

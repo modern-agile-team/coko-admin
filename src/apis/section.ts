@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import api from './axios/instance';
 import Section from '../types/Section';
 interface Params {
@@ -20,20 +20,41 @@ const sectionApis = {
       staleTime: 1 * 60 * 1000,
     });
   },
-  create: () =>
-    useMutation({
-      mutationFn: (data: Section) => api.post('/sections', data),
-    }),
-  update: () =>
-    useMutation({
+  create: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: (section: Section) => api.post('/sections', section),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['sections'],
+        });
+      },
+    });
+  },
+  update: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationFn: (section: Section) => {
         const { id, ...rest } = section;
         return api.patch(`/sections/${id}`, rest);
       },
-    }),
-  delete: () =>
-    useMutation({
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['sections'],
+        });
+      },
+    });
+  },
+  delete: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationFn: (id: number) => api.delete(`/sections/${id}`),
-    }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['sections'],
+        });
+      },
+    });
+  },
 };
 export default sectionApis;
