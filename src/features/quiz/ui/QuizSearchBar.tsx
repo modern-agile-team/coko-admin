@@ -15,8 +15,14 @@ export default function QuizSearchBar({ setquerys }: QuizSaerchBarProps) {
           className="mx-1"
           onChange={e => {
             e.target.value
-              ? setquerys({ sectionId: e.target.value })
-              : setquerys({});
+              ? setquerys((prev: Record<string, number>) => ({
+                  ...prev,
+                  sectionId: e.target.value,
+                }))
+              : setquerys((prev: Record<string, number>) => {
+                  const { sectionId, ...rest } = prev;
+                  return rest;
+                });
           }}
         >
           <option value={''}>섹션</option>
@@ -32,9 +38,15 @@ export default function QuizSearchBar({ setquerys }: QuizSaerchBarProps) {
           aria-label="Default select example"
           className="mx-1"
           onChange={e => {
-            e.target.value === undefined
-              ? setquerys({ part: e.target.value })
-              : setquerys({});
+            e.target.value
+              ? setquerys((prev: Record<string, number>) => ({
+                  ...prev,
+                  partId: e.target.value,
+                }))
+              : setquerys((prev: Record<string, number>) => {
+                  const { partId, ...rest } = prev;
+                  return rest;
+                });
           }}
         >
           <option value={''}>파트</option>
