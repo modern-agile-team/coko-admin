@@ -7,19 +7,19 @@ import {
   Table,
 } from 'react-bootstrap';
 import useMoadl from '../hooks/useModal';
-import sectionApis from '../apis/section';
 import SectionForm from '../features/section/ui/SectionForm';
 import { useState } from 'react';
 import useSectionStore from '../store/useSectionStore';
 import type Section from '../types/Section';
+import sectionsQueries from '../queries/sections';
 export default function Section() {
   const { resetSection, section, setSection } = useSectionStore();
   const { isShow, closeModal, openModal, Modal } = useMoadl();
   const [mod, setMod] = useState<'create' | 'update'>();
-  const { data: sections } = sectionApis.read();
-  const createMutation = sectionApis.create();
-  const updateMutation = sectionApis.update();
-  const deleteMutation = sectionApis.delete();
+  const { data: sections } = sectionsQueries.read();
+  const createMutation = sectionsQueries.create();
+  const updateMutation = sectionsQueries.update();
+  const deleteMutation = sectionsQueries.delete();
   return (
     <>
       <Modal

@@ -1,13 +1,14 @@
 import { FloatingLabel, Form } from 'react-bootstrap';
 import useQuizStore from '../../../store/useQuizStore';
 import Quiz from '../../../types/Quiz';
-import partApis from '../../../apis/part';
+import partQueries from '../../../queries/parts';
+
 interface QuizFormProps {
   prevQuiz?: Partial<Quiz>;
 }
 export function QuizForm({ prevQuiz }: QuizFormProps) {
   const { quiz, pushQuiz } = useQuizStore();
-  const { data: parts } = partApis.get();
+  const { data: parts } = partQueries.read();
   const categorys = [
     'COMBINATION',
     'MULTIPLE_CHOICE',
