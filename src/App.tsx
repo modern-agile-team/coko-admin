@@ -6,8 +6,8 @@ function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 300000,
-        gcTime: 600000,
+        staleTime: 60000,
+        gcTime: 300000,
       },
     },
   });
