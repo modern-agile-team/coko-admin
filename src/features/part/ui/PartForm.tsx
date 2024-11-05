@@ -1,9 +1,10 @@
 import { FloatingLabel, Form } from 'react-bootstrap';
-import sectionApis from '../../../apis/section';
+
 import usePartStore from '../../../store/usePartStore';
+import sectionsQueries from '../../../queries/sections';
 
 export default function PartForm() {
-  const { data: sections } = sectionApis.read();
+  const { data: sections } = sectionsQueries.read();
   const { part, pushPart } = usePartStore();
   return (
     <>

@@ -7,18 +7,18 @@ import {
   Table,
 } from 'react-bootstrap';
 import useMoadl from '../hooks/useModal';
-import partApis from '../apis/part';
 import PartForm from '../features/part/ui/PartForm';
 import { useState } from 'react';
 import usePartStore from '../store/usePartStore';
 import type Part from '../types/Part';
+import partsQueries from '../queries/parts';
 export default function Part() {
   const { isShow, openModal, closeModal, Modal } = useMoadl();
   const [mod, setMod] = useState<'create' | 'update'>();
-  const { data: parts } = partApis.get();
-  const createMutation = partApis.create();
-  const updateMutation = partApis.update();
-  const deleteMutation = partApis.delete();
+  const { data: parts } = partsQueries.read();
+  const createMutation = partsQueries.create();
+  const updateMutation = partsQueries.update();
+  const deleteMutation = partsQueries.delete();
   const { part, resetPart, setPart } = usePartStore();
   return (
     <>

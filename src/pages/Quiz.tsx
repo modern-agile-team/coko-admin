@@ -8,17 +8,19 @@ import {
 } from 'react-bootstrap';
 import type Quiz from '../types/Quiz';
 import useModal from '../hooks/useModal';
-import quizApis from '../apis/quiz';
 import { QuizForm } from '../features/quiz/ui/QuizForm';
 import useQuizStore from '../store/useQuizStore';
 import { useState } from 'react';
 import QuizSearchBar from '../features/quiz/ui/QuizSearchBar';
+import quizzesQueries from '../queries/quizzes';
 export default function Quiz() {
-  const [querys, setquerys] = useState<Record<string, any>>({});
-  const { data: quizzes } = quizApis.read(querys);
-  const createMutation = quizApis.create();
-  const updateMutation = quizApis.update();
-  const deleteMutation = quizApis.delete();
+  const [querys, setquerys] = useState<{ sectionId?: number; partId?: number }>(
+    {}
+  );
+  const { data: quizzes } = quizzesQueries.read(querys);
+  const createMutation = quizzesQueries.create();
+  const updateMutation = quizzesQueries.update();
+  const deleteMutation = quizzesQueries.delete();
   const [mod, setMod] = useState<'create' | 'update'>();
   const { isShow, closeModal, openModal, Modal } = useModal();
   const { quiz, resetQuiz, setQuiz } = useQuizStore();
