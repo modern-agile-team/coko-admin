@@ -12,8 +12,9 @@ const quizzesApis = {
   postQuizzes: async (quiz: Quiz): Promise<void> => api.post('/quizzes', quiz),
   putQuiz: async (quiz: Quiz): Promise<void> => {
     const { id, ...rest } = quiz;
-    api.put(`/quizzes/${id}`, rest);
+    await api.put(`/quizzes/${id}`, rest);
   },
-  deleteQuiz: async (id: number): Promise<void> => api.delete(`/quizzes/${id}`),
+  deleteQuiz: async (id: number): Promise<void> =>
+    await api.delete(`/quizzes/${id}`),
 };
 export default quizzesApis;

@@ -19,7 +19,7 @@ export default function Quiz() {
   );
   const { data: quizzes } = quizzesQueries.read(querys);
   const createMutation = quizzesQueries.create();
-  const updateMutation = quizzesQueries.update();
+  const updateMutation = quizzesQueries.update(querys);
   const deleteMutation = quizzesQueries.delete();
   const [mod, setMod] = useState<'create' | 'update'>();
   const { isShow, closeModal, openModal, Modal } = useModal();

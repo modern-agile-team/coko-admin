@@ -10,23 +10,37 @@ const quizzesQueries = {
   },
   create: () => {
     const queryClient = useQueryClient();
+
     return useMutation({
       mutationFn: quizzesApis.postQuizzes,
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['quizzes'],
-        });
+
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: ['quizzes'] });
       },
     });
   },
-  update: () => {
+  update: (params?: { sectionId?: number; partId?: number }) => {
     const queryClient = useQueryClient();
+    const queryKey = ['quizzes', params];
     return useMutation({
       mutationFn: quizzesApis.putQuiz,
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['quizzes'],
-        });
+      onMutate: async newQuiz => {
+        await queryClient.cancelQueries({ queryKey });
+        const prevQuizzes = queryClient.getQueryData<Quiz[]>(queryKey);
+        queryClient.setQueryData<Quiz[]>(queryKey, prevQuizzes =>
+          prevQuizzes?.map(prevQuiz =>
+            prevQuiz.id === newQuiz.id ? newQuiz : prevQuiz
+          )
+        );
+        return { prevQuizzes };
+      },
+      onError: (err, _, context) => {
+        queryClient.setQueryData(queryKey, context?.prevQuizzes);
+        console.error('Update mutation error:', err);
+      },
+      onSettled: async () => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        queryClient.invalidateQueries({ queryKey });
       },
     });
   },
