@@ -20,6 +20,10 @@ jobs:
       # GitHub Repository에서 Checkout
       - uses: actions/checkout@v3
 
+      - name: Generate .env file
+        run: |
+          echo "${{ secrets.SERVER }}" > .env
+
       # Docker Buildx 설정
       - name: Set up docker buildx
         id: buildx
