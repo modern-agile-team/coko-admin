@@ -25,14 +25,6 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Check if nginx.conf exists
-        run: |
-          if [ -f ./nginx/nginx.conf ]; then
-            echo "nginx.conf file exists"
-          else
-            echo "nginx.conf file not found"
-            exit 1
-          fi
       # Docker 캐시 설정
       - name: Cache docker layers
         uses: actions/cache@v3
