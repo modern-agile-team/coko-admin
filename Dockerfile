@@ -25,7 +25,7 @@ WORKDIR /app
 # 빌드된 정적 파일 복사 (이 부분은 첫 번째 단계에서 생성된 dist 폴더)
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
-COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
 # COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 
