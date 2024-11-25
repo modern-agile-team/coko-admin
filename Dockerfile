@@ -1,6 +1,11 @@
 # 1. Node.js 기반으로 빌드를 먼저 진행
 FROM node:18-alpine as build-stage
 
+ARG VITE_BASE_URL
+
+ENV VITE_BASE_URL=${VITE_BASE_URL}
+
+RUN echo "VITE_BASE_URL=${VITE_BASE_URL}" >> /app/.env
 # 작업 디렉토리 설정
 WORKDIR /app
 
@@ -13,7 +18,6 @@ RUN npm install
 # 애플리케이션 소스 복사
 COPY . .
 
-COPY .env .env
 
 # 빌드 명령어 실행 (정적 파일을 dist 폴더에 생성)
 RUN npm run build
