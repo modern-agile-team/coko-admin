@@ -9,7 +9,7 @@ ENV VITE_BASE_URL=${VITE_BASE_URL}
 WORKDIR /app
 
 RUN echo "VITE_BASE_URL=${VITE_BASE_URL}" > /app/.env
-RUN echo "VITE_BASE_URL in build: ${VITE_BASE_URL}"
+
 # 패키지 파일 복사
 COPY package.json package-lock.json ./
 
