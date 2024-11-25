@@ -74,4 +74,4 @@ jobs:
       - name: Docker run
         run: |
           docker compose -f /home/ubuntu/docker-compose.yml down
-          docker compose -f /home/ubuntu/docker-compose.yml up -d
+          docker compose -f /home/ubuntu/docker-compose.yml up -d --pull always
