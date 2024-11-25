@@ -24,7 +24,6 @@ export default function Quiz() {
   const [mod, setMod] = useState<'create' | 'update'>();
   const { isShow, closeModal, openModal, Modal } = useModal();
   const { quiz, resetQuiz, setQuiz } = useQuizStore();
-  console.log(import.meta.env.VITE_BASE_URL);
   if (isLoading) {
     return <div>로딩 중...</div>;
   }
