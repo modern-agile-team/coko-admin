@@ -9,6 +9,7 @@ ENV VITE_BASE_URL=${VITE_BASE_URL}
 WORKDIR /app
 
 RUN echo "VITE_BASE_URL=${VITE_BASE_URL}" > /app/.env
+RUN echo "VITE_BASE_URL in build: ${VITE_BASE_URL}"
 # 패키지 파일 복사
 COPY package.json package-lock.json ./
 
@@ -17,7 +18,6 @@ RUN npm install
 
 # 애플리케이션 소스 복사
 COPY . .
-
 
 # 빌드 명령어 실행 (정적 파일을 dist 폴더에 생성)
 RUN npm run build
