@@ -27,7 +27,7 @@ export default function Quiz() {
 
   return (
     <>
-      <h1>테스트33333333</h1>
+      <h1>테스트344</h1>
       <Modal
         isShow={isShow}
         closeModal={closeModal}
