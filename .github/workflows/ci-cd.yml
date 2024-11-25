@@ -10,6 +10,7 @@ env:
   DOCKER_IMAGE: ghcr.io/${{ github.actor }}/react-auto-deploy
   VERSION: ${{ github.sha }}
   NAME: go_cicd
+  VITE_BASE_URL: ${{ secrets.SERVER }}
 
 jobs:
   # 빌드 Job
@@ -19,12 +20,6 @@ jobs:
     steps:
       # GitHub Repository에서 Checkout
       - uses: actions/checkout@v3
-
-      - name: Generate .env file
-        run: |
-          echo "VITE_BASE_URL=${{ secrets.SERVER }}" >> .env
-           echo "Contents of .env file:"
-           cat .env  # .env 파일의 내용을 출력
 
       # Docker Buildx 설정
       - name: Set up docker buildx
