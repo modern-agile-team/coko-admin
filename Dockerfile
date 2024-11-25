@@ -23,7 +23,7 @@ FROM nginx:1.25.1-alpine3.17-slim
 WORKDIR /app
 
 # Nginx 설정 파일 복사
-COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx/nginx.conf /etc/nginx/nginx.d
 
 # 빌드된 정적 파일 복사 (이 부분은 첫 번째 단계에서 생성된 dist 폴더)
 COPY --from=build-stage /app/dist /usr/share/nginx/html
