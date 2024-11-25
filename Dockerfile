@@ -1,5 +1,5 @@
 # 1. Node.js 기반으로 빌드를 먼저 진행
-FROM node:16-alpine as build-stage
+FROM node:18-alpine as build-stage
 
 # 작업 디렉토리 설정
 WORKDIR /app
@@ -22,11 +22,10 @@ FROM nginx:1.25.1-alpine3.17-slim
 # 작업 디렉토리 설정
 WORKDIR /app
 
-# Nginx 설정 파일 복사
-COPY ./nginx/nginx.conf /etc/nginx/conf.d
-
 # 빌드된 정적 파일 복사 (이 부분은 첫 번째 단계에서 생성된 dist 폴더)
 COPY --from=build-stage /app/dist /usr/share/nginx/html
+
+COPY ./nginx/nginx.conf /etc/nginx/conf.d
 
 # Nginx의 기본 포트를 노출
 EXPOSE 80
