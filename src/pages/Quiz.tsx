@@ -27,6 +27,7 @@ export default function Quiz() {
 
   return (
     <>
+      <h1>테스트11111</h1>
       <Modal
         isShow={isShow}
         closeModal={closeModal}
