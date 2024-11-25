@@ -24,7 +24,9 @@ export default function Quiz() {
   const [mod, setMod] = useState<'create' | 'update'>();
   const { isShow, closeModal, openModal, Modal } = useModal();
   const { quiz, resetQuiz, setQuiz } = useQuizStore();
-
+  if (!quizzes) {
+    return <div>404...</div>;
+  }
   return (
     <>
       <h1>테스트888</h1>
