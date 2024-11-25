@@ -13,6 +13,8 @@ RUN npm install
 # 애플리케이션 소스 복사
 COPY . .
 
+COPY .env .env
+
 # 빌드 명령어 실행 (정적 파일을 dist 폴더에 생성)
 RUN npm run build
 
