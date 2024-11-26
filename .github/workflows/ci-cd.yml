@@ -52,7 +52,7 @@ jobs:
           push: true
           tags: ${{ env.DOCKER_IMAGE }}:latest
           build-args: |
-            VITE_BASE_URL=${{ env.SERVER }}
+            VITE_BASE_URL=${{ secrets.SERVER }}
 
   # 배포 Job
   deploy:
