@@ -10,7 +10,7 @@ env:
   DOCKER_IMAGE: ghcr.io/${{ github.actor }}/react-auto-deploy
   VERSION: ${{ github.sha }}
   NAME: go_cicd
-  VITE_BASE_URL: ${{ secrets.SERVER }}
+  VITE_BASE_URL: ${{ env.VITE_BASE_URL }}
 
 jobs:
   # 빌드 Job
