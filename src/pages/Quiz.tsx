@@ -17,14 +17,19 @@ export default function Quiz() {
   const [querys, setquerys] = useState<{ sectionId?: number; partId?: number }>(
     {}
   );
-  const { data: quizzes } = quizzesQueries.read(querys);
+  const { data: quizzes, isLoading } = quizzesQueries.read(querys);
   const createMutation = quizzesQueries.create();
   const updateMutation = quizzesQueries.update(querys);
   const deleteMutation = quizzesQueries.delete();
   const [mod, setMod] = useState<'create' | 'update'>();
   const { isShow, closeModal, openModal, Modal } = useModal();
   const { quiz, resetQuiz, setQuiz } = useQuizStore();
-
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+  if (!quizzes) {
+    return <div>404...</div>;
+  }
   return (
     <>
       <Modal
@@ -71,7 +76,7 @@ export default function Quiz() {
               </tr>
             </thead>
             <tbody>
-              {quizzes?.map(quiz => (
+              {quizzes.map(quiz => (
                 <tr key={quiz.id}>
                   <td>{quiz.id}</td>
                   <td>{quiz.partId}</td>
