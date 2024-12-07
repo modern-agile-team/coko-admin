@@ -2,9 +2,9 @@ import { Col, Form } from 'react-bootstrap';
 import partQueries from '../../../queries/parts';
 import sectionsQueries from '../../../queries/sections';
 interface QuizSaerchBarProps {
-  setquerys: (query: Record<string, any>) => void;
+  setQuery: (query: Record<string, any>) => void;
 }
-export default function QuizSearchBar({ setquerys }: QuizSaerchBarProps) {
+export default function QuizSearchBar({ setQuery }: QuizSaerchBarProps) {
   const { data: parts } = partQueries.read();
   const { data: sections } = sectionsQueries.read();
   return (
@@ -15,11 +15,11 @@ export default function QuizSearchBar({ setquerys }: QuizSaerchBarProps) {
           className="mx-1"
           onChange={e => {
             e.target.value
-              ? setquerys((prev: Record<string, number>) => ({
+              ? setQuery((prev: Record<string, number>) => ({
                   ...prev,
                   sectionId: e.target.value,
                 }))
-              : setquerys((prev: Record<string, number>) => {
+              : setQuery((prev: Record<string, number>) => {
                   const { sectionId, ...rest } = prev;
                   return rest;
                 });
@@ -39,11 +39,11 @@ export default function QuizSearchBar({ setquerys }: QuizSaerchBarProps) {
           className="mx-1"
           onChange={e => {
             e.target.value
-              ? setquerys((prev: Record<string, number>) => ({
+              ? setQuery((prev: Record<string, number>) => ({
                   ...prev,
                   partId: e.target.value,
                 }))
-              : setquerys((prev: Record<string, number>) => {
+              : setQuery((prev: Record<string, number>) => {
                   const { partId, ...rest } = prev;
                   return rest;
                 });

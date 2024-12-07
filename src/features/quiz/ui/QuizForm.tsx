@@ -9,7 +9,7 @@ interface QuizFormProps {
 export function QuizForm({ prevQuiz }: QuizFormProps) {
   const { quiz, pushQuiz } = useQuizStore();
   const { data: parts } = partQueries.read();
-  const categorys = [
+  const category = [
     'COMBINATION',
     'MULTIPLE_CHOICE',
     'OX_SELECTOR',
@@ -45,9 +45,9 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
           }
         >
           <option>문제 유형 선택</option>
-          {categorys.map((category, index) => (
-            <option key={index} value={category}>
-              {category}
+          {category.map(item => (
+            <option key={item} value={item}>
+              {item}
             </option>
           ))}
         </Form.Select>

@@ -6,14 +6,14 @@ import {
   Row,
   Table,
 } from 'react-bootstrap';
-import useMoadl from '../hooks/useModal';
+import useModal from '../hooks/useModal';
 import PartForm from '../features/part/ui/PartForm';
 import { useState } from 'react';
 import usePartStore from '../store/usePartStore';
 import type Part from '../types/Part';
 import partsQueries from '../queries/parts';
 export default function Part() {
-  const { isShow, openModal, closeModal, Modal } = useMoadl();
+  const { isShow, openModal, closeModal, Modal } = useModal();
   const [mod, setMod] = useState<'create' | 'update'>();
   const { data: parts } = partsQueries.read();
   const createMutation = partsQueries.create();
@@ -26,7 +26,7 @@ export default function Part() {
         title="파트 추가"
         isShow={isShow}
         closeModal={closeModal}
-        submitEvnet={() => {
+        submitEvent={() => {
           switch (mod) {
             case 'create':
               createMutation.mutate(part as Part);
