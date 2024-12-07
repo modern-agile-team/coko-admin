@@ -68,6 +68,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.actor == 'bluetree7878' && secrets.bluetree7878_GHCR_TOKEN || secrets.rhehfl_ghcr_token }}
 
+      - name: Remove non-latest Docker images
+        run: |
+          docker images --format '{{.Repository}}:{{.Tag}} {{.ID}}' \
+          | grep -E '^${{ env.DOCKER_IMAGE }}:' \
+          | grep -v ':latest' \
+          | awk '{print $2}' \
+          | xargs -r docker rmi || echo "No non-latest images to remove"
+
       # `.env` 파일 생성
       - name: Generate .env file
         run: |
