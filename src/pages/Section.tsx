@@ -6,15 +6,15 @@ import {
   Row,
   Table,
 } from 'react-bootstrap';
-import useMoadl from '../hooks/useModal';
+import useModal from '../hooks/useModal';
 import SectionForm from '../features/section/ui/SectionForm';
 import { useState } from 'react';
 import useSectionStore from '../store/useSectionStore';
-import type Section from '../types/Section';
-import sectionsQueries from '../queries/sections';
+import type Section from '@/types/Section';
+import sectionsQueries from '@/queries/sections';
 export default function Section() {
   const { resetSection, section, setSection } = useSectionStore();
-  const { isShow, closeModal, openModal, Modal } = useMoadl();
+  const { isShow, closeModal, openModal, Modal } = useModal();
   const [mod, setMod] = useState<'create' | 'update'>();
   const { data: sections } = sectionsQueries.read();
   const createMutation = sectionsQueries.create();
