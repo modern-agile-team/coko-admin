@@ -1,12 +1,12 @@
 import { PropsWithChildren } from 'react';
 import ModalPortal from '../ModalPortal';
-import { Button, Modal as Overray } from 'react-bootstrap';
+import { Button, Modal as Overlay } from 'react-bootstrap';
 
 interface ModalProps {
   isShow: boolean;
   closeModal: () => void;
   title: string;
-  submitEvnet?: () => void;
+  submitEvent?: () => void;
   closeEvent?: () => void;
 }
 export default function Modal({
@@ -14,14 +14,14 @@ export default function Modal({
   closeModal,
   title,
   children,
-  submitEvnet,
+  submitEvent,
   closeEvent,
 }: PropsWithChildren<ModalProps>) {
   return (
     <ModalPortal>
-      <Overray show={isShow} size="lg">
-        <Overray.Header>
-          <Overray.Title>{title}</Overray.Title>
+      <Overlay show={isShow} size="lg">
+        <Overlay.Header>
+          <Overlay.Title>{title}</Overlay.Title>
           <Button
             size="lg"
             variant="close"
@@ -31,23 +31,23 @@ export default function Modal({
             }}
             aria-label="Close lg"
           />
-        </Overray.Header>
-        <Overray.Body>{children}</Overray.Body>
-        <Overray.Footer>
+        </Overlay.Header>
+        <Overlay.Body>{children}</Overlay.Body>
+        <Overlay.Footer>
           <Button variant="secondary" onClick={closeModal}>
             Close
           </Button>
           <Button
             variant="primary"
             onClick={() => {
-              submitEvnet && submitEvnet();
+              submitEvent && submitEvent();
               closeModal();
             }}
           >
             Submit
           </Button>
-        </Overray.Footer>
-      </Overray>
+        </Overlay.Footer>
+      </Overlay>
     </ModalPortal>
   );
 }

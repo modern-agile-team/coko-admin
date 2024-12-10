@@ -14,10 +14,10 @@ import { useState } from 'react';
 import QuizSearchBar from '../features/quiz/ui/QuizSearchBar';
 import quizzesQueries from '../queries/quizzes';
 export default function Quiz() {
-  const [querys, setquerys] = useState<{ sectionId?: number; partId?: number }>(
+  const [query, setQuery] = useState<{ sectionId?: number; partId?: number }>(
     {}
   );
-  const { data: quizzes, isLoading } = quizzesQueries.read(querys);
+  const { data: quizzes, isLoading } = quizzesQueries.read(query);
   const createMutation = quizzesQueries.create();
   const updateMutation = quizzesQueries.update();
   const deleteMutation = quizzesQueries.delete();
@@ -37,7 +37,7 @@ export default function Quiz() {
         closeModal={closeModal}
         title="퀴즈 생성"
         closeEvent={resetQuiz}
-        submitEvnet={() => {
+        submitEvent={() => {
           switch (mod) {
             case 'create':
               createMutation.mutate(quiz as Quiz);
@@ -53,7 +53,7 @@ export default function Quiz() {
       </Modal>
       <Container>
         <Row className="justify-content-end mt-3 mb-2">
-          <QuizSearchBar setquerys={setquerys}></QuizSearchBar>
+          <QuizSearchBar setQuery={setQuery}></QuizSearchBar>
           <Col xs="auto">
             <Button
               type="button"
