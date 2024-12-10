@@ -22,6 +22,12 @@ export default function Header() {
       label: 'part',
       isActive: location.pathname === '/part' ? 'active' : '',
     },
+    {
+      id: 4,
+      to: '/item',
+      label: 'item',
+      isActive: location.pathname === '/item' ? 'active' : '',
+    },
   ];
   return (
     <>
