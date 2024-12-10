@@ -26,7 +26,7 @@ export default function Section() {
         isShow={isShow}
         closeModal={closeModal}
         title="섹션 추가"
-        submitEvnet={() => {
+        submitEvent={() => {
           switch (mod) {
             case 'create':
               createMutation.mutate(section as Section);
