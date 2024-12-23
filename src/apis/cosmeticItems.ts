@@ -6,5 +6,8 @@ const cosmeticItemApis = {
     const response = await api.get('/items');
     return response.data;
   },
+  postItem: async (cosmeticItem: CosmeticItem): Promise<void> => {
+    await api.post('/items', cosmeticItem);
+  },
 };
 export default cosmeticItemApis;

@@ -1,15 +1,15 @@
-import ItemForm from '@/features/item/ui/cosmeticItemForm';
+import CosmeticItemForm from '@/features/item/ui/CosmeticItemForm';
 import useModal from '@/hooks/useModal';
 import cosmeticItemQueries from '@/queries/cosmeticItem';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 
 export default function CosmeticItem() {
   const { Modal, closeModal, isShow, openModal } = useModal();
-  const { data: CosmeticItems } = cosmeticItemQueries.get();
+  const { data: CosmeticItems } = cosmeticItemQueries.read();
   return (
     <>
-      <Modal title="ㅎㅇ" isShow={isShow} closeModal={closeModal}>
-        <ItemForm></ItemForm>
+      <Modal title="ㅎㅇㅇㅇ" isShow={isShow} closeModal={closeModal}>
+        <CosmeticItemForm></CosmeticItemForm>
       </Modal>
       <Container>
         <Row className="justify-content-end mt-3 mb-2">

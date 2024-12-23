@@ -1,6 +1,6 @@
 type category = 'clothes' | 'accessories' | 'profile' | 'color';
 interface CosmeticItem {
-  id: number;
+  id?: number;
   name: string;
   cost: number;
   image: string;

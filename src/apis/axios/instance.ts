@@ -16,6 +16,7 @@ const api = axios.create({
     });
   },
 });
+
 api.interceptors.request.use(requestFunction);
 api.interceptors.response.use(responseFunction, responseError);
 export default api;
