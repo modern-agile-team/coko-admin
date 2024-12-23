@@ -3,7 +3,7 @@ import Quiz from '../pages/Quiz';
 import Header from '../common/Header';
 import Section from '../pages/Section';
 import Part from '../pages/Part';
-import Item from '../pages/Item';
+import CosmeticItem from '../pages/CosmeticItem';
 export default function Router() {
   return (
     <BrowserRouter>
@@ -13,7 +13,7 @@ export default function Router() {
         <Route path="/quiz" element={<Quiz />} />
         <Route path="/section" element={<Section />} />
         <Route path="/part" element={<Part />} />
-        <Route path="/item" element={<Item />} />
+        <Route path="/item" element={<CosmeticItem />} />
       </Routes>
     </BrowserRouter>
   );
