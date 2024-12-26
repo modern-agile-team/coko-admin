@@ -1,11 +1,11 @@
 import { Col, Form } from 'react-bootstrap';
-import partQueries from '../../../queries/parts';
+import partsQueries from '../../part/queries';
 import sectionsQueries from '../../../queries/sections';
 interface QuizSaerchBarProps {
   setQuery: (query: Record<string, any>) => void;
 }
 export default function QuizSearchBar({ setQuery }: QuizSaerchBarProps) {
-  const { data: parts } = partQueries.read();
+  const { data: parts } = partsQueries.read();
   const { data: sections } = sectionsQueries.read();
   return (
     <>

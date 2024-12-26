@@ -10,8 +10,9 @@ import useModal from '../hooks/useModal';
 import PartForm from '../features/part/ui/PartForm';
 import { useState } from 'react';
 import usePartStore from '../store/usePartStore';
-import type Part from '../types/Part';
-import partsQueries from '../queries/parts';
+import type { Part } from '../features/part/types';
+import partsQueries from '../features/part/queries';
+
 export default function Part() {
   const { isShow, openModal, closeModal, Modal } = useModal();
   const [mod, setMod] = useState<'create' | 'update'>();
@@ -22,22 +23,7 @@ export default function Part() {
   const { part, resetPart, setPart } = usePartStore();
   return (
     <>
-      <Modal
-        title="파트 추가"
-        isShow={isShow}
-        closeModal={closeModal}
-        submitEvent={() => {
-          switch (mod) {
-            case 'create':
-              createMutation.mutate(part as Part);
-              break;
-            case 'update':
-              updateMutation.mutate(part as Part);
-          }
-
-          resetPart();
-        }}
-      >
+      <Modal title="파트 추가" isShow={isShow} closeModal={closeModal}>
         <PartForm />
       </Modal>
 

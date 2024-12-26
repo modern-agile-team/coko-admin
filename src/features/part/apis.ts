@@ -1,5 +1,5 @@
-import Part from '../types/Part';
-import api from './axios/instance';
+import api from '../../apis/axios/instance';
+import { Part } from './types';
 
 const partsApis = {
   getParts: async (): Promise<Part[]> => {
