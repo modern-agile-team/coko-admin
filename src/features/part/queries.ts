@@ -1,45 +1,36 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import partsApis from './apis';
 import { Part } from './types';
-
+const partKeys = {
+  all: ['parts'],
+};
 const partsQueries = {
   read: () => {
     return useQuery<Part[]>({
-      queryKey: ['parts'],
-      queryFn: partsApis.getParts,
+      queryKey: partKeys.all,
+      queryFn: partsApis.get,
     });
   },
   create: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: partsApis.postParts,
+      mutationFn: partsApis.post,
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['parts'],
+          queryKey: partKeys.all,
         });
       },
     });
   },
-  update: () => {
-    const queryClient = useQueryClient();
 
-    return useMutation({
-      mutationFn: partsApis.putPart,
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['parts'],
-        });
-      },
-    });
-  },
   delete: () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-      mutationFn: partsApis.deletePart,
+      mutationFn: partsApis.delete,
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['parts'],
+          queryKey: partKeys.all,
         });
       },
     });

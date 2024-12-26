@@ -1,15 +1,21 @@
-import { Button, FloatingLabel, Form } from 'react-bootstrap';
+import { Button, FloatingLabel, Form, Row } from 'react-bootstrap';
 import sectionsQueries from '../../../queries/sections';
-import getFormDataValue from '../service/getFormData';
+import partsQueries from '../queries';
+import getFormDataValue from '../../../utils/getFormDataValue';
 
-export default function PartForm() {
+interface PartFormProps {
+  closeModal: () => void;
+}
+export default function PartForm({ closeModal }: PartFormProps) {
   const { data: sections } = sectionsQueries.read();
+  const { mutate: createPart } = partsQueries.create();
+
   const handleMutate = (formData: FormData) => {
     const sectionId = getFormDataValue(formData, 'sectionId');
-    const part = getFormDataValue(formData, 'part');
-
-    console.log(sectionId, part);
+    const name = getFormDataValue(formData, 'partName');
+    createPart({ name, sectionId: Number(sectionId) });
   };
+
   return (
     <>
       <Form action={handleMutate}>
@@ -22,15 +28,13 @@ export default function PartForm() {
           ))}
         </Form.Select>
         <FloatingLabel label="파트 입력">
-          <Form.Control
-            id="part"
-            size="sm"
-            type="text"
-            name="part"
-            onChange={e => {}}
-          />
+          <Form.Control id="partName" size="sm" type="text" name="partName" />
         </FloatingLabel>
-        <Button type="submit">asdasds</Button>
+        <div className="d-flex justify-content-end">
+          <Button type="submit" className="m-3" onClick={closeModal}>
+            확인
+          </Button>
+        </div>
       </Form>
     </>
   );
