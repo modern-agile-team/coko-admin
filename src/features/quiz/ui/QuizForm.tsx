@@ -1,36 +1,65 @@
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
-import useQuizStore from '../../../store/useQuizStore';
-
 import partsQueries from '../../part/queries';
-import { Quiz } from '../types';
-import getFormDataValue from '../../../utils/getFormDataValues';
-import { category } from '../constants';
+import { Category, Mod, Quiz } from '../types';
+import getFormDataValue from '../../../utils/getFormDataValue';
+import { useEffect, useState, useTransition } from 'react';
+import quizzesQueries from '../queries';
+import { category } from './../constants';
+import getQuizFormDataValues from '../service/getQuizFormDataValue';
 interface QuizFormProps {
-  prevQuiz?: Partial<Quiz>;
+  prevQuiz?: Omit<Quiz, 'sectionId'>;
+  closeModal: () => void;
+  mod: Mod;
+  setQuiz: () => void;
 }
-export function QuizForm({ prevQuiz }: QuizFormProps) {
-  const { quiz, pushQuiz } = useQuizStore();
+export function QuizForm({
+  prevQuiz,
+  closeModal,
+  mod,
+  setQuiz,
+}: QuizFormProps) {
   const { data: parts } = partsQueries.read();
+  const [selectedCategory, setSelectedCategory] = useState<Category>();
+  const [error, setError] = useState<string>('');
+  const { mutate: createQuiz } = quizzesQueries.create();
+  const { mutate: updateQuiz } = quizzesQueries.update();
+  useEffect(() => {
+    return () => setQuiz();
+  }, []);
+  const handleMutate = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    try {
+      const quiz = getQuizFormDataValues(formData);
+      if (mod === 'create') {
+        createQuiz(quiz);
+      } else if (mod === 'update' && prevQuiz) {
+        updateQuiz({
+          id: prevQuiz?.id,
+          ...quiz,
+        });
+      }
 
-  const handleMutate = (formData: FormData) => {
-    const [partId, category, title, question, answer, answerChoice] =
-      getFormDataValue(formData, [
-        'partId',
-        'category',
-        'title',
-        'question',
-        'answer',
-        'answerChoice',
-      ]);
-    console.log(partId, category, title, question, answer, answerChoice);
+      closeModal();
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
+    }
   };
+
+  const validCategories = ['COMBINATION', 'MULTIPLE_CHOICE'];
+  const isChoiceRequired =
+    validCategories.includes(prevQuiz?.category ?? '') ||
+    validCategories.includes(selectedCategory ?? '');
   return (
-    <Form action={handleMutate}>
+    <Form onSubmit={handleMutate}>
+      {error && <div className="alert alert-danger">{error}</div>}
       <Form.Group className="d-flex justify-content-between">
         <Form.Select
           id="partId"
           className="mx-2"
-          value={prevQuiz?.partId}
+          defaultValue={prevQuiz?.partId}
           name="partId"
         >
           <option>파트 선택</option>
@@ -43,8 +72,11 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
         <Form.Select
           className="mx-2"
           id="category"
-          value={prevQuiz?.category}
+          defaultValue={prevQuiz?.category}
           name="category"
+          onChange={e => {
+            setSelectedCategory(e.target.value as Category);
+          }}
         >
           <option>문제 유형 선택</option>
           {category.map(item => (
@@ -92,8 +124,7 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
             defaultValue={prevQuiz?.answer}
           />
         </FloatingLabel>
-        {(quiz?.category === 'COMBINATION' ||
-          quiz?.category === 'MULTIPLE_CHOICE') && (
+        {isChoiceRequired && (
           <FloatingLabel label="보기" className="mx-2 mt-4 w-50">
             <Form.Control
               id="answerChoice"
@@ -108,7 +139,7 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
         )}
       </Form.Group>
       <div className="d-flex justify-content-end">
-        <Button type="submit" className="m-3">
+        <Button className="m-3" type="submit">
           확인
         </Button>
       </div>

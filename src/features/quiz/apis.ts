@@ -9,10 +9,11 @@ const quizzesApis = {
     const response = await api.get('/quizzes', { params });
     return response.data;
   },
-  post: async (quiz: Quiz): Promise<void> => api.post('/quizzes', quiz),
-  put: async (quiz: Quiz): Promise<void> => {
+  post: async (quiz: Omit<Quiz, 'id' | 'sectionId'>): Promise<void> =>
+    await api.post('/quizzes', quiz),
+  put: async (quiz: Omit<Quiz, 'sectionId'>): Promise<void> => {
     const { id, ...rest } = quiz;
-    api.put(`/quizzes/${id}`, rest);
+    await api.put(`/quizzes/${id}`, rest);
   },
   delete: async (id: number): Promise<void> => api.delete(`/quizzes/${id}`),
 };

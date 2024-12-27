@@ -8,11 +8,10 @@ import {
 } from 'react-bootstrap';
 import useModal from '../hooks/useModal';
 import { QuizForm } from '../features/quiz/ui/QuizForm';
-import useQuizStore from '../store/useQuizStore';
 import { useState } from 'react';
 import QuizSearchBar from '../features/quiz/ui/QuizSearchBar';
 import quizzesQueries from '../features/quiz/queries';
-import type { Quiz, Quizfilters } from '../features/quiz/types';
+import type { Mod, Quiz, Quizfilters } from '../features/quiz/types';
 export default function Quiz() {
   const [filters, setFilters] = useState<Quizfilters>({
     partId: 0,
@@ -21,17 +20,24 @@ export default function Quiz() {
   const { data: quizzes, isLoading } = quizzesQueries.read(filters);
   const deleteMutation = quizzesQueries.delete();
   const { isShow, closeModal, openModal, Modal } = useModal();
-  const [quiz, setQuiz] = useState<Quiz>();
+  const [quiz, setQuiz] = useState<Omit<Quiz, 'sectionId'>>();
+  const [mod, setMod] = useState<Mod>('create');
   if (isLoading) {
     return <div>로딩 중...</div>;
   }
   if (!quizzes) {
     return <div>404...</div>;
   }
+
   return (
     <>
-      <Modal isShow={isShow} closeModal={closeModal} title="퀴즈 생성">
-        <QuizForm prevQuiz={quiz} />
+      <Modal isShow={isShow} title="퀴즈 생성" closeModal={closeModal}>
+        <QuizForm
+          prevQuiz={quiz}
+          closeModal={closeModal}
+          mod={mod}
+          setQuiz={() => setQuiz}
+        />
       </Modal>
       <Container>
         <Row className="justify-content-end mt-3 mb-2">
@@ -40,6 +46,7 @@ export default function Quiz() {
             <Button
               type="button"
               onClick={() => {
+                setMod('create');
                 openModal();
               }}
             >
@@ -71,6 +78,7 @@ export default function Quiz() {
                       <Button
                         variant="secondary"
                         onClick={() => {
+                          setMod('update');
                           setQuiz(quiz);
                           openModal();
                         }}
