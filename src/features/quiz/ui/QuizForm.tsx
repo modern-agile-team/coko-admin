@@ -1,11 +1,10 @@
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
 import partsQueries from '../../part/queries';
 import { Category, Mod, Quiz } from '../types';
-import getFormDataValue from '../../../utils/getFormDataValue';
-import { useEffect, useState, useTransition } from 'react';
+import { useState } from 'react';
 import quizzesQueries from '../queries';
 import { category } from './../constants';
-import getQuizFormDataValues from '../service/getQuizFormDataValue';
+import { parseQuizData } from '../service/getQuizFormData';
 interface QuizFormProps {
   prevQuiz?: Omit<Quiz, 'sectionId'>;
   closeModal: () => void;
@@ -14,39 +13,42 @@ interface QuizFormProps {
 export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
   const { data: parts } = partsQueries.read();
   const [selectedCategory, setSelectedCategory] = useState<Category>();
-  const [error, setError] = useState<string>('');
-  const { mutate: createQuiz } = quizzesQueries.create();
+  const { mutate: createQuiz, failureReason } = quizzesQueries.create();
   const { mutate: updateQuiz } = quizzesQueries.update();
 
   const handleMutate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    try {
-      const quiz = getQuizFormDataValues(formData);
-      if (mod === 'create') {
-        createQuiz(quiz);
-      } else if (mod === 'update' && prevQuiz) {
-        updateQuiz({
-          id: prevQuiz?.id,
-          ...quiz,
-        });
-      }
-
-      closeModal();
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      }
+    const quizData = Object.fromEntries(formData.entries());
+    const parsedQuizData = parseQuizData(quizData);
+    if (mod === 'create') {
+      createQuiz(parsedQuizData, {
+        onError: (err, val, conText) => {},
+        onSuccess: () => {
+          closeModal();
+        },
+      });
+    } else if (mod === 'update' && prevQuiz) {
+      updateQuiz(
+        {
+          id: prevQuiz.id,
+          ...parsedQuizData,
+        },
+        {
+          onError: (err, val, conText) => {},
+          onSuccess: () => {
+            closeModal();
+          },
+        }
+      );
     }
   };
-
   const validCategories = ['COMBINATION', 'MULTIPLE_CHOICE'];
   const isChoiceRequired =
     validCategories.includes(prevQuiz?.category ?? '') ||
     validCategories.includes(selectedCategory ?? '');
   return (
     <Form onSubmit={handleMutate}>
-      {error && <div className="alert alert-danger">{error}</div>}
       <Form.Group className="d-flex justify-content-between">
         <Form.Select
           id="partId"
@@ -103,7 +105,7 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
       </Form.Group>
       <Form.Group className="d-flex">
         <FloatingLabel
-          label="정답 (,로 구분해서 작성 / ex : a,b...)"
+          label="정답 (,로 구분해서 작성 띄어쓰기 노노/ ex : a,b...)"
           className="mx-2 mt-4 w-50"
         >
           <Form.Control
