@@ -1,7 +1,7 @@
 import { Button, FloatingLabel, Form, Row } from 'react-bootstrap';
 import sectionsQueries from '../../../queries/sections';
 import partsQueries from '../queries';
-import getFormDataValue from '../../../utils/getFormDataValue';
+import getFormDataValue from '../../../utils/getFormDataValues';
 
 interface PartFormProps {
   closeModal: () => void;
@@ -11,8 +11,11 @@ export default function PartForm({ closeModal }: PartFormProps) {
   const { mutate: createPart } = partsQueries.create();
 
   const handleMutate = (formData: FormData) => {
-    const sectionId = getFormDataValue(formData, 'sectionId');
-    const name = getFormDataValue(formData, 'partName');
+    const [sectionId, name] = getFormDataValue(formData, [
+      'sectionId',
+      'partName',
+    ]);
+
     createPart({ name, sectionId: Number(sectionId) });
   };
 

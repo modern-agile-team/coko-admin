@@ -1,29 +1,37 @@
-import { FloatingLabel, Form } from 'react-bootstrap';
+import { Button, FloatingLabel, Form } from 'react-bootstrap';
 import useQuizStore from '../../../store/useQuizStore';
-import Quiz from '../../../types/Quiz';
+
 import partsQueries from '../../part/queries';
+import { Quiz } from '../types';
+import getFormDataValue from '../../../utils/getFormDataValues';
+import { category } from '../constants';
 interface QuizFormProps {
   prevQuiz?: Partial<Quiz>;
 }
 export function QuizForm({ prevQuiz }: QuizFormProps) {
   const { quiz, pushQuiz } = useQuizStore();
   const { data: parts } = partsQueries.read();
-  const category = [
-    'COMBINATION',
-    'MULTIPLE_CHOICE',
-    'OX_SELECTOR',
-    'SHORT_ANSWER',
-  ];
+
+  const handleMutate = (formData: FormData) => {
+    const [partId, category, title, question, answer, answerChoice] =
+      getFormDataValue(formData, [
+        'partId',
+        'category',
+        'title',
+        'question',
+        'answer',
+        'answerChoice',
+      ]);
+    console.log(partId, category, title, question, answer, answerChoice);
+  };
   return (
-    <Form>
+    <Form action={handleMutate}>
       <Form.Group className="d-flex justify-content-between">
         <Form.Select
           id="partId"
           className="mx-2"
           value={prevQuiz?.partId}
-          onChange={e =>
-            pushQuiz(e.target.id as 'partId', Number(e.target.value))
-          }
+          name="partId"
         >
           <option>파트 선택</option>
           {parts?.map(part => (
@@ -36,12 +44,7 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
           className="mx-2"
           id="category"
           value={prevQuiz?.category}
-          onChange={e =>
-            pushQuiz(
-              e.target.id as 'category',
-              e.target.value as Quiz['category']
-            )
-          }
+          name="category"
         >
           <option>문제 유형 선택</option>
           {category.map(item => (
@@ -57,8 +60,8 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
             id="title"
             size="sm"
             type="text"
+            name="title"
             defaultValue={prevQuiz?.title}
-            onChange={e => pushQuiz(e.target.id as 'title', e.target.value)}
           />
         </FloatingLabel>
         <FloatingLabel
@@ -70,7 +73,7 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
             as="textarea"
             style={{ height: '170px' }}
             defaultValue={prevQuiz?.question}
-            onChange={e => pushQuiz(e.target.id as 'question', e.target.value)}
+            name="question"
           />
         </FloatingLabel>
       </Form.Group>
@@ -82,13 +85,11 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
           <Form.Control
             id="answer"
             as="textarea"
+            name="answer"
             size="sm"
             type="text"
             style={{ height: '150px' }}
             defaultValue={prevQuiz?.answer}
-            onChange={e =>
-              pushQuiz(e.target.id as 'answer', e.target.value.split(','))
-            }
           />
         </FloatingLabel>
         {(quiz?.category === 'COMBINATION' ||
@@ -99,18 +100,18 @@ export function QuizForm({ prevQuiz }: QuizFormProps) {
               size="sm"
               type="text"
               as="textarea"
+              name="answerChoice"
               defaultValue={prevQuiz?.answerChoice}
               style={{ height: '150px' }}
-              onChange={e =>
-                pushQuiz(
-                  e.target.id as 'answerChoice',
-                  e.target.value.split(',')
-                )
-              }
             />
           </FloatingLabel>
         )}
       </Form.Group>
+      <div className="d-flex justify-content-end">
+        <Button type="submit" className="m-3">
+          확인
+        </Button>
+      </div>
     </Form>
   );
 }
