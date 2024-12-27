@@ -1,8 +1,10 @@
+import Section from '../../types/Section';
 import { Part } from '../part/types';
 
 export interface Quiz {
   id: number;
   partId: Part['id'];
+  sectionId: Section['id'];
   title: string;
   question: string;
   answer: string[];

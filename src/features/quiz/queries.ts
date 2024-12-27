@@ -7,10 +7,19 @@ const quizKeys = {
   list: (filters?: Quizfilters) => [...quizKeys.lists(), filters] as const,
 };
 const quizzesQueries = {
-  read: (params?: Quizfilters) => {
+  read: (params: Quizfilters) => {
     return useQuery<Quiz[]>({
-      queryKey: quizKeys.list(params),
-      queryFn: () => quizzesApis.get(params),
+      queryKey: quizKeys.lists(),
+      queryFn: () => quizzesApis.get(),
+      select: quizzes => {
+        const { partId, sectionId } = params;
+        return quizzes.filter(quiz => {
+          const matchesSection =
+            sectionId === 0 || quiz.sectionId === sectionId;
+          const matchesPart = partId === 0 || quiz.partId === partId;
+          return matchesSection && matchesPart;
+        });
+      },
     });
   },
   create: () => {

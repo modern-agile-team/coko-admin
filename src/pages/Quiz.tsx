@@ -12,14 +12,16 @@ import useQuizStore from '../store/useQuizStore';
 import { useState } from 'react';
 import QuizSearchBar from '../features/quiz/ui/QuizSearchBar';
 import quizzesQueries from '../features/quiz/queries';
+import type { Quiz, Quizfilters } from '../features/quiz/types';
 export default function Quiz() {
-  const [query, setQuery] = useState<{ sectionId?: number; partId?: number }>(
-    {}
-  );
-  const { data: quizzes, isLoading } = quizzesQueries.read(query);
+  const [filters, setFilters] = useState<Quizfilters>({
+    partId: 0,
+    sectionId: 0,
+  });
+  const { data: quizzes, isLoading } = quizzesQueries.read(filters);
   const deleteMutation = quizzesQueries.delete();
   const { isShow, closeModal, openModal, Modal } = useModal();
-  const { quiz, resetQuiz, setQuiz } = useQuizStore();
+  const [quiz, setQuiz] = useState<Quiz>();
   if (isLoading) {
     return <div>로딩 중...</div>;
   }
@@ -28,17 +30,12 @@ export default function Quiz() {
   }
   return (
     <>
-      <Modal
-        isShow={isShow}
-        closeModal={closeModal}
-        title="퀴즈 생성"
-        closeEvent={resetQuiz}
-      >
+      <Modal isShow={isShow} closeModal={closeModal} title="퀴즈 생성">
         <QuizForm prevQuiz={quiz} />
       </Modal>
       <Container>
         <Row className="justify-content-end mt-3 mb-2">
-          <QuizSearchBar setQuery={setQuery}></QuizSearchBar>
+          <QuizSearchBar setFilters={setFilters}></QuizSearchBar>
           <Col xs="auto">
             <Button
               type="button"
@@ -74,15 +71,7 @@ export default function Quiz() {
                       <Button
                         variant="secondary"
                         onClick={() => {
-                          setQuiz({
-                            id: quiz.id,
-                            partId: quiz.partId,
-                            title: quiz.title,
-                            question: quiz.question,
-                            answer: quiz.answer,
-                            category: quiz.category,
-                            answerChoice: quiz.answerChoice,
-                          });
+                          setQuiz(quiz);
                           openModal();
                         }}
                       >
