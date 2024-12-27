@@ -1,13 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import quizzesApis from './apis';
-import { Quiz, Quizfilters } from './types';
+import { Quiz, QuizFilters } from './types';
 const quizKeys = {
   all: ['quizzes'] as const,
   lists: () => [...quizKeys.all, 'list'] as const,
-  list: (filters?: Quizfilters) => [...quizKeys.lists(), filters] as const,
+  list: (filters?: QuizFilters) => [...quizKeys.lists(), filters] as const,
 };
 const quizzesQueries = {
-  read: (params: Quizfilters) => {
+  read: (params: QuizFilters) => {
     return useQuery<Quiz[]>({
       queryKey: quizKeys.lists(),
       queryFn: () => quizzesApis.get(),

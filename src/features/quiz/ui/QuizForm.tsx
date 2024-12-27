@@ -10,22 +10,14 @@ interface QuizFormProps {
   prevQuiz?: Omit<Quiz, 'sectionId'>;
   closeModal: () => void;
   mod: Mod;
-  setQuiz: () => void;
 }
-export function QuizForm({
-  prevQuiz,
-  closeModal,
-  mod,
-  setQuiz,
-}: QuizFormProps) {
+export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
   const { data: parts } = partsQueries.read();
   const [selectedCategory, setSelectedCategory] = useState<Category>();
   const [error, setError] = useState<string>('');
   const { mutate: createQuiz } = quizzesQueries.create();
   const { mutate: updateQuiz } = quizzesQueries.update();
-  useEffect(() => {
-    return () => setQuiz();
-  }, []);
+
   const handleMutate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);

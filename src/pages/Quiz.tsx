@@ -11,9 +11,9 @@ import { QuizForm } from '../features/quiz/ui/QuizForm';
 import { useState } from 'react';
 import QuizSearchBar from '../features/quiz/ui/QuizSearchBar';
 import quizzesQueries from '../features/quiz/queries';
-import type { Mod, Quiz, Quizfilters } from '../features/quiz/types';
+import type { Mod, Quiz, QuizFilters } from '../features/quiz/types';
 export default function Quiz() {
-  const [filters, setFilters] = useState<Quizfilters>({
+  const [filters, setFilters] = useState<QuizFilters>({
     partId: 0,
     sectionId: 0,
   });
@@ -31,13 +31,13 @@ export default function Quiz() {
 
   return (
     <>
-      <Modal isShow={isShow} title="퀴즈 생성" closeModal={closeModal}>
-        <QuizForm
-          prevQuiz={quiz}
-          closeModal={closeModal}
-          mod={mod}
-          setQuiz={() => setQuiz}
-        />
+      <Modal
+        isShow={isShow}
+        title="퀴즈 생성"
+        closeModal={closeModal}
+        closeEvent={() => setQuiz(undefined)}
+      >
+        <QuizForm prevQuiz={quiz} closeModal={closeModal} mod={mod} />
       </Modal>
       <Container>
         <Row className="justify-content-end mt-3 mb-2">

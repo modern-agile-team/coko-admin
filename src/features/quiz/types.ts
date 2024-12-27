@@ -17,7 +17,7 @@ export interface Quiz {
   answerChoice: string[];
 }
 
-export interface Quizfilters {
+export interface QuizFilters {
   sectionId?: number;
   partId?: number;
 }
