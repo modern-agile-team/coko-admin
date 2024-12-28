@@ -12,11 +12,10 @@ const responseFunction = (config: AxiosResponse<any, any>) => {
   return config;
 };
 const responseError = (error: AxiosError) => {
-  console.log(error.status);
   if (error.response?.status) {
     const message = status[error.response.status];
     if (message) {
-      console.log(message); // 상태 코드에 맞는 메시지 출력
+      error.message = message;
     }
   }
   return Promise.reject(error);

@@ -1,6 +1,8 @@
-import { Button, FloatingLabel, Form, Row } from 'react-bootstrap';
+import { Alert, Button, FloatingLabel, Form, Row } from 'react-bootstrap';
 import sectionsQueries from '../../../queries/sections';
 import partsQueries from '../queries';
+import { parsePartData } from '../service/getPartFormData';
+import { useState } from 'react';
 
 interface PartFormProps {
   closeModal: () => void;
@@ -8,18 +10,26 @@ interface PartFormProps {
 export default function PartForm({ closeModal }: PartFormProps) {
   const { data: sections } = sectionsQueries.read();
   const { mutate: createPart } = partsQueries.create();
-
-  const handleMutate = (formData: FormData) => {
-    // const [sectionId, name] = getFormDataValue(formData, [
-    //   'sectionId',
-    //   'partName',
-    // ]);
-    // createPart({ name, sectionId: Number(sectionId) });
+  const [errorMessage, setErrorMessage] = useState('');
+  const handleMutate = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const partData = Object.fromEntries(formData.entries());
+    const parsedPartData = parsePartData(partData);
+    createPart(parsedPartData, {
+      onSuccess: () => {
+        closeModal();
+      },
+      onError: error => {
+        setErrorMessage(error.message);
+      },
+    });
   };
 
   return (
     <>
-      <Form action={handleMutate}>
+      <Form onSubmit={handleMutate}>
+        {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
         <Form.Select id="sectionId" className="mb-3" name="sectionId">
           <option>섹션 선택</option>
           {sections?.map(section => (
@@ -32,7 +42,7 @@ export default function PartForm({ closeModal }: PartFormProps) {
           <Form.Control id="partName" size="sm" type="text" name="partName" />
         </FloatingLabel>
         <div className="d-flex justify-content-end">
-          <Button type="submit" className="m-3" onClick={closeModal}>
+          <Button type="submit" className="m-3">
             확인
           </Button>
         </div>

@@ -1,4 +1,4 @@
-import { Button, FloatingLabel, Form } from 'react-bootstrap';
+import { Alert, Button, FloatingLabel, Form } from 'react-bootstrap';
 import partsQueries from '../../part/queries';
 import { Category, Mod, Quiz } from '../types';
 import { useState } from 'react';
@@ -15,15 +15,18 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
   const [selectedCategory, setSelectedCategory] = useState<Category>();
   const { mutate: createQuiz, failureReason } = quizzesQueries.create();
   const { mutate: updateQuiz } = quizzesQueries.update();
-
+  const [errorMessage, setErrorMessage] = useState('');
   const handleMutate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const quizData = Object.fromEntries(formData.entries());
     const parsedQuizData = parseQuizData(quizData);
+
     if (mod === 'create') {
       createQuiz(parsedQuizData, {
-        onError: (err, val, conText) => {},
+        onError: (err, val, conText) => {
+          setErrorMessage(err.message);
+        },
         onSuccess: () => {
           closeModal();
         },
@@ -49,6 +52,7 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
     validCategories.includes(selectedCategory ?? '');
   return (
     <Form onSubmit={handleMutate}>
+      {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
       <Form.Group className="d-flex justify-content-between">
         <Form.Select
           id="partId"
