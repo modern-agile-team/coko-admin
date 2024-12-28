@@ -19,7 +19,7 @@ export default function Quiz() {
     sectionId: 0,
   });
 
-  const [quiz, setQuiz] = useState<Omit<Quiz, 'sectionId'>>();
+  const [quiz, setQuiz] = useState<Omit<Quiz, 'sectionId'> | null>(null);
   const [mod, setMod] = useState<Mod>('create');
 
   const { isShow, closeModal, openModal, Modal } = useModal();
@@ -39,7 +39,7 @@ export default function Quiz() {
         isShow={isShow}
         title="퀴즈 생성"
         closeModal={closeModal}
-        closeEvent={() => setQuiz(undefined)}
+        closeEvent={() => setQuiz(null)}
       >
         <QuizForm prevQuiz={quiz} closeModal={closeModal} mod={mod} />
       </Modal>

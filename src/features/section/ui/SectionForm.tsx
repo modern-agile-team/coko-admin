@@ -1,7 +1,7 @@
 import { Alert, Button, FloatingLabel, Form } from 'react-bootstrap';
 import sectionsQueries from '../queries';
-import { parseSectionData } from '../service/parseSectionData';
 import { useState } from 'react';
+import { parseSectionData } from '../service/utils';
 interface SectionFormProps {
   closeModal: () => void;
 }

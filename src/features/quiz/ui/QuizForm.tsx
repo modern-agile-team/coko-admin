@@ -4,9 +4,9 @@ import { Category, Mod, Quiz } from '../types';
 import { useState } from 'react';
 import quizzesQueries from '../queries';
 import { category, validCategories } from './../constants';
-import { parseQuizData } from '../service/parseQuizData';
+import { parseQuizData } from '../service/utils';
 interface QuizFormProps {
-  prevQuiz?: Omit<Quiz, 'sectionId'>;
+  prevQuiz: Omit<Quiz, 'sectionId'> | null;
   closeModal: () => void;
   mod: Mod;
 }

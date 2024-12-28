@@ -1,9 +1,9 @@
 import { Section } from '../types';
 
 export const parseSectionData = (
-  section: Record<string, any>
+  formData: Record<string, FormDataEntryValue>
 ): Omit<Section, 'id' | 'sectionId'> => {
   return {
-    name: section.sectionName.toString(),
+    name: formData.sectionName.toString(),
   };
 };
