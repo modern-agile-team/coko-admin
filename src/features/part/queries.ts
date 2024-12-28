@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import partsApis from './apis';
 import { Part } from './types';
 const partKeys = {
-  all: ['parts'],
+  all: ['parts'] as const,
+  lists: () => [...partKeys.all, 'list'] as const,
 };
 const partsQueries = {
   read: () => {
