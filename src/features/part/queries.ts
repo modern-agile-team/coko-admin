@@ -8,7 +8,7 @@ const partKeys = {
 const partsQueries = {
   read: () => {
     return useQuery<Part[]>({
-      queryKey: partKeys.all,
+      queryKey: partKeys.lists(),
       queryFn: partsApis.get,
     });
   },
@@ -18,7 +18,7 @@ const partsQueries = {
       mutationFn: partsApis.post,
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: partKeys.all,
+          queryKey: partKeys.lists(),
         });
       },
     });
@@ -31,7 +31,7 @@ const partsQueries = {
       mutationFn: partsApis.delete,
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: partKeys.all,
+          queryKey: partKeys.lists(),
         });
       },
     });
