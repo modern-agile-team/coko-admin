@@ -6,39 +6,18 @@ import {
   Row,
   Table,
 } from 'react-bootstrap';
-import useMoadl from '../hooks/useModal';
+import useModal from '../hooks/useModal';
 import SectionForm from '../features/section/ui/SectionForm';
-import { useState } from 'react';
-import useSectionStore from '../store/useSectionStore';
-import type Section from '../types/Section';
-import sectionsQueries from '../queries/sections';
+import sectionsQueries from '../features/section/queries';
 export default function Section() {
-  const { resetSection, section, setSection } = useSectionStore();
-  const { isShow, closeModal, openModal, Modal } = useMoadl();
-  const [mod, setMod] = useState<'create' | 'update'>();
+  const { isShow, closeModal, openModal, Modal } = useModal();
   const { data: sections } = sectionsQueries.read();
-  const createMutation = sectionsQueries.create();
-  const updateMutation = sectionsQueries.update();
   const deleteMutation = sectionsQueries.delete();
+
   return (
     <>
-      <Modal
-        isShow={isShow}
-        closeModal={closeModal}
-        title="섹션 추가"
-        submitEvent={() => {
-          switch (mod) {
-            case 'create':
-              createMutation.mutate(section as Section);
-              break;
-            case 'update':
-              updateMutation.mutate(section as Section);
-          }
-
-          resetSection();
-        }}
-      >
-        <SectionForm />
+      <Modal isShow={isShow} closeModal={closeModal} title="섹션 추가">
+        <SectionForm closeModal={closeModal} />
       </Modal>
 
       <Container>
@@ -47,7 +26,6 @@ export default function Section() {
             <Button
               type="button"
               onClick={() => {
-                setMod('create');
                 openModal();
               }}
             >
@@ -73,8 +51,6 @@ export default function Section() {
                       <Button
                         variant="secondary"
                         onClick={() => {
-                          setMod('update');
-                          setSection({ id: section.id, name: section.name });
                           openModal();
                         }}
                       >

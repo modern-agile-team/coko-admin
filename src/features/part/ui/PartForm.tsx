@@ -1,8 +1,8 @@
 import { Alert, Button, FloatingLabel, Form, Row } from 'react-bootstrap';
-import sectionsQueries from '../../../queries/sections';
 import partsQueries from '../queries';
 import { parsePartData } from '../service/getPartFormData';
 import { useState } from 'react';
+import sectionsQueries from '../../section/queries';
 
 interface PartFormProps {
   closeModal: () => void;

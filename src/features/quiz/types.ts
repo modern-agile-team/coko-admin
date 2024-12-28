@@ -1,5 +1,5 @@
-import Section from '../../types/Section';
 import { Part } from '../part/types';
+import { Section } from '../section/types';
 
 export type Category =
   | 'COMBINATION'
