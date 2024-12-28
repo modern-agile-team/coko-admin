@@ -1,6 +1,6 @@
 import { Alert, Button, FloatingLabel, Form, Row } from 'react-bootstrap';
 import partsQueries from '../queries';
-import { parsePartData } from '../service/getPartFormData';
+import { parsePartData } from '../service/parsePartData';
 import { useState } from 'react';
 import sectionsQueries from '../../section/queries';
 

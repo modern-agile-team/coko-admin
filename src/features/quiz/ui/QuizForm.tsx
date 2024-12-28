@@ -4,7 +4,7 @@ import { Category, Mod, Quiz } from '../types';
 import { useState } from 'react';
 import quizzesQueries from '../queries';
 import { category } from './../constants';
-import { parseQuizData } from '../service/getQuizFormData';
+import { parseQuizData } from '../service/parseQuizData';
 interface QuizFormProps {
   prevQuiz?: Omit<Quiz, 'sectionId'>;
   closeModal: () => void;
