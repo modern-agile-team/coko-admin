@@ -13,7 +13,7 @@ interface QuizFormProps {
 export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
   const { data: parts } = partsQueries.read();
   const [selectedCategory, setSelectedCategory] = useState<Category>();
-  const { mutate: createQuiz, failureReason } = quizzesQueries.create();
+  const { mutate: createQuiz } = quizzesQueries.create();
   const { mutate: updateQuiz } = quizzesQueries.update();
   const [errorMessage, setErrorMessage] = useState('');
   const handleMutate = (e: React.FormEvent<HTMLFormElement>) => {
@@ -24,8 +24,8 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
 
     if (mod === 'create') {
       createQuiz(parsedQuizData, {
-        onError: (err, val, conText) => {
-          setErrorMessage(err.message);
+        onError: error => {
+          setErrorMessage(error.message);
         },
         onSuccess: () => {
           closeModal();
@@ -38,7 +38,9 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
           ...parsedQuizData,
         },
         {
-          onError: (err, val, conText) => {},
+          onError: error => {
+            setErrorMessage(error.message);
+          },
           onSuccess: () => {
             closeModal();
           },
