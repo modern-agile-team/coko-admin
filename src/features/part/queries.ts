@@ -14,7 +14,6 @@ const partsQueries = {
       queryFn: partsApis.get,
     });
   },
-
   create: () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -26,7 +25,6 @@ const partsQueries = {
       },
     });
   },
-
   delete: () => {
     const queryClient = useQueryClient();
 
@@ -40,4 +38,5 @@ const partsQueries = {
     });
   },
 };
+
 export default partsQueries;

@@ -21,6 +21,7 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
 
   const handleMutate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const formData = new FormData(e.currentTarget);
     const quizData = Object.fromEntries(formData.entries());
     const parsedQuizData = parseQuizData(quizData);

@@ -9,10 +9,8 @@ const quizzesApis = {
     const response = await api.get('/quizzes', { params });
     return response.data;
   },
-
   post: async (quiz: Omit<Quiz, 'id' | 'sectionId'>): Promise<void> =>
     await api.post('/quizzes', quiz),
-
   put: async (quiz: Omit<Quiz, 'sectionId'>): Promise<void> => {
     const { id, ...rest } = quiz;
     await api.put(`/quizzes/${id}`, rest);
@@ -20,4 +18,5 @@ const quizzesApis = {
 
   delete: async (id: number): Promise<void> => api.delete(`/quizzes/${id}`),
 };
+
 export default quizzesApis;

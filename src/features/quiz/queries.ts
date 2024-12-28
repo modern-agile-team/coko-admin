@@ -24,7 +24,6 @@ const quizzesQueries = {
       },
     });
   },
-
   create: () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -36,7 +35,6 @@ const quizzesQueries = {
       },
     });
   },
-
   update: () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -48,7 +46,6 @@ const quizzesQueries = {
       },
     });
   },
-
   delete: () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -61,4 +58,5 @@ const quizzesQueries = {
     });
   },
 };
+
 export default quizzesQueries;

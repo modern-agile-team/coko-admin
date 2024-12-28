@@ -11,7 +11,6 @@ const sectionsQueries = {
       queryFn: () => sectionsApis.get(),
     });
   },
-
   create: () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -23,7 +22,6 @@ const sectionsQueries = {
       },
     });
   },
-
   delete: () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -36,4 +34,5 @@ const sectionsQueries = {
     });
   },
 };
+
 export default sectionsQueries;

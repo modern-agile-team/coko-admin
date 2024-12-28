@@ -6,10 +6,9 @@ const partsApis = {
     const response = await api.get('/parts');
     return response.data;
   },
-
   post: async (params: Omit<Part, 'id'>): Promise<void> =>
     api.post('/parts', params),
-
   delete: async (id: number): Promise<void> => api.delete(`/parts/${id}`),
 };
+
 export default partsApis;

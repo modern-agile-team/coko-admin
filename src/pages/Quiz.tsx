@@ -26,6 +26,7 @@ export default function Quiz() {
 
   const { data: quizzes, isLoading } = quizzesQueries.read(filters);
   const deleteMutation = quizzesQueries.delete();
+
   if (isLoading) {
     return <div>로딩 중...</div>;
   }
