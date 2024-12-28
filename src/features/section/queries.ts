@@ -11,6 +11,7 @@ const sectionsQueries = {
       queryFn: () => sectionsApis.get(),
     });
   },
+
   create: () => {
     const queryClient = useQueryClient();
     return useMutation({

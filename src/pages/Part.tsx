@@ -13,6 +13,7 @@ import partsQueries from '../features/part/queries';
 
 export default function Part() {
   const { isShow, openModal, closeModal, Modal } = useModal();
+
   const { data: parts } = partsQueries.read();
   const deleteMutation = partsQueries.delete();
 

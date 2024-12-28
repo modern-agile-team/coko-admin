@@ -1,10 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import partsApis from './apis';
 import { Part } from './types';
+
 const partKeys = {
   all: ['parts'] as const,
   lists: () => [...partKeys.all, 'list'] as const,
 };
+
 const partsQueries = {
   read: () => {
     return useQuery<Part[]>({
@@ -12,6 +14,7 @@ const partsQueries = {
       queryFn: partsApis.get,
     });
   },
+
   create: () => {
     const queryClient = useQueryClient();
     return useMutation({

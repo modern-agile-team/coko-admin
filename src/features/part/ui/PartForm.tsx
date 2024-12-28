@@ -7,10 +7,13 @@ import sectionsQueries from '../../section/queries';
 interface PartFormProps {
   closeModal: () => void;
 }
+
 export default function PartForm({ closeModal }: PartFormProps) {
+  const [errorMessage, setErrorMessage] = useState('');
+
   const { data: sections } = sectionsQueries.read();
   const { mutate: createPart } = partsQueries.create();
-  const [errorMessage, setErrorMessage] = useState('');
+
   const handleMutate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);

@@ -5,9 +5,11 @@ import sectionsQueries from '../../section/queries';
 interface QuizSearchBarProps {
   setFilters: (filter: QuizFilters) => void;
 }
+
 export default function QuizSearchBar({ setFilters }: QuizSearchBarProps) {
   const { data: parts } = partsQueries.read();
   const { data: sections } = sectionsQueries.read();
+
   return (
     <>
       <Col xs="auto">

@@ -23,6 +23,7 @@ export default function SectionForm({ closeModal }: SectionFormProps) {
       },
     });
   };
+
   return (
     <Form onSubmit={handleMutate}>
       {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}

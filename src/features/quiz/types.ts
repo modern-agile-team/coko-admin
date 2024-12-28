@@ -6,6 +6,7 @@ export type Category =
   | 'MULTIPLE_CHOICE'
   | 'OX_SELECTOR'
   | 'SHORT_ANSWER';
+
 export interface Quiz {
   id: number;
   partId: Part['id'];

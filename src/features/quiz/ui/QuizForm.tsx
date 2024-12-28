@@ -3,19 +3,22 @@ import partsQueries from '../../part/queries';
 import { Category, Mod, Quiz } from '../types';
 import { useState } from 'react';
 import quizzesQueries from '../queries';
-import { category } from './../constants';
+import { category, validCategories } from './../constants';
 import { parseQuizData } from '../service/parseQuizData';
 interface QuizFormProps {
   prevQuiz?: Omit<Quiz, 'sectionId'>;
   closeModal: () => void;
   mod: Mod;
 }
+
 export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
-  const { data: parts } = partsQueries.read();
   const [selectedCategory, setSelectedCategory] = useState<Category>();
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const { data: parts } = partsQueries.read();
   const { mutate: createQuiz } = quizzesQueries.create();
   const { mutate: updateQuiz } = quizzesQueries.update();
-  const [errorMessage, setErrorMessage] = useState('');
+
   const handleMutate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -48,10 +51,11 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
       );
     }
   };
-  const validCategories = ['COMBINATION', 'MULTIPLE_CHOICE'];
+
   const isChoiceRequired =
     validCategories.includes(prevQuiz?.category ?? '') ||
     validCategories.includes(selectedCategory ?? '');
+
   return (
     <Form onSubmit={handleMutate}>
       {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}

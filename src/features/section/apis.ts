@@ -6,8 +6,10 @@ const sectionsApis = {
     const response = await api.get('/sections');
     return response.data;
   },
+
   post: async (section: Omit<Section, 'id'>): Promise<void> =>
     api.post('/sections', section),
+
   delete: async (id: Section['id']): Promise<void> =>
     api.delete(`/sections/${id}`),
 };

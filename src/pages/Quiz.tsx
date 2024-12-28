@@ -12,16 +12,20 @@ import { useState } from 'react';
 import QuizSearchBar from '../features/quiz/ui/QuizSearchBar';
 import quizzesQueries from '../features/quiz/queries';
 import type { Mod, Quiz, QuizFilters } from '../features/quiz/types';
+
 export default function Quiz() {
   const [filters, setFilters] = useState<QuizFilters>({
     partId: 0,
     sectionId: 0,
   });
-  const { data: quizzes, isLoading } = quizzesQueries.read(filters);
-  const deleteMutation = quizzesQueries.delete();
-  const { isShow, closeModal, openModal, Modal } = useModal();
+
   const [quiz, setQuiz] = useState<Omit<Quiz, 'sectionId'>>();
   const [mod, setMod] = useState<Mod>('create');
+
+  const { isShow, closeModal, openModal, Modal } = useModal();
+
+  const { data: quizzes, isLoading } = quizzesQueries.read(filters);
+  const deleteMutation = quizzesQueries.delete();
   if (isLoading) {
     return <div>로딩 중...</div>;
   }

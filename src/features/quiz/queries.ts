@@ -1,11 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import quizzesApis from './apis';
 import { Quiz, QuizFilters } from './types';
+
 const quizKeys = {
   all: ['quizzes'] as const,
   lists: () => [...quizKeys.all, 'list'] as const,
   list: (filters?: QuizFilters) => [...quizKeys.lists(), filters] as const,
 };
+
 const quizzesQueries = {
   read: (params: QuizFilters) => {
     return useQuery<Quiz[]>({
@@ -22,6 +24,7 @@ const quizzesQueries = {
       },
     });
   },
+
   create: () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -33,6 +36,7 @@ const quizzesQueries = {
       },
     });
   },
+
   update: () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -44,9 +48,9 @@ const quizzesQueries = {
       },
     });
   },
+
   delete: () => {
     const queryClient = useQueryClient();
-
     return useMutation({
       mutationFn: quizzesApis.delete,
       onSuccess: () => {
