@@ -1,10 +1,10 @@
 import { Part } from '../types';
 
 export const parsePartData = (
-  formData: Record<string, FormDataEntryValue>
+  partFormData: Record<string, FormDataEntryValue>
 ): Omit<Part, 'id'> => {
   return {
-    name: formData.partName.toString(),
-    sectionId: Number(formData.sectionId),
+    name: partFormData.partName.toString(),
+    sectionId: Number(partFormData.sectionId),
   };
 };

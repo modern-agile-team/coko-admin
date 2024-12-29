@@ -5,16 +5,16 @@ export const isString = (value: FormDataEntryValue): value is string => {
 };
 
 export const parseQuizData = (
-  formData: Record<string, FormDataEntryValue>
+  quizFormData: Record<string, FormDataEntryValue>
 ): Omit<Quiz, 'id' | 'sectionId'> => {
   return {
-    title: formData.title.toString(),
-    category: formData.category as Category,
-    partId: Number(formData.partId),
-    question: formData.question.toString(),
-    answer: isString(formData.answer) ? formData.answer.split(',') : [],
-    answerChoice: isString(formData.answerChoice)
-      ? formData.answerChoice.split(',')
+    title: quizFormData.title.toString(),
+    category: quizFormData.category as Category,
+    partId: Number(quizFormData.partId),
+    question: quizFormData.question.toString(),
+    answer: isString(quizFormData.answer) ? quizFormData.answer.split(',') : [],
+    answerChoice: isString(quizFormData.answerChoice)
+      ? quizFormData.answerChoice.split(',')
       : [],
   };
 };
