@@ -24,8 +24,8 @@ export default function Quiz() {
 
   const { isShow, closeModal, openModal, Modal } = useModal();
 
-  const { data: quizzes, isLoading } = quizzesQueries.read(filters);
-  const deleteMutation = quizzesQueries.delete();
+  const { data: quizzes, isLoading } = quizzesQueries.getQuizzes(filters);
+  const deleteMutation = quizzesQueries.deleteQuiz();
 
   if (isLoading) {
     return <div>로딩 중...</div>;

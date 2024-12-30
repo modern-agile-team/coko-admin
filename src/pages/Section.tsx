@@ -8,12 +8,12 @@ import {
 } from 'react-bootstrap';
 import useModal from '../hooks/useModal';
 import SectionForm from '../features/section/ui/SectionForm';
-import { sectionsQueries } from '../features/section/queries';
+import sectionsQueries from '../features/section/queries';
 export default function Section() {
   const { isShow, closeModal, openModal, Modal } = useModal();
 
-  const { data: sections } = sectionsQueries.read();
-  const deleteMutation = sectionsQueries.delete();
+  const { data: sections } = sectionsQueries.getSections();
+  const deleteMutation = sectionsQueries.deleteSection();
 
   return (
     <>

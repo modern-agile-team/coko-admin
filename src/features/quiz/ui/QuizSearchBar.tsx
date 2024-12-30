@@ -1,14 +1,14 @@
 import { Col, Form } from 'react-bootstrap';
-import { partsQueries } from '../../part/queries';
+import partsQueries from '../../part/queries';
 import { QuizFilters } from '../types';
-import { sectionsQueries } from '../../section/queries';
+import sectionsQueries from '../../section/queries';
 interface QuizSearchBarProps {
   setFilters: (filter: QuizFilters) => void;
 }
 
 export default function QuizSearchBar({ setFilters }: QuizSearchBarProps) {
-  const { data: parts } = partsQueries.read();
-  const { data: sections } = sectionsQueries.read();
+  const { data: parts } = partsQueries.getParts();
+  const { data: sections } = sectionsQueries.getSections();
 
   return (
     <>

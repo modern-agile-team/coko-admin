@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { partsApis, partsOrderApi } from './apis';
+import partsApis from './apis';
 import { Part } from './types';
 
 const partKeys = {
@@ -7,17 +7,17 @@ const partKeys = {
   lists: () => [...partKeys.all, 'list'] as const,
 };
 
-export const partsQueries = {
-  read: () => {
+const partsQueries = {
+  getParts: () => {
     return useQuery<Part[]>({
       queryKey: partKeys.lists(),
-      queryFn: partsApis.get,
+      queryFn: partsApis.getParts,
     });
   },
-  create: () => {
+  createPart: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: partsApis.post,
+      mutationFn: partsApis.createPart,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: partKeys.lists(),
@@ -25,11 +25,11 @@ export const partsQueries = {
       },
     });
   },
-  delete: () => {
+  deletePart: () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-      mutationFn: partsApis.delete,
+      mutationFn: partsApis.deletePart,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: partKeys.lists(),
@@ -37,12 +37,10 @@ export const partsQueries = {
       },
     });
   },
-};
-
-export const partsQuery = {
-  patch: () => {
+  updatePartOrder: () => {
     return useMutation({
-      mutationFn: partsOrderApi.patch,
+      mutationFn: partsApis.patchPartOrder,
     });
   },
 };
+export default partsQueries;

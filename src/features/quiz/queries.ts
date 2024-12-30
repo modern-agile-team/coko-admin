@@ -9,22 +9,24 @@ const quizKeys = {
 };
 
 const quizzesQueries = {
-  read: (params: QuizFilters) => {
+  getQuizzes: (params: QuizFilters) => {
     return useQuery<Quiz[]>({
       queryKey: quizKeys.lists(),
       queryFn: () => quizzesApis.get(),
       select: quizzes => {
         const { partId, sectionId } = params;
+
         return quizzes.filter(quiz => {
           const matchesSection =
             sectionId === 0 || quiz.sectionId === sectionId;
           const matchesPart = partId === 0 || quiz.partId === partId;
+
           return matchesSection && matchesPart;
         });
       },
     });
   },
-  create: () => {
+  createQuiz: () => {
     const queryClient = useQueryClient();
     return useMutation({
       mutationFn: quizzesApis.post,
@@ -35,7 +37,7 @@ const quizzesQueries = {
       },
     });
   },
-  update: () => {
+  updateQuiz: () => {
     const queryClient = useQueryClient();
     return useMutation({
       mutationFn: quizzesApis.put,
@@ -46,7 +48,7 @@ const quizzesQueries = {
       },
     });
   },
-  delete: () => {
+  deleteQuiz: () => {
     const queryClient = useQueryClient();
     return useMutation({
       mutationFn: quizzesApis.delete,

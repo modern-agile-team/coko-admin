@@ -9,15 +9,13 @@ import {
 import useModal from '../hooks/useModal';
 import PartForm from '../features/part/ui/PartForm';
 import type { Part } from '../features/part/types';
-import { partsQueries, partsQuery } from '../features/part/queries';
-import { useEffect } from 'react';
-
+import partsQueries from '../features/part/queries';
 export default function Part() {
   const { isShow, openModal, closeModal, Modal } = useModal();
 
-  const { data: parts } = partsQueries.read();
-  const deleteMutation = partsQueries.delete();
-  const { mutate: updatePartOrder } = partsQuery.patch();
+  const { data: parts } = partsQueries.getParts();
+  const deleteMutation = partsQueries.deletePart();
+  const { mutate: updatePartOrder } = partsQueries.updatePartOrder();
 
   return (
     <>

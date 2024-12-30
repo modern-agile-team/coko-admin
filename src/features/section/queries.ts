@@ -1,21 +1,21 @@
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { sectionOrderApi, sectionsApis } from './apis';
+import sectionsApis from './apis';
 
 const sectionKeys = {
   all: ['sections'] as const,
   lists: () => [...sectionKeys.all, 'list'] as const,
 };
-export const sectionsQueries = {
-  read: () => {
+const sectionsQueries = {
+  getSections: () => {
     return useQuery({
       queryKey: sectionKeys.lists(),
-      queryFn: () => sectionsApis.get(),
+      queryFn: sectionsApis.getSections,
     });
   },
-  create: () => {
+  createSection: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: sectionsApis.post,
+      mutationFn: sectionsApis.createSection,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: sectionKeys.lists(),
@@ -23,23 +23,22 @@ export const sectionsQueries = {
       },
     });
   },
-  delete: () => {
+  deleteSection: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: sectionsApis.delete,
+      mutationFn: sectionsApis.deleteSection,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: sectionKeys.lists(),
         });
       },
+    });
+  },
+  updateSectionOrder: () => {
+    return useMutation({
+      mutationFn: sectionsApis.updateSectionOrder,
     });
   },
 };
 
-export const sectionQuery = {
-  patch: () => {
-    return useMutation({
-      mutationFn: sectionOrderApi.patch,
-    });
-  },
-};
+export default sectionsQueries;
