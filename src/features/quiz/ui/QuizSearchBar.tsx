@@ -1,31 +1,19 @@
 import { Col, Form } from 'react-bootstrap';
-import partQueries from '../../../queries/parts';
-import sectionsQueries from '../../../queries/sections';
-interface QuizSaerchBarProps {
-  setQuery: (query: Record<string, any>) => void;
+import partsQueries from '../../part/queries';
+import { QuizFilters } from '../types';
+import sectionsQueries from '../../section/queries';
+interface QuizSearchBarProps {
+  setFilters: (filter: QuizFilters) => void;
 }
-export default function QuizSearchBar({ setQuery }: QuizSaerchBarProps) {
-  const { data: parts } = partQueries.read();
+
+export default function QuizSearchBar({ setFilters }: QuizSearchBarProps) {
+  const { data: parts } = partsQueries.read();
   const { data: sections } = sectionsQueries.read();
+
   return (
     <>
       <Col xs="auto">
-        <Form.Select
-          aria-label="Default select example"
-          className="mx-1"
-          onChange={e => {
-            e.target.value
-              ? setQuery((prev: Record<string, number>) => ({
-                  ...prev,
-                  sectionId: e.target.value,
-                }))
-              : setQuery((prev: Record<string, number>) => {
-                  const { sectionId, ...rest } = prev;
-                  return rest;
-                });
-          }}
-        >
-          <option value={''}>섹션</option>
+        <Form.Select aria-label="Default select example" className="mx-1">
           {sections?.map(section => (
             <option key={section.id} value={section.id}>
               {section.name}
@@ -38,18 +26,10 @@ export default function QuizSearchBar({ setQuery }: QuizSaerchBarProps) {
           aria-label="Default select example"
           className="mx-1"
           onChange={e => {
-            e.target.value
-              ? setQuery((prev: Record<string, number>) => ({
-                  ...prev,
-                  partId: e.target.value,
-                }))
-              : setQuery((prev: Record<string, number>) => {
-                  const { partId, ...rest } = prev;
-                  return rest;
-                });
+            setFilters({ partId: Number(e.target.value) });
           }}
         >
-          <option value={''}>파트</option>
+          <option value="0">파트</option>
           {parts?.map(part => (
             <option key={part.id} value={part.id}>
               {part.name}

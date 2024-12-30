@@ -1,32 +1,26 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import Part from '../types/Part';
-import partsApis from '../apis/parts';
+import partsApis from './apis';
+import { Part } from './types';
+
+const partKeys = {
+  all: ['parts'] as const,
+  lists: () => [...partKeys.all, 'list'] as const,
+};
+
 const partsQueries = {
   read: () => {
     return useQuery<Part[]>({
-      queryKey: ['parts'],
-      queryFn: partsApis.getParts,
+      queryKey: partKeys.lists(),
+      queryFn: partsApis.get,
     });
   },
   create: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: partsApis.postParts,
+      mutationFn: partsApis.post,
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['parts'],
-        });
-      },
-    });
-  },
-  update: () => {
-    const queryClient = useQueryClient();
-
-    return useMutation({
-      mutationFn: partsApis.putPart,
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['parts'],
+          queryKey: partKeys.lists(),
         });
       },
     });
@@ -35,13 +29,14 @@ const partsQueries = {
     const queryClient = useQueryClient();
 
     return useMutation({
-      mutationFn: partsApis.deletePart,
+      mutationFn: partsApis.delete,
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['parts'],
+          queryKey: partKeys.lists(),
         });
       },
     });
   },
 };
+
 export default partsQueries;

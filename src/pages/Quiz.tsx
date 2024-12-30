@@ -6,54 +6,47 @@ import {
   Row,
   Table,
 } from 'react-bootstrap';
-import type Quiz from '../types/Quiz';
 import useModal from '../hooks/useModal';
 import { QuizForm } from '../features/quiz/ui/QuizForm';
-import useQuizStore from '../store/useQuizStore';
 import { useState } from 'react';
 import QuizSearchBar from '../features/quiz/ui/QuizSearchBar';
-import quizzesQueries from '../queries/quizzes';
+import quizzesQueries from '../features/quiz/queries';
+import type { Mod, Quiz, QuizFilters } from '../features/quiz/types';
+
 export default function Quiz() {
-  const [query, setQuery] = useState<{ sectionId?: number; partId?: number }>(
-    {}
-  );
-  const { data: quizzes, isLoading } = quizzesQueries.read(query);
-  const createMutation = quizzesQueries.create();
-  const updateMutation = quizzesQueries.update();
-  const deleteMutation = quizzesQueries.delete();
-  const [mod, setMod] = useState<'create' | 'update'>();
+  const [filters, setFilters] = useState<QuizFilters>({
+    partId: 0,
+    sectionId: 0,
+  });
+
+  const [quiz, setQuiz] = useState<Omit<Quiz, 'sectionId'> | null>(null);
+  const [mod, setMod] = useState<Mod>('create');
+
   const { isShow, closeModal, openModal, Modal } = useModal();
-  const { quiz, resetQuiz, setQuiz } = useQuizStore();
+
+  const { data: quizzes, isLoading } = quizzesQueries.read(filters);
+  const deleteMutation = quizzesQueries.delete();
+
   if (isLoading) {
     return <div>로딩 중...</div>;
   }
   if (!quizzes) {
     return <div>404...</div>;
   }
+
   return (
     <>
       <Modal
         isShow={isShow}
-        closeModal={closeModal}
         title="퀴즈 생성"
-        closeEvent={resetQuiz}
-        submitEvent={() => {
-          switch (mod) {
-            case 'create':
-              createMutation.mutate(quiz as Quiz);
-              break;
-            case 'update':
-              updateMutation.mutate(quiz as Quiz);
-          }
-
-          resetQuiz();
-        }}
+        closeModal={closeModal}
+        closeEvent={() => setQuiz(null)}
       >
-        <QuizForm prevQuiz={quiz} />
+        <QuizForm prevQuiz={quiz} closeModal={closeModal} mod={mod} />
       </Modal>
       <Container>
         <Row className="justify-content-end mt-3 mb-2">
-          <QuizSearchBar setQuery={setQuery}></QuizSearchBar>
+          <QuizSearchBar setFilters={setFilters}></QuizSearchBar>
           <Col xs="auto">
             <Button
               type="button"
@@ -91,15 +84,7 @@ export default function Quiz() {
                         variant="secondary"
                         onClick={() => {
                           setMod('update');
-                          setQuiz({
-                            id: quiz.id,
-                            partId: quiz.partId,
-                            title: quiz.title,
-                            question: quiz.question,
-                            answer: quiz.answer,
-                            category: quiz.category,
-                            answerChoice: quiz.answerChoice,
-                          });
+                          setQuiz(quiz);
                           openModal();
                         }}
                       >

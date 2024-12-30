@@ -7,4 +7,5 @@ const useModal = () => {
   const closeModal = () => setIsShow(false);
   return { isShow, openModal, closeModal, Modal };
 };
+
 export default useModal;
