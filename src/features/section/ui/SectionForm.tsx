@@ -6,16 +6,16 @@ interface SectionFormProps {
   closeModal: () => void;
 }
 export default function SectionForm({ closeModal }: SectionFormProps) {
-  const { mutate: createMutate } = sectionsQueries.create();
+  const { mutate: createMutate } = sectionsQueries.createSection();
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleMutate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     const formData = new FormData(e.currentTarget);
     const sectionData = Object.fromEntries(formData.entries());
     const parsedSectionData = parseSectionData(sectionData);
-    
+
     createMutate(parsedSectionData, {
       onSuccess: () => {
         closeModal();

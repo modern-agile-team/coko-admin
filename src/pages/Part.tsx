@@ -10,10 +10,17 @@ import useModal from '../hooks/useModal';
 import PartForm from '../features/part/ui/PartForm';
 import type { Part } from '../features/part/types';
 import partsQueries from '../features/part/queries';
+import PartSearchBar from '../features/part/ui/PartSearchBar';
+import { useState } from 'react';
+import { QuizFilters } from '../features/quiz/types';
 export default function Part() {
+  const [filters, setFilters] = useState<Omit<QuizFilters, 'partId'>>({
+    sectionId: 0,
+  });
+
   const { isShow, openModal, closeModal, Modal } = useModal();
 
-  const { data: parts } = partsQueries.getParts();
+  const { data: parts } = partsQueries.getParts(filters);
   const deleteMutation = partsQueries.deletePart();
   const { mutate: updatePartOrder } = partsQueries.updatePartOrder();
 
@@ -22,9 +29,9 @@ export default function Part() {
       <Modal title="파트 추가" isShow={isShow} closeModal={closeModal}>
         <PartForm closeModal={closeModal} />
       </Modal>
-
       <Container>
         <Row className="justify-content-end mt-3 mb-2">
+          <PartSearchBar setFilters={setFilters} />
           <Col xs="auto">
             <Button
               type="button"

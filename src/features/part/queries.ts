@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import partsApis from './apis';
 import { Part } from './types';
+import { QuizFilters } from '../quiz/types';
 
 const partKeys = {
   all: ['parts'] as const,
@@ -8,10 +9,20 @@ const partKeys = {
 };
 
 const partsQueries = {
-  getParts: () => {
+  getParts: (params: Omit<QuizFilters, 'partId'>) => {
     return useQuery<Part[]>({
       queryKey: partKeys.lists(),
       queryFn: partsApis.getParts,
+      select: quizzes => {
+        const { sectionId } = params;
+
+        return quizzes.filter(quiz => {
+          const matchesSection =
+            sectionId === 0 || quiz.sectionId === sectionId;
+
+          return matchesSection;
+        });
+      },
     });
   },
   createPart: () => {

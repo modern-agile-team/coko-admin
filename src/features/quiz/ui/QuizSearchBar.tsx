@@ -7,7 +7,7 @@ interface QuizSearchBarProps {
 }
 
 export default function QuizSearchBar({ setFilters }: QuizSearchBarProps) {
-  const { data: parts } = partsQueries.getParts();
+  const { data: parts } = partsQueries.getParts({ sectionId: 0 });
   const { data: sections } = sectionsQueries.getSections();
 
   return (

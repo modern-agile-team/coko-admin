@@ -15,7 +15,7 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
   const [selectedCategory, setSelectedCategory] = useState<Category>();
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { data: parts } = partsQueries.getParts();
+  const { data: parts } = partsQueries.getParts({ sectionId: 0 });
   const { mutate: createQuiz } = quizzesQueries.createQuiz();
   const { mutate: updateQuiz } = quizzesQueries.updateQuiz();
 

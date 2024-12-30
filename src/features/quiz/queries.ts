@@ -11,7 +11,7 @@ const quizKeys = {
 const quizzesQueries = {
   getQuizzes: (params: QuizFilters) => {
     return useQuery<Quiz[]>({
-      queryKey: quizKeys.lists(),
+      queryKey: quizKeys.list(params),
       queryFn: () => quizzesApis.get(),
       select: quizzes => {
         const { partId, sectionId } = params;
