@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import partsApis from './apis';
+import { partsApis, partsOrderApi } from './apis';
 import { Part } from './types';
 
 const partKeys = {
@@ -7,7 +7,7 @@ const partKeys = {
   lists: () => [...partKeys.all, 'list'] as const,
 };
 
-const partsQueries = {
+export const partsQueries = {
   read: () => {
     return useQuery<Part[]>({
       queryKey: partKeys.lists(),
@@ -39,4 +39,10 @@ const partsQueries = {
   },
 };
 
-export default partsQueries;
+export const partsQuery = {
+  patch: () => {
+    return useMutation({
+      mutationFn: partsOrderApi.patch,
+    });
+  },
+};

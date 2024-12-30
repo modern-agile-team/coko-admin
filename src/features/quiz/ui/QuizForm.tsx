@@ -1,5 +1,5 @@
 import { Alert, Button, FloatingLabel, Form } from 'react-bootstrap';
-import partsQueries from '../../part/queries';
+import { partsQueries } from '../../part/queries';
 import { Category, Mod, Quiz } from '../types';
 import { useState } from 'react';
 import quizzesQueries from '../queries';

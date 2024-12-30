@@ -1,5 +1,5 @@
 import { Alert, Button, FloatingLabel, Form, Row } from 'react-bootstrap';
-import partsQueries from '../queries';
+import { partsQueries } from '../queries';
 import { parsePartData } from '../service/utils';
 import { useState } from 'react';
 import sectionsQueries from '../../section/queries';

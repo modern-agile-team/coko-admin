@@ -9,13 +9,15 @@ import {
 import useModal from '../hooks/useModal';
 import PartForm from '../features/part/ui/PartForm';
 import type { Part } from '../features/part/types';
-import partsQueries from '../features/part/queries';
+import { partsQueries, partsQuery } from '../features/part/queries';
+import { useEffect } from 'react';
 
 export default function Part() {
   const { isShow, openModal, closeModal, Modal } = useModal();
 
   const { data: parts } = partsQueries.read();
   const deleteMutation = partsQueries.delete();
+  const { mutate: updatePartOrder } = partsQuery.patch();
 
   return (
     <>
@@ -40,6 +42,7 @@ export default function Part() {
           <Table striped="columns" bordered hover>
             <thead>
               <tr>
+                <th>order</th>
                 <th>id</th>
                 <th>sectionId</th>
                 <th>part</th>
@@ -48,6 +51,7 @@ export default function Part() {
             <tbody>
               {parts?.map(part => (
                 <tr key={part.id}>
+                  <td>{part.order}</td>
                   <td>{part.id}</td>
                   <td>{part.sectionId}</td>
                   <td>{part.name}</td>

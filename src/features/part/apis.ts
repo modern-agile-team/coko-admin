@@ -1,7 +1,7 @@
 import api from '../../axios/instance';
 import { Part } from './types';
 
-const partsApis = {
+export const partsApis = {
   get: async (): Promise<Part[]> => {
     const response = await api.get('/parts');
     return response.data;
@@ -11,4 +11,9 @@ const partsApis = {
   delete: async (id: number): Promise<void> => api.delete(`/parts/${id}`),
 };
 
-export default partsApis;
+export const partsOrderApi = {
+  patch: async (params: Omit<Part, 'sectionId' | 'name'>) => {
+    const { id, order } = params;
+    api.patch(`/parts/${id}/order`, { order });
+  },
+};

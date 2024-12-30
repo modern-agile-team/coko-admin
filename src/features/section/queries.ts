@@ -1,10 +1,11 @@
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import sectionsApis from './apis';
+import { sectionOrderApi, sectionsApis } from './apis';
+
 const sectionKeys = {
   all: ['sections'] as const,
   lists: () => [...sectionKeys.all, 'list'] as const,
 };
-const sectionsQueries = {
+export const sectionsQueries = {
   read: () => {
     return useQuery({
       queryKey: sectionKeys.lists(),
@@ -35,4 +36,10 @@ const sectionsQueries = {
   },
 };
 
-export default sectionsQueries;
+export const sectionQuery = {
+  patch: () => {
+    return useMutation({
+      mutationFn: sectionOrderApi.patch,
+    });
+  },
+};

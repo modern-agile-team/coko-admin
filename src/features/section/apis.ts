@@ -1,7 +1,7 @@
 import api from '../../axios/instance';
 import { Section } from './types';
 
-const sectionsApis = {
+export const sectionsApis = {
   get: async (): Promise<Section[]> => {
     const response = await api.get('/sections');
     return response.data;
@@ -12,4 +12,9 @@ const sectionsApis = {
     api.delete(`/sections/${id}`),
 };
 
-export default sectionsApis;
+export const sectionOrderApi = {
+  patch: async (params: Omit<Section, 'name'>) => {
+    const { id, order } = params;
+    api.patch(`/sections/${id}/order`, { order });
+  },
+};
