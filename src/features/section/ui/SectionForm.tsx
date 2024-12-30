@@ -11,9 +11,11 @@ export default function SectionForm({ closeModal }: SectionFormProps) {
 
   const handleMutate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
     const formData = new FormData(e.currentTarget);
     const sectionData = Object.fromEntries(formData.entries());
     const parsedSectionData = parseSectionData(sectionData);
+    
     createMutate(parsedSectionData, {
       onSuccess: () => {
         closeModal();
