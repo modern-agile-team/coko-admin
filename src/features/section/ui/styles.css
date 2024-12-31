@@ -1,0 +1,28 @@
+.drop-down {
+  background-color: red;
+}
+.drag-over {
+  border-top: 3px solid #007bff !important;
+}
+.drag-start {
+  opacity: 0.1;
+  background-color: gray;
+}
+
+@keyframes moveDown {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(1px);
+  }
+}
+
+@keyframes moveUp {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-15px);
+  }
+}
