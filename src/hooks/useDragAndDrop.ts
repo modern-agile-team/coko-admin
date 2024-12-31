@@ -44,6 +44,8 @@ const useDragAndDrop = () => {
 
     if (fromRef.current && toRef.current) {
       callback(fromRef.current, toRef.current);
+      fromRef.current = null;
+      toRef.current = null;
     }
   };
 

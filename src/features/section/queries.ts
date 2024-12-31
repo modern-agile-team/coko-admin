@@ -41,11 +41,36 @@ const sectionsQueries = {
     return useMutation({
       mutationFn: sectionsApis.updateSectionOrder,
 
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: sectionKeys.lists(),
-          refetchType: 'all',
+      onMutate: async changeOrder => {
+        await queryClient.cancelQueries({ queryKey: sectionKeys.lists() });
+
+        const previousSections = queryClient.getQueryData(
+          sectionKeys.lists()
+        ) as Section[];
+
+        const indexById = previousSections.findIndex(
+          item => item.id === changeOrder.id
+        );
+        const indexByOrder = changeOrder.order - 1;
+
+        queryClient.setQueryData(sectionKeys.lists(), (old: Section[]) => {
+          const temp = old[indexById];
+          old[indexById] = {
+            ...old[indexByOrder],
+            order: old[indexById].order,
+          };
+
+          old[indexByOrder] = { ...temp, order: old[indexByOrder].order };
+
+          return [...old];
         });
+        return { previousSections };
+      },
+      onError: (err, newTodo, context) => {
+        queryClient.setQueryData(
+          sectionKeys.lists(),
+          context?.previousSections
+        );
       },
     });
   },
