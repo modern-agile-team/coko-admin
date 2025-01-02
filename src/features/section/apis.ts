@@ -7,12 +7,12 @@ const sectionsApis = {
     return response.data;
   },
   createSection: async (section: Omit<Section, 'id'>): Promise<void> =>
-    api.post('/sections', section),
+    await api.post('/sections', section),
   deleteSection: async (id: Section['id']): Promise<void> =>
-    api.delete(`/sections/${id}`),
+    await api.delete(`/sections/${id}`),
   updateSectionOrder: async (params: Omit<Section, 'name'>) => {
     const { id, order } = params;
-    return api.patch(`/sections/${id}/order`, { order });
+    return await api.patch(`/sections/${id}/order`, { order });
   },
 };
 export default sectionsApis;

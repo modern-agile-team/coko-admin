@@ -7,11 +7,12 @@ const partsApis = {
     return response.data;
   },
   createPart: async (params: Omit<Part, 'id'>): Promise<void> =>
-    api.post('/parts', params),
-  deletePart: async (id: number): Promise<void> => api.delete(`/parts/${id}`),
+    await api.post('/parts', params),
+  deletePart: async (id: number): Promise<void> =>
+    await api.delete(`/parts/${id}`),
   patchPartOrder: async (params: Omit<Part, 'sectionId' | 'name'>) => {
     const { id, order } = params;
-    return api.patch(`/parts/${id}/order`, { order });
+    return await api.patch(`/parts/${id}/order`, { order });
   },
 };
 export default partsApis;

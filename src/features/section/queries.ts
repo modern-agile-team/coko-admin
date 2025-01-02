@@ -1,6 +1,5 @@
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import sectionsApis from './apis';
-import { Section } from './types';
 
 const sectionKeys = {
   all: ['sections'] as const,
@@ -40,34 +39,10 @@ const sectionsQueries = {
     const queryClient = useQueryClient();
     return useMutation({
       mutationFn: sectionsApis.updateSectionOrder,
-
-      onMutate: async sectionOrderChange => {
-        await queryClient.cancelQueries({ queryKey: sectionKeys.lists() });
-
-        const previousSections = queryClient.getQueryData(
-          sectionKeys.lists()
-        ) as Section[];
-
-        const sourceIndex = previousSections.findIndex(
-          section => section.id === sectionOrderChange.id
-        );
-
-        const targetIndex = sectionOrderChange.order - 1;
-
-        queryClient.setQueryData(sectionKeys.lists(), (old: Section[]) => {
-          const updatedSections = [...old];
-          const removedSection = updatedSections.splice(sourceIndex, 1);
-          updatedSections.splice(targetIndex, 0, ...removedSection);
-          return updatedSections;
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: sectionKeys.lists(),
         });
-
-        return { previousSections };
-      },
-      onError: (err, newTodo, context) => {
-        queryClient.setQueryData(
-          sectionKeys.lists(),
-          context?.previousSections
-        );
       },
     });
   },

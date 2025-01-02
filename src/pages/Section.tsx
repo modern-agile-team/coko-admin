@@ -70,7 +70,7 @@ export default function Section() {
                   onDragLeave={e => handleDragLeave(e, section.id)}
                   onDragOver={e => e.preventDefault()}
                 >
-                  <td>{index + 1}</td>
+                  <td>{section.order}</td>
                   <td>{section.id}</td>
                   <td>{section.name}</td>
                   <td className="d-flex justify-content-end">
