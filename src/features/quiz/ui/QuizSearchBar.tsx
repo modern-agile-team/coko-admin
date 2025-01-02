@@ -2,6 +2,7 @@ import { Col, Form } from 'react-bootstrap';
 import partsQueries from '../../part/queries';
 import { QuizFilters } from '../types';
 import sectionsQueries from '../../section/queries';
+
 interface QuizSearchBarProps {
   setQuizFilters: (filter: QuizFilters) => void;
   quizFilters: QuizFilters;
