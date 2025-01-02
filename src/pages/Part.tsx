@@ -21,8 +21,7 @@ export default function Part() {
   });
 
   const { isShow, openModal, closeModal, Modal } = useModal();
-  const { handleDragEnd, handleDragEnter, handleDragLeave, handleDragStart } =
-    useDragAndDrop();
+  const { onDragEnd, onDragEnter, onDragLeave, onDragStart } = useDragAndDrop();
 
   const { data: parts, isLoading } = partsQueries.getParts(partFilter);
   const { mutate: deletePart } = partsQueries.deletePart();
@@ -73,20 +72,20 @@ export default function Part() {
                     key={part.id}
                     draggable
                     onDragStart={e => {
-                      handleDragStart(e, part.id);
+                      onDragStart(e, { from: part.id });
                     }}
                     onDragEnter={e => {
-                      handleDragEnter(e, part.id, part.order);
+                      onDragEnter(e, { from: part.id, to: part.order });
                     }}
                     onDragEnd={e => {
-                      handleDragEnd(e, (from, to) => {
+                      onDragEnd(e, (from, to) => {
                         updatePartOrder({
                           id: from,
                           order: to,
                         });
                       });
                     }}
-                    onDragLeave={e => handleDragLeave(e, part.id)}
+                    onDragLeave={e => onDragLeave(e, { from: part.id })}
                     onDragOver={e => e.preventDefault()}
                   >
                     <td>{part.order}</td>

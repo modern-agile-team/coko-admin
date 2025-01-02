@@ -18,8 +18,7 @@ export default function Section() {
   const { data: sections, isLoading } = sectionsQueries.getSections();
   const { mutate: deleteSection } = sectionsQueries.deleteSection();
   const { mutate: updateSectionOrder } = sectionsQueries.updateSectionOrder();
-  const { handleDragEnd, handleDragEnter, handleDragLeave, handleDragStart } =
-    useDragAndDrop();
+  const { onDragEnd, onDragEnter, onDragLeave, onDragStart } = useDragAndDrop();
 
   return (
     <>
@@ -58,19 +57,19 @@ export default function Section() {
                     id={`section${section.id}`}
                     key={section.id}
                     draggable
-                    onDragStart={e => handleDragStart(e, section.id)}
+                    onDragStart={e => onDragStart(e, { from: section.id })}
                     onDragEnter={e =>
-                      handleDragEnter(e, section.id, section.order)
+                      onDragEnter(e, { from: section.id, to: section.order })
                     }
                     onDragEnd={e => {
-                      handleDragEnd(e, (from, to) => {
+                      onDragEnd(e, (from, to) => {
                         updateSectionOrder({
                           id: from,
                           order: to,
                         });
                       });
                     }}
-                    onDragLeave={e => handleDragLeave(e, section.id)}
+                    onDragLeave={e => onDragLeave(e, { from: section.id })}
                     onDragOver={e => e.preventDefault()}
                   >
                     <td>{section.order}</td>
