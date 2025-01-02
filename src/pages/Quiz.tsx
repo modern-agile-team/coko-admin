@@ -12,6 +12,7 @@ import { useState } from 'react';
 import QuizSearchBar from '../features/quiz/ui/QuizSearchBar';
 import quizzesQueries from '../features/quiz/queries';
 import type { Mod, Quiz, QuizFilters } from '../features/quiz/types';
+import SkeletonLoader from '../common/SkeletonLoader';
 
 export default function Quiz() {
   const [filters, setFilters] = useState<QuizFilters>({
@@ -27,13 +28,6 @@ export default function Quiz() {
   const { data: quizzes, isLoading } = quizzesQueries.getQuizzes(filters);
   const deleteMutation = quizzesQueries.deleteQuiz();
 
-  if (isLoading) {
-    return <div>로딩 중...</div>;
-  }
-  if (!quizzes) {
-    return <div>404...</div>;
-  }
-
   return (
     <>
       <Modal
@@ -46,7 +40,7 @@ export default function Quiz() {
       </Modal>
       <Container>
         <Row className="justify-content-end mt-3 mb-2">
-          <QuizSearchBar setFilters={setFilters}></QuizSearchBar>
+          <QuizSearchBar setFilters={setFilters} filters={filters} />
           <Col xs="auto">
             <Button
               type="button"
@@ -61,6 +55,12 @@ export default function Quiz() {
         </Row>
         <Row>
           <Table striped="columns" bordered hover>
+            <colgroup>
+              <col width="10%" />
+              <col width="10%" />
+              <col width="70%" />
+              <col width="10%" />
+            </colgroup>
             <thead>
               <tr>
                 <th>id</th>
@@ -69,41 +69,45 @@ export default function Quiz() {
               </tr>
             </thead>
             <tbody>
-              {quizzes.map(quiz => (
-                <tr key={quiz.id}>
-                  <td>{quiz.id}</td>
-                  <td>{quiz.partId}</td>
-                  <td>{quiz.question}</td>
-                  <td className="d-flex justify-content-between w-100">
-                    <ButtonGroup
-                      size="sm"
-                      className="w-100"
-                      aria-label="Basic example"
-                    >
-                      <Button
-                        variant="secondary"
-                        onClick={() => {
-                          setMod('update');
-                          setQuiz(quiz);
-                          openModal();
-                        }}
+              {isLoading ? (
+                <SkeletonLoader columnsCount={4} rowsCount={3} />
+              ) : (
+                quizzes?.map(quiz => (
+                  <tr key={quiz.id}>
+                    <td>{quiz.id}</td>
+                    <td>{quiz.partId}</td>
+                    <td>{quiz.question}</td>
+                    <td className="d-flex justify-content-between">
+                      <ButtonGroup
+                        size="sm"
+                        className="w-100"
+                        aria-label="Basic example"
                       >
-                        수정
-                      </Button>
-                      <Button
-                        variant="secondary"
-                        onClick={() => {
-                          if (confirm('삭제 하시겠습니까?')) {
-                            deleteMutation.mutate(Number(quiz.id));
-                          }
-                        }}
-                      >
-                        삭제
-                      </Button>
-                    </ButtonGroup>
-                  </td>
-                </tr>
-              ))}
+                        <Button
+                          variant="secondary"
+                          onClick={() => {
+                            setMod('update');
+                            setQuiz(quiz);
+                            openModal();
+                          }}
+                        >
+                          수정
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          onClick={() => {
+                            if (confirm('삭제 하시겠습니까?')) {
+                              deleteMutation.mutate(Number(quiz.id));
+                            }
+                          }}
+                        >
+                          삭제
+                        </Button>
+                      </ButtonGroup>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </Table>
         </Row>

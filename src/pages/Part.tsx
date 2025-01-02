@@ -8,14 +8,14 @@ import {
 } from 'react-bootstrap';
 import useModal from '../hooks/useModal';
 import PartForm from '../features/part/ui/PartForm';
-import type { Part } from '../features/part/types';
+import type { Part, PartFilter } from '../features/part/types';
 import partsQueries from '../features/part/queries';
 import PartSearchBar from '../features/part/ui/PartSearchBar';
 import { useState } from 'react';
-import { QuizFilters } from '../features/quiz/types';
 import useDragAndDrop from '../hooks/useDragandDrop';
+import SkeletonLoader from '../common/SkeletonLoader';
 export default function Part() {
-  const [filters, setFilters] = useState<Omit<QuizFilters, 'partId'>>({
+  const [filters, setFilters] = useState<PartFilter>({
     sectionId: 0,
   });
 
@@ -23,7 +23,7 @@ export default function Part() {
   const { handleDragEnd, handleDragEnter, handleDragLeave, handleDragStart } =
     useDragAndDrop();
 
-  const { data: parts } = partsQueries.getParts(filters);
+  const { data: parts, isLoading } = partsQueries.getParts(filters);
   const { mutate: deletePart } = partsQueries.deletePart();
   const { mutate: updatePartOrder } = partsQueries.updatePartOrder();
   return (
@@ -47,6 +47,13 @@ export default function Part() {
         </Row>
         <Row>
           <Table striped="columns" bordered hover>
+            <colgroup>
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="20%" />
+              <col width="20%" />
+            </colgroup>
             <thead>
               <tr>
                 <th>order</th>
@@ -56,47 +63,54 @@ export default function Part() {
               </tr>
             </thead>
             <tbody>
-              {parts?.map(part => (
-                <tr
-                  key={part.id}
-                  draggable
-                  onDragStart={e => {
-                    handleDragStart(e, part.id);
-                  }}
-                  onDragEnter={e => {
-                    handleDragEnter(e, part.id, part.order);
-                  }}
-                  onDragEnd={e => {
-                    handleDragEnd(e, (from, to) => {
-                      updatePartOrder({
-                        id: from,
-                        order: to,
+              {isLoading ? (
+                <SkeletonLoader columnsCount={5} rowsCount={3} />
+              ) : (
+                parts?.map(part => (
+                  <tr
+                    key={part.id}
+                    draggable
+                    onDragStart={e => {
+                      handleDragStart(e, part.id);
+                    }}
+                    onDragEnter={e => {
+                      handleDragEnter(e, part.id, part.order);
+                    }}
+                    onDragEnd={e => {
+                      handleDragEnd(e, (from, to) => {
+                        updatePartOrder({
+                          id: from,
+                          order: to,
+                        });
                       });
-                    });
-                  }}
-                  onDragLeave={e => handleDragLeave(e, part.id)}
-                  onDragOver={e => e.preventDefault()}
-                >
-                  <td>{part.order}</td>
-                  <td>{part.id}</td>
-                  <td>{part.sectionId}</td>
-                  <td>{part.name}</td>
-                  <td className="d-flex justify-content-end">
-                    <ButtonGroup size="sm" aria-label="Basic example">
-                      <Button
-                        variant="secondary"
-                        onClick={() => {
-                          if (confirm('삭제 하시겠습니까?')) {
-                            deletePart(part.id);
-                          }
-                        }}
-                      >
-                        삭제
-                      </Button>
-                    </ButtonGroup>
-                  </td>
-                </tr>
-              ))}
+                    }}
+                    onDragLeave={e => handleDragLeave(e, part.id)}
+                    onDragOver={e => e.preventDefault()}
+                  >
+                    <td>{part.order}</td>
+                    <td>{part.id}</td>
+                    <td>{part.sectionId}</td>
+                    <td>{part.name}</td>
+                    <td
+                      className="d-flex justify-content-end"
+                      style={{ minWidth: '120px' }}
+                    >
+                      <ButtonGroup size="sm" aria-label="Basic example">
+                        <Button
+                          variant="secondary"
+                          onClick={() => {
+                            if (confirm('삭제 하시겠습니까?')) {
+                              deletePart(part.id);
+                            }
+                          }}
+                        >
+                          삭제
+                        </Button>
+                      </ButtonGroup>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </Table>
         </Row>

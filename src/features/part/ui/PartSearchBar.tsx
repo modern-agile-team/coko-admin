@@ -1,9 +1,9 @@
 import { Col, Form } from 'react-bootstrap';
 import sectionsQueries from '../../section/queries';
-import { QuizFilters } from '../../quiz/types';
+import { PartFilter } from '../types';
 
 interface PartSearchBarProps {
-  setFilters: (filter: Omit<QuizFilters, 'partId'>) => void;
+  setFilters: (filter: PartFilter) => void;
 }
 export default function PartSearchBar({ setFilters }: PartSearchBarProps) {
   const { data: sections } = sectionsQueries.getSections();

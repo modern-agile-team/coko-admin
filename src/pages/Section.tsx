@@ -12,10 +12,11 @@ import sectionsQueries from '../features/section/queries';
 import type { Section } from '../features/section/types';
 import '../features/section/ui/styles.css';
 import useDragAndDrop from '../hooks/useDragandDrop';
+import SkeletonLoader from '../common/SkeletonLoader';
 export default function Section() {
   const { isShow, closeModal, openModal, Modal } = useModal();
 
-  const { data: sections } = sectionsQueries.getSections();
+  const { data: sections, isLoading } = sectionsQueries.getSections();
   const { mutate: deleteSection } = sectionsQueries.deleteSection();
   const { mutate: updateSectionOrder } = sectionsQueries.updateSectionOrder();
   const { handleDragEnd, handleDragEnter, handleDragLeave, handleDragStart } =
@@ -50,45 +51,52 @@ export default function Section() {
               </tr>
             </thead>
             <tbody>
-              {sections?.map((section, index) => (
-                <tr
-                  id={`section${section.id}`}
-                  key={section.id}
-                  draggable
-                  onDragStart={e => handleDragStart(e, section.id)}
-                  onDragEnter={e =>
-                    handleDragEnter(e, section.id, section.order)
-                  }
-                  onDragEnd={e => {
-                    handleDragEnd(e, (from, to) => {
-                      updateSectionOrder({
-                        id: from,
-                        order: to,
+              {isLoading ? (
+                <SkeletonLoader columnsCount={4} rowsCount={3} />
+              ) : (
+                sections?.map((section, index) => (
+                  <tr
+                    id={`section${section.id}`}
+                    key={section.id}
+                    draggable
+                    onDragStart={e => handleDragStart(e, section.id)}
+                    onDragEnter={e =>
+                      handleDragEnter(e, section.id, section.order)
+                    }
+                    onDragEnd={e => {
+                      handleDragEnd(e, (from, to) => {
+                        updateSectionOrder({
+                          id: from,
+                          order: to,
+                        });
                       });
-                    });
-                  }}
-                  onDragLeave={e => handleDragLeave(e, section.id)}
-                  onDragOver={e => e.preventDefault()}
-                >
-                  <td>{section.order}</td>
-                  <td>{section.id}</td>
-                  <td>{section.name}</td>
-                  <td className="d-flex justify-content-end">
-                    <ButtonGroup size="sm" aria-label="Basic example">
-                      <Button
-                        variant="secondary"
-                        onClick={() => {
-                          if (confirm('삭제 하시겠습니까?')) {
-                            deleteSection(section.id);
-                          }
-                        }}
-                      >
-                        삭제
-                      </Button>
-                    </ButtonGroup>
-                  </td>
-                </tr>
-              ))}
+                    }}
+                    onDragLeave={e => handleDragLeave(e, section.id)}
+                    onDragOver={e => e.preventDefault()}
+                  >
+                    <td>{section.order}</td>
+                    <td>{section.id}</td>
+                    <td>{section.name}</td>
+                    <td
+                      className="d-flex justify-content-end"
+                      style={{ minWidth: '120px' }}
+                    >
+                      <ButtonGroup size="sm" aria-label="Basic example">
+                        <Button
+                          variant="secondary"
+                          onClick={() => {
+                            if (confirm('삭제 하시겠습니까?')) {
+                              deleteSection(section.id);
+                            }
+                          }}
+                        >
+                          삭제
+                        </Button>
+                      </ButtonGroup>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </Table>
         </Row>

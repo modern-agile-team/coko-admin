@@ -4,3 +4,7 @@ export interface Part {
   name: string;
   order: number;
 }
+
+export interface PartFilter {
+  sectionId: Part['sectionId'];
+}

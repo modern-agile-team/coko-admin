@@ -1,0 +1,21 @@
+.skeleton-item {
+  background: linear-gradient(to right, #f2f2f2, #ddd, #f2f2f2);
+  animation: loading 1.5s infinite ease-in-out;
+}
+.skeleton-button {
+  background: linear-gradient(to right, #f2f2f2, #ddd, #f2f2f2);
+  animation: loading 1.5s infinite ease-in-out;
+}
+.skeleton-wrapper {
+  background-color: red;
+}
+
+@keyframes loading {
+  0% {
+    transform: translateX(0);
+  }
+  50%,
+  100% {
+    transform: translateX(460px);
+  }
+}
