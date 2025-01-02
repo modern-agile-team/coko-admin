@@ -10,12 +10,11 @@ import useModal from '../hooks/useModal';
 import SectionForm from '../features/section/ui/SectionForm';
 import sectionsQueries from '../features/section/queries';
 import type { Section } from '../features/section/types';
-import '../features/section/ui/styles.css';
-import useDragAndDrop from '../hooks/useDragandDrop';
 import SkeletonLoader from '../common/SkeletonLoader';
+import useDragAndDrop from '../hooks/useDragAndDrop';
+
 export default function Section() {
   const { isShow, closeModal, openModal, Modal } = useModal();
-
   const { data: sections, isLoading } = sectionsQueries.getSections();
   const { mutate: deleteSection } = sectionsQueries.deleteSection();
   const { mutate: updateSectionOrder } = sectionsQueries.updateSectionOrder();

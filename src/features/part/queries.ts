@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import partsApis from './apis';
 import { Part, PartFilter } from './types';
-import { QuizFilters } from '../quiz/types';
 
 const partKeys = {
   all: ['parts'] as const,
@@ -65,4 +64,5 @@ const partsQueries = {
     });
   },
 };
+
 export default partsQueries;

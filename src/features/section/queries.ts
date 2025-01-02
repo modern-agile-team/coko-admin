@@ -10,7 +10,6 @@ const sectionsQueries = {
     return useQuery({
       queryKey: sectionKeys.lists(),
       queryFn: sectionsApis.getSections,
-      enabled: true,
     });
   },
   createSection: () => {

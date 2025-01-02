@@ -3,13 +3,13 @@ import partsQueries from '../../part/queries';
 import { QuizFilters } from '../types';
 import sectionsQueries from '../../section/queries';
 interface QuizSearchBarProps {
-  setFilters: (filter: QuizFilters) => void;
-  filters: QuizFilters;
+  setQuizFilters: (filter: QuizFilters) => void;
+  quizFilters: QuizFilters;
 }
 
 export default function QuizSearchBar({
-  setFilters,
-  filters,
+  setQuizFilters,
+  quizFilters,
 }: QuizSearchBarProps) {
   const { data: parts } = partsQueries.getParts();
   const { data: sections } = sectionsQueries.getSections();
@@ -20,9 +20,9 @@ export default function QuizSearchBar({
         <Form.Select
           aria-label="Default select example"
           className="mx-1"
-          defaultValue={filters.sectionId}
+          defaultValue={quizFilters.sectionId}
           onChange={e => {
-            setFilters({ sectionId: Number(e.target.value) });
+            setQuizFilters({ sectionId: Number(e.target.value) });
           }}
         >
           {sections?.map(section => (
@@ -36,9 +36,9 @@ export default function QuizSearchBar({
         <Form.Select
           aria-label="Default select example"
           className="mx-1"
-          defaultValue={filters.partId}
+          defaultValue={quizFilters.partId}
           onChange={e => {
-            setFilters({ partId: Number(e.target.value) });
+            setQuizFilters({ partId: Number(e.target.value) });
           }}
         >
           <option value="0">파트</option>

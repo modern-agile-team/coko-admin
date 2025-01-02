@@ -12,10 +12,11 @@ import type { Part, PartFilter } from '../features/part/types';
 import partsQueries from '../features/part/queries';
 import PartSearchBar from '../features/part/ui/PartSearchBar';
 import { useState } from 'react';
-import useDragAndDrop from '../hooks/useDragandDrop';
 import SkeletonLoader from '../common/SkeletonLoader';
+import useDragAndDrop from '../hooks/useDragAndDrop';
+
 export default function Part() {
-  const [filters, setFilters] = useState<PartFilter>({
+  const [partFilter, setPartFilter] = useState<PartFilter>({
     sectionId: 0,
   });
 
@@ -23,9 +24,10 @@ export default function Part() {
   const { handleDragEnd, handleDragEnter, handleDragLeave, handleDragStart } =
     useDragAndDrop();
 
-  const { data: parts, isLoading } = partsQueries.getParts(filters);
+  const { data: parts, isLoading } = partsQueries.getParts(partFilter);
   const { mutate: deletePart } = partsQueries.deletePart();
   const { mutate: updatePartOrder } = partsQueries.updatePartOrder();
+
   return (
     <>
       <Modal title="파트 추가" isShow={isShow} closeModal={closeModal}>
@@ -33,7 +35,7 @@ export default function Part() {
       </Modal>
       <Container>
         <Row className="justify-content-end mt-3 mb-2">
-          <PartSearchBar setFilters={setFilters} />
+          <PartSearchBar setPartFilter={setPartFilter} />
           <Col xs="auto">
             <Button
               type="button"

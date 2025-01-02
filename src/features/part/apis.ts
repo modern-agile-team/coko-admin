@@ -15,4 +15,5 @@ const partsApis = {
     return await api.patch(`/parts/${id}/order`, { order });
   },
 };
+
 export default partsApis;

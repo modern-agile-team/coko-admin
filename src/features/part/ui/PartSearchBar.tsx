@@ -3,9 +3,10 @@ import sectionsQueries from '../../section/queries';
 import { PartFilter } from '../types';
 
 interface PartSearchBarProps {
-  setFilters: (filter: PartFilter) => void;
+  setPartFilter: (filter: PartFilter) => void;
 }
-export default function PartSearchBar({ setFilters }: PartSearchBarProps) {
+
+export default function PartSearchBar({ setPartFilter }: PartSearchBarProps) {
   const { data: sections } = sectionsQueries.getSections();
 
   return (
@@ -15,7 +16,7 @@ export default function PartSearchBar({ setFilters }: PartSearchBarProps) {
           aria-label="Default select example"
           className="mx-1"
           onChange={e => {
-            setFilters({ sectionId: Number(e.target.value) });
+            setPartFilter({ sectionId: Number(e.target.value) });
           }}
         >
           <option value={0}>섹션 선택</option>

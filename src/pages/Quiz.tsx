@@ -15,7 +15,7 @@ import type { Mod, Quiz, QuizFilters } from '../features/quiz/types';
 import SkeletonLoader from '../common/SkeletonLoader';
 
 export default function Quiz() {
-  const [filters, setFilters] = useState<QuizFilters>({
+  const [quizFilters, setQuizFilters] = useState<QuizFilters>({
     partId: 0,
     sectionId: 0,
   });
@@ -25,7 +25,7 @@ export default function Quiz() {
 
   const { isShow, closeModal, openModal, Modal } = useModal();
 
-  const { data: quizzes, isLoading } = quizzesQueries.getQuizzes(filters);
+  const { data: quizzes, isLoading } = quizzesQueries.getQuizzes(quizFilters);
   const deleteMutation = quizzesQueries.deleteQuiz();
 
   return (
@@ -40,7 +40,10 @@ export default function Quiz() {
       </Modal>
       <Container>
         <Row className="justify-content-end mt-3 mb-2">
-          <QuizSearchBar setFilters={setFilters} filters={filters} />
+          <QuizSearchBar
+            setQuizFilters={setQuizFilters}
+            quizFilters={quizFilters}
+          />
           <Col xs="auto">
             <Button
               type="button"

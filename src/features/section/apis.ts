@@ -15,4 +15,5 @@ const sectionsApis = {
     return await api.patch(`/sections/${id}/order`, { order });
   },
 };
+
 export default sectionsApis;

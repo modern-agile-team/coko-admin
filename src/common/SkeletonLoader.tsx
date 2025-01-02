@@ -1,11 +1,11 @@
-import { JSX, useEffect, useMemo, useState } from 'react';
+import { JSX, useMemo } from 'react';
 import { Placeholder } from 'react-bootstrap';
 
 interface SkeletionLoaderProps {
   columnsCount: number;
   rowsCount: number;
 }
-import './styles.css';
+
 export default function SkeletonLoader({
   columnsCount,
   rowsCount,

@@ -15,7 +15,6 @@ const quizzesApis = {
     const { id, ...rest } = quiz;
     return await api.put(`/quizzes/${id}`, rest);
   },
-
   delete: async (id: number): Promise<void> =>
     await api.delete(`/quizzes/${id}`),
 };
