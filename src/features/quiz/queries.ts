@@ -12,13 +12,13 @@ const quizzesQueries = {
   getQuizzes: (params: QuizFilters) => {
     return useQuery<Quiz[]>({
       queryKey: quizKeys.list(params),
-      queryFn: () => quizzesApis.get(params),
+      queryFn: () => quizzesApis.getQuizzes(params),
     });
   },
   createQuiz: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: quizzesApis.post,
+      mutationFn: quizzesApis.createQuiz,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: quizKeys.lists(),
@@ -29,7 +29,7 @@ const quizzesQueries = {
   updateQuiz: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: quizzesApis.put,
+      mutationFn: quizzesApis.updateQuiz,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: quizKeys.lists(),
@@ -40,7 +40,7 @@ const quizzesQueries = {
   deleteQuiz: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: quizzesApis.delete,
+      mutationFn: quizzesApis.deleteQuiz,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: quizKeys.lists(),
