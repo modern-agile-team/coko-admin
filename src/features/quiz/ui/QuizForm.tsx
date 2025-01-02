@@ -1,7 +1,7 @@
 import { Alert, Button, FloatingLabel, Form } from 'react-bootstrap';
 import partsQueries from '../../part/queries';
 import { Category, Mod, Quiz } from '../types';
-import { useState } from 'react';
+import { FormEventHandler, useState } from 'react';
 import quizzesQueries from '../queries';
 import { category, validCategories } from './../constants';
 import { parseQuizData } from '../service/utils';
@@ -20,7 +20,7 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
   const { mutate: createQuiz } = quizzesQueries.createQuiz();
   const { mutate: updateQuiz } = quizzesQueries.updateQuiz();
 
-  const handleMutate = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleMutate: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);

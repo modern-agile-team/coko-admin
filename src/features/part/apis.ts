@@ -6,7 +6,7 @@ const partsApis = {
     const response = await api.get('/parts');
     return response.data;
   },
-  createPart: async (params: Omit<Part, 'id'>): Promise<void> =>
+  createPart: async (params: Omit<Part, 'id' | 'order'>): Promise<void> =>
     await api.post('/parts', params),
   deletePart: async (id: number): Promise<void> =>
     await api.delete(`/parts/${id}`),

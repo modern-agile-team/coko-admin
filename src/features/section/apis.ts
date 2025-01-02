@@ -6,8 +6,9 @@ const sectionsApis = {
     const response = await api.get('/sections');
     return response.data;
   },
-  createSection: async (section: Omit<Section, 'id'>): Promise<void> =>
-    await api.post('/sections', section),
+  createSection: async (
+    section: Omit<Section, 'id' | 'order'>
+  ): Promise<void> => await api.post('/sections', section),
   deleteSection: async (id: Section['id']): Promise<void> =>
     await api.delete(`/sections/${id}`),
   updateSectionOrder: async (params: Omit<Section, 'name'>) => {
