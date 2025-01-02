@@ -1,17 +1,19 @@
 import { useRef } from 'react';
 
+export type DragEndEvent = (from: number, to: number) => void;
+type DragEvent = React.DragEvent<HTMLTableRowElement>;
+type DragEventHandler<T> = (event: DragEvent, options: T) => void;
+
 interface DragStartLeaveOptions {
   from: number;
 }
-
 interface DragEnterOptions {
   from: number;
   to: number;
 }
-
-type OnDragEndCallback = (from: number, to: number) => void;
-type DragEvent = React.DragEvent<HTMLTableRowElement>;
-type DragEventHandler<T> = (event: DragEvent, options: T) => void;
+interface DragEndOptions {
+  dragEndEvent: DragEndEvent;
+}
 
 const useDragAndDrop = () => {
   const fromRef = useRef<number | null>(null);
@@ -51,7 +53,10 @@ const useDragAndDrop = () => {
 
   //드레그 끝나면 드래그 시작할때 클레스 제거
   //모든 요소의
-  const onDragEnd = (e: DragEvent, callback: OnDragEndCallback) => {
+  const onDragEnd: DragEventHandler<DragEndOptions> = (
+    e: DragEvent,
+    { dragEndEvent }
+  ) => {
     const parent = e.currentTarget.parentElement;
 
     if (parent) {
@@ -62,7 +67,7 @@ const useDragAndDrop = () => {
     e.currentTarget.classList.remove('drag-start');
 
     if (fromRef.current && toRef.current) {
-      callback(fromRef.current, toRef.current);
+      dragEndEvent(fromRef.current, toRef.current);
       fromRef.current = null;
       toRef.current = null;
     }

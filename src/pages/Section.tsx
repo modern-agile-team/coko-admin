@@ -11,7 +11,7 @@ import SectionForm from '../features/section/ui/SectionForm';
 import sectionsQueries from '../features/section/queries';
 import type { Section } from '../features/section/types';
 import SkeletonLoader from '../common/SkeletonLoader';
-import useDragAndDrop from '../hooks/useDragAndDrop';
+import useDragAndDrop, { DragEndEvent } from '../hooks/useDragAndDrop';
 
 export default function Section() {
   const { isShow, closeModal, openModal, Modal } = useModal();
@@ -19,6 +19,13 @@ export default function Section() {
   const { mutate: deleteSection } = sectionsQueries.deleteSection();
   const { mutate: updateSectionOrder } = sectionsQueries.updateSectionOrder();
   const { onDragEnd, onDragEnter, onDragLeave, onDragStart } = useDragAndDrop();
+
+  const dragEndEvent: DragEndEvent = (from, to) => {
+    updateSectionOrder({
+      id: from,
+      order: to,
+    });
+  };
 
   return (
     <>
@@ -62,11 +69,8 @@ export default function Section() {
                       onDragEnter(e, { from: section.id, to: section.order })
                     }
                     onDragEnd={e => {
-                      onDragEnd(e, (from, to) => {
-                        updateSectionOrder({
-                          id: from,
-                          order: to,
-                        });
+                      onDragEnd(e, {
+                        dragEndEvent,
                       });
                     }}
                     onDragLeave={e => onDragLeave(e, { from: section.id })}

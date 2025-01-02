@@ -13,7 +13,7 @@ import partsQueries from '../features/part/queries';
 import PartSearchBar from '../features/part/ui/PartSearchBar';
 import { useState } from 'react';
 import SkeletonLoader from '../common/SkeletonLoader';
-import useDragAndDrop from '../hooks/useDragAndDrop';
+import useDragAndDrop, { DragEndEvent } from '../hooks/useDragAndDrop';
 
 export default function Part() {
   const [partFilter, setPartFilter] = useState<PartFilter>({
@@ -27,6 +27,12 @@ export default function Part() {
   const { mutate: deletePart } = partsQueries.deletePart();
   const { mutate: updatePartOrder } = partsQueries.updatePartOrder();
 
+  const dragEndEvent: DragEndEvent = (from, to) => {
+    updatePartOrder({
+      id: from,
+      order: to,
+    });
+  };
   return (
     <>
       <Modal title="파트 추가" isShow={isShow} closeModal={closeModal}>
@@ -78,11 +84,8 @@ export default function Part() {
                       onDragEnter(e, { from: part.id, to: part.order });
                     }}
                     onDragEnd={e => {
-                      onDragEnd(e, (from, to) => {
-                        updatePartOrder({
-                          id: from,
-                          order: to,
-                        });
+                      onDragEnd(e, {
+                        dragEndEvent,
                       });
                     }}
                     onDragLeave={e => onDragLeave(e, { from: part.id })}
