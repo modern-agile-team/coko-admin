@@ -41,29 +41,26 @@ const sectionsQueries = {
     return useMutation({
       mutationFn: sectionsApis.updateSectionOrder,
 
-      onMutate: async changeOrder => {
+      onMutate: async sectionOrderChange => {
         await queryClient.cancelQueries({ queryKey: sectionKeys.lists() });
 
         const previousSections = queryClient.getQueryData(
           sectionKeys.lists()
         ) as Section[];
 
-        const indexById = previousSections.findIndex(
-          item => item.id === changeOrder.id
+        const sourceIndex = previousSections.findIndex(
+          section => section.id === sectionOrderChange.id
         );
-        const indexByOrder = changeOrder.order - 1;
+
+        const targetIndex = sectionOrderChange.order - 1;
 
         queryClient.setQueryData(sectionKeys.lists(), (old: Section[]) => {
-          const temp = old[indexById];
-          old[indexById] = {
-            ...old[indexByOrder],
-            order: old[indexById].order,
-          };
-
-          old[indexByOrder] = { ...temp, order: old[indexByOrder].order };
-
-          return [...old];
+          const updatedSections = [...old];
+          const removedSection = updatedSections.splice(sourceIndex, 1);
+          updatedSections.splice(targetIndex, 0, ...removedSection);
+          return updatedSections;
         });
+
         return { previousSections };
       },
       onError: (err, newTodo, context) => {

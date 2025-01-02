@@ -13,7 +13,7 @@ const quizzesApis = {
     await api.post('/quizzes', quiz),
   put: async (quiz: Omit<Quiz, 'sectionId'>): Promise<void> => {
     const { id, ...rest } = quiz;
-    await api.put(`/quizzes/${id}`, rest);
+    return await api.put(`/quizzes/${id}`, rest);
   },
 
   delete: async (id: number): Promise<void> => api.delete(`/quizzes/${id}`),

@@ -12,7 +12,7 @@ const sectionsApis = {
     api.delete(`/sections/${id}`),
   updateSectionOrder: async (params: Omit<Section, 'name'>) => {
     const { id, order } = params;
-    api.patch(`/sections/${id}/order`, { order });
+    return api.patch(`/sections/${id}/order`, { order });
   },
 };
 export default sectionsApis;

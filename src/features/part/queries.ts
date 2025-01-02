@@ -49,8 +49,15 @@ const partsQueries = {
     });
   },
   updatePartOrder: () => {
+    const queryClient = useQueryClient();
+
     return useMutation({
       mutationFn: partsApis.patchPartOrder,
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: partKeys.lists(),
+        });
+      },
     });
   },
 };

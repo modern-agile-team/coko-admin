@@ -2,7 +2,7 @@
   background-color: red;
 }
 .drag-over {
-  border-top: 3px solid #007bff !important;
+  border-bottom: 3px solid #007bff !important;
 }
 .drag-start {
   opacity: 0.1;

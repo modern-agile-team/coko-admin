@@ -13,17 +13,19 @@ import partsQueries from '../features/part/queries';
 import PartSearchBar from '../features/part/ui/PartSearchBar';
 import { useState } from 'react';
 import { QuizFilters } from '../features/quiz/types';
+import useDragAndDrop from '../hooks/useDragandDrop';
 export default function Part() {
   const [filters, setFilters] = useState<Omit<QuizFilters, 'partId'>>({
     sectionId: 0,
   });
 
   const { isShow, openModal, closeModal, Modal } = useModal();
+  const { handleDragEnd, handleDragEnter, handleDragLeave, handleDragStart } =
+    useDragAndDrop();
 
   const { data: parts } = partsQueries.getParts(filters);
-  const deleteMutation = partsQueries.deletePart();
+  const { mutate: deletePart } = partsQueries.deletePart();
   const { mutate: updatePartOrder } = partsQueries.updatePartOrder();
-
   return (
     <>
       <Modal title="파트 추가" isShow={isShow} closeModal={closeModal}>
@@ -55,7 +57,26 @@ export default function Part() {
             </thead>
             <tbody>
               {parts?.map(part => (
-                <tr key={part.id}>
+                <tr
+                  key={part.id}
+                  draggable
+                  onDragStart={e => {
+                    handleDragStart(e, part.id);
+                  }}
+                  onDragEnter={e => {
+                    handleDragEnter(e, part.id, part.order);
+                  }}
+                  onDragEnd={e => {
+                    handleDragEnd(e, (from, to) => {
+                      updatePartOrder({
+                        id: from,
+                        order: to,
+                      });
+                    });
+                  }}
+                  onDragLeave={e => handleDragLeave(e, part.id)}
+                  onDragOver={e => e.preventDefault()}
+                >
                   <td>{part.order}</td>
                   <td>{part.id}</td>
                   <td>{part.sectionId}</td>
@@ -66,7 +87,7 @@ export default function Part() {
                         variant="secondary"
                         onClick={() => {
                           if (confirm('삭제 하시겠습니까?')) {
-                            deleteMutation.mutate(part.id);
+                            deletePart(part.id);
                           }
                         }}
                       >

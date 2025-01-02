@@ -11,7 +11,7 @@ const partsApis = {
   deletePart: async (id: number): Promise<void> => api.delete(`/parts/${id}`),
   patchPartOrder: async (params: Omit<Part, 'sectionId' | 'name'>) => {
     const { id, order } = params;
-    api.patch(`/parts/${id}/order`, { order });
+    return api.patch(`/parts/${id}/order`, { order });
   },
 };
 export default partsApis;
