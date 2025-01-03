@@ -10,36 +10,30 @@ export default function SkeletonLoader({
   columnsCount,
   rowsCount,
 }: SkeletionLoaderProps) {
-  const columns = useMemo(() => {
-    const skeletons: JSX.Element[] = [];
-    for (let i = 0; i < columnsCount; i++) {
-      skeletons.push(
+  const skeletonColumns = useMemo(() => {
+    return Array.from({ length: columnsCount }, (_, index) => (
+      <Placeholder
+        bg="light"
+        as={'td'}
+        animation="glow"
+        key={`column-${index}`}
+        size="lg"
+        style={{ flex: 1 }}
+      >
         <Placeholder
-          bg="light"
-          as={'td'}
-          animation="glow"
-          key={`column-${i}`}
-          size="lg"
-          style={{ flex: 1 }}
-        >
-          <Placeholder
-            bg="secondary"
-            xs={12}
-            style={{ height: '36px', borderRadius: 6 }}
-          />
-        </Placeholder>
-      );
-    }
-    return skeletons;
+          bg="secondary"
+          xs={12}
+          style={{ height: '36px', borderRadius: 6 }}
+        />
+      </Placeholder>
+    ));
   }, [columnsCount]);
 
-  const rows = useMemo(() => {
-    const rowSkeletons: JSX.Element[] = [];
-    for (let i = 0; i < rowsCount; i++) {
-      rowSkeletons.push(<tr key={`row-${i}`}>{columns}</tr>);
-    }
-    return rowSkeletons;
-  }, [columns, rowsCount]);
+  const rowSkeletons = useMemo(() => {
+    return Array.from({ length: rowsCount }, (_, index) => (
+      <tr key={`row-${index}`}>{skeletonColumns}</tr>
+    ));
+  }, [skeletonColumns, rowsCount]);
 
-  return <>{rows}</>;
+  return <>{rowSkeletons}</>;
 }
