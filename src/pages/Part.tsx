@@ -23,7 +23,7 @@ export default function Part() {
   const { isShow, openModal, closeModal, Modal } = useModal();
   const { onDragEnd, onDragEnter, onDragLeave, onDragStart } = useDragAndDrop();
 
-  const { data: parts, isLoading } = partsQueries.getParts(partFilter);
+  const { data: parts, isLoading } = partsQueries.getFilteredParts(partFilter);
   const { mutate: deletePart } = partsQueries.deletePart();
   const { mutate: updatePartOrder } = partsQueries.updatePartOrder();
 
