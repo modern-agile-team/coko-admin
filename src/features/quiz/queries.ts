@@ -9,25 +9,16 @@ const quizKeys = {
 };
 
 const quizzesQueries = {
-  read: (params: QuizFilters) => {
+  getQuizzes: (params: QuizFilters) => {
     return useQuery<Quiz[]>({
-      queryKey: quizKeys.lists(),
-      queryFn: () => quizzesApis.get(),
-      select: quizzes => {
-        const { partId, sectionId } = params;
-        return quizzes.filter(quiz => {
-          const matchesSection =
-            sectionId === 0 || quiz.sectionId === sectionId;
-          const matchesPart = partId === 0 || quiz.partId === partId;
-          return matchesSection && matchesPart;
-        });
-      },
+      queryKey: quizKeys.list(params),
+      queryFn: () => quizzesApis.getQuizzes(params),
     });
   },
-  create: () => {
+  createQuiz: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: quizzesApis.post,
+      mutationFn: quizzesApis.createQuiz,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: quizKeys.lists(),
@@ -35,10 +26,10 @@ const quizzesQueries = {
       },
     });
   },
-  update: () => {
+  updateQuiz: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: quizzesApis.put,
+      mutationFn: quizzesApis.updateQuiz,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: quizKeys.lists(),
@@ -46,10 +37,10 @@ const quizzesQueries = {
       },
     });
   },
-  delete: () => {
+  deleteQuiz: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: quizzesApis.delete,
+      mutationFn: quizzesApis.deleteQuiz,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: quizKeys.lists(),

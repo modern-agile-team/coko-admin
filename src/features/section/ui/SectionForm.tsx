@@ -1,21 +1,23 @@
 import { Alert, Button, FloatingLabel, Form } from 'react-bootstrap';
 import sectionsQueries from '../queries';
-import { useState } from 'react';
+import { FormEventHandler, useState } from 'react';
 import { parseSectionData } from '../service/utils';
+
 interface SectionFormProps {
   closeModal: () => void;
 }
+
 export default function SectionForm({ closeModal }: SectionFormProps) {
-  const { mutate: createMutate } = sectionsQueries.create();
+  const { mutate: createMutate } = sectionsQueries.createSection();
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleMutate = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleMutate: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
-    
+
     const formData = new FormData(e.currentTarget);
     const sectionData = Object.fromEntries(formData.entries());
     const parsedSectionData = parseSectionData(sectionData);
-    
+
     createMutate(parsedSectionData, {
       onSuccess: () => {
         closeModal();

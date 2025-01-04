@@ -1,23 +1,43 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import partsApis from './apis';
-import { Part } from './types';
+import { Part, PartFilter } from './types';
+import { useCallback } from 'react';
 
 const partKeys = {
   all: ['parts'] as const,
   lists: () => [...partKeys.all, 'list'] as const,
+  list: (params: PartFilter) => [...partKeys.lists(), params],
 };
 
 const partsQueries = {
-  read: () => {
+  getParts: (select?: (data: Part[]) => Part[]) => {
     return useQuery<Part[]>({
       queryKey: partKeys.lists(),
-      queryFn: partsApis.get,
+      queryFn: partsApis.getParts,
+      select,
     });
   },
-  create: () => {
+  getFilteredParts: (params: PartFilter) => {
+    return partsQueries.getParts(
+      useCallback(
+        (parts: Part[]) => {
+          const { sectionId } = params;
+
+          if (sectionId === 0) {
+            return parts;
+          }
+
+          return parts.filter(part => part.sectionId === sectionId);
+        },
+        [params]
+      )
+    );
+  },
+
+  createPart: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: partsApis.post,
+      mutationFn: partsApis.createPart,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: partKeys.lists(),
@@ -25,11 +45,23 @@ const partsQueries = {
       },
     });
   },
-  delete: () => {
+  deletePart: () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-      mutationFn: partsApis.delete,
+      mutationFn: partsApis.deletePart,
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: partKeys.lists(),
+        });
+      },
+    });
+  },
+  updatePartOrder: () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+      mutationFn: partsApis.patchPartOrder,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: partKeys.lists(),

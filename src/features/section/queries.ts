@@ -1,20 +1,21 @@
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import sectionsApis from './apis';
+
 const sectionKeys = {
   all: ['sections'] as const,
   lists: () => [...sectionKeys.all, 'list'] as const,
 };
 const sectionsQueries = {
-  read: () => {
+  getSections: () => {
     return useQuery({
       queryKey: sectionKeys.lists(),
-      queryFn: () => sectionsApis.get(),
+      queryFn: sectionsApis.getSections,
     });
   },
-  create: () => {
+  createSection: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: sectionsApis.post,
+      mutationFn: sectionsApis.createSection,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: sectionKeys.lists(),
@@ -22,10 +23,21 @@ const sectionsQueries = {
       },
     });
   },
-  delete: () => {
+  deleteSection: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: sectionsApis.delete,
+      mutationFn: sectionsApis.deleteSection,
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: sectionKeys.lists(),
+        });
+      },
+    });
+  },
+  updateSectionOrder: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: sectionsApis.updateSectionOrder,
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: sectionKeys.lists(),

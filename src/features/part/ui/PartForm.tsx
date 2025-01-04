@@ -1,7 +1,7 @@
 import { Alert, Button, FloatingLabel, Form, Row } from 'react-bootstrap';
 import partsQueries from '../queries';
 import { parsePartData } from '../service/utils';
-import { useState } from 'react';
+import { FormEventHandler, useState } from 'react';
 import sectionsQueries from '../../section/queries';
 
 interface PartFormProps {
@@ -11,10 +11,10 @@ interface PartFormProps {
 export default function PartForm({ closeModal }: PartFormProps) {
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { data: sections } = sectionsQueries.read();
-  const { mutate: createPart } = partsQueries.create();
+  const { data: sections } = sectionsQueries.getSections();
+  const { mutate: createPart } = partsQueries.createPart();
 
-  const handleMutate = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleMutate: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const partData = Object.fromEntries(formData.entries());
