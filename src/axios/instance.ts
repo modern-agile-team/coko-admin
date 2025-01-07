@@ -15,6 +15,7 @@ const api = axios.create({
       skipNull: true,
     });
   },
+  withCredentials: true,
 });
 api.interceptors.request.use(requestFunction);
 api.interceptors.response.use(responseFunction, responseError);
