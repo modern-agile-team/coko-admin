@@ -14,6 +14,7 @@ import PartSearchBar from '../features/part/ui/PartSearchBar';
 import { useState } from 'react';
 import SkeletonLoader from '../common/SkeletonLoader';
 import useDragAndDrop, { DragEndEvent } from '../hooks/useDragAndDrop';
+import Header from '../common/Header';
 
 export default function Part() {
   const [partFilter, setPartFilter] = useState<PartFilter>({
@@ -35,6 +36,7 @@ export default function Part() {
   };
   return (
     <>
+      <Header />
       <Modal title="파트 추가" isShow={isShow} closeModal={closeModal}>
         <PartForm closeModal={closeModal} />
       </Modal>

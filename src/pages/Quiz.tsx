@@ -13,6 +13,7 @@ import QuizSearchBar from '../features/quiz/ui/QuizSearchBar';
 import quizzesQueries from '../features/quiz/queries';
 import type { Mod, Quiz, QuizFilters } from '../features/quiz/types';
 import SkeletonLoader from '../common/SkeletonLoader';
+import Header from '../common/Header';
 
 export default function Quiz() {
   const [quizFilters, setQuizFilters] = useState<QuizFilters>({
@@ -30,6 +31,7 @@ export default function Quiz() {
 
   return (
     <>
+      <Header />
       <Modal
         isShow={isShow}
         title="퀴즈 생성"
@@ -38,6 +40,7 @@ export default function Quiz() {
       >
         <QuizForm prevQuiz={quiz} closeModal={closeModal} mod={mod} />
       </Modal>
+
       <Container>
         <Row className="justify-content-end mt-3 mb-2">
           <QuizSearchBar
