@@ -1,6 +1,8 @@
+import { AxiosResponse } from 'axios';
 import api from '../../axios/instance';
 import { AuthRequest } from './types';
 
 export const authApis = {
-  login: (params: AuthRequest) => api.post('/admins/login', params),
+  login: async (params: AuthRequest): Promise<AxiosResponse> =>
+    await api.post('/admins/login', params),
 };

@@ -3,10 +3,11 @@ import { getImageUrl } from '../utils';
 import { authQueries } from '../features/auth/queries';
 import { FormEventHandler } from 'react';
 import { parseAuthRequestData } from '../features/auth/service/utils';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const { mutate: mutateLogin } = authQueries.useLogin();
-
+  const navigate = useNavigate();
   const handleMutate: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
 
@@ -14,7 +15,14 @@ export default function Login() {
     const authData = Object.fromEntries(formData.entries());
     const parsedAuthRequestData = parseAuthRequestData(authData);
 
-    mutateLogin(parsedAuthRequestData);
+    mutateLogin(parsedAuthRequestData, {
+      onSettled: data => {
+        if (data?.status === 201) {
+          return navigate('/');
+        }
+        alert('로그인 실패');
+      },
+    });
   };
   return (
     <Container
