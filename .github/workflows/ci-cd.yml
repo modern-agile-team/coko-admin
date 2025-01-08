@@ -11,6 +11,7 @@ env:
   VERSION: ${{ github.sha }}
   NAME: go_cicd
   VITE_BASE_URL: ${{ secrets.SERVER }}
+  VITE_IMAGE_URL: ${{ secrets.VITE_IMAGE_URL }}
 
 jobs:
   # 빌드 Job
@@ -53,6 +54,7 @@ jobs:
           tags: ${{ env.DOCKER_IMAGE }}:latest
           build-args: |
             VITE_BASE_URL=${{ env.VITE_BASE_URL }}
+            VITE_IMAGE_URL=${{ env.VITE_IMAGE_URL }}
 
   # 배포 Job
   deploy:
