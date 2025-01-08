@@ -1,10 +1,9 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
 import { PropsWithChildren } from 'react';
+import { useAuthStore } from '../../../store/useAuthStore';
 
-export default function ProtectedRoute({
-  children,
-  isLoginin,
-}: PropsWithChildren<{ isLoginin: boolean }>) {
-  return isLoginin ? children : <Navigate to="/login" replace />;
+export default function ProtectedRoutes() {
+  const { isLoggedIn } = useAuthStore();
+  return isLoggedIn ? <Outlet /> : <Navigate to="/login" replace />;
 }
