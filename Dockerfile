@@ -3,8 +3,6 @@ FROM node:18-alpine as build-stage
 
 ARG VITE_BASE_URL
 
-ENV VITE_BASE_URL=${VITE_BASE_URL}
-
 # 작업 디렉토리 설정
 WORKDIR /app
 
