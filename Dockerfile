@@ -6,7 +6,7 @@ ARG VITE_BASE_URL
 # 작업 디렉토리 설정
 WORKDIR /app
 
-RUN echo "VITE_BASE_URL=${VITE_BASE_URL}" > /app/.env
+RUN echo "${VITE_BASE_URL}" > /app/.env
 
 # 패키지 파일 복사
 COPY package.json package-lock.json ./
