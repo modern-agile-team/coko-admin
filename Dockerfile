@@ -7,7 +7,7 @@ ARG VITE_IMAGE_URL
 WORKDIR /app
 
 RUN echo "VITE_BASE_URL=${VITE_BASE_URL}" > /app/.env
-RUN echo "VITE_IMAGE_URL=${VITE_IMAGE_URL}" > /app/.env
+RUN echo "VITE_IMG_BASE_URL=${VITE_IMAGE_URL}" > /app/.env
 
 # 패키지 파일 복사
 COPY package.json package-lock.json ./
