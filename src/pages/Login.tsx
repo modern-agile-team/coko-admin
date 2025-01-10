@@ -44,11 +44,7 @@ export default function Login() {
       >
         <h1 className="mb-5">
           코코 어드민{' '}
-          <Image
-            src={getImageUrl('레벨1코코.svg')}
-            width={120}
-            height={60}
-          ></Image>
+          <Image src={getImageUrl('레벨1코코.svg')} width={120} height={60} />
         </h1>
         <Form onSubmit={handleMutate}>
           <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
