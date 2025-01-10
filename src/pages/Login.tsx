@@ -4,11 +4,8 @@ import { authQueries } from '../features/auth/queries';
 import { FormEventHandler } from 'react';
 import { parseAuthRequestData } from '../features/auth/service/utils';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../store/useAuthStore';
 
 export default function Login() {
-  const { setIsLoggedIn } = useAuthStore();
-
   const { mutate: mutateLogin } = authQueries.useLogin();
 
   const navigate = useNavigate();
@@ -22,11 +19,11 @@ export default function Login() {
 
     mutateLogin(parsedAuthRequestData, {
       onSettled: data => {
-        if (data?.status === 201) {
-          setIsLoggedIn(true);
-          return navigate('/');
+        if (data?.status === 200) {
+          navigate('/');
+        } else {
+          alert('로그인 실패');
         }
-        alert('로그인 실패');
       },
     });
   };

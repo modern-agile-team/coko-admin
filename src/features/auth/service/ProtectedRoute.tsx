@@ -1,7 +1,16 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuthStore } from '../../../store/useAuthStore';
+import { authQueries } from '../queries';
 
 export default function ProtectedRoutes() {
-  const { isLoggedIn } = useAuthStore();
-  return isLoggedIn ? <Outlet /> : <Navigate to="/login" replace />;
+  const { isLoading, isError } = authQueries.useVerify();
+
+  if (isLoading) {
+    return <div>인증 권한 확인 중.............</div>;
+  }
+
+  if (isError) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <Outlet />;
 }
