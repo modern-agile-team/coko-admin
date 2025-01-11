@@ -16,6 +16,7 @@ export const authQueries = {
     return useQuery({
       queryKey: authKeys.authentic(),
       queryFn: authApis.verify,
+      retry: 0,
     });
   },
 };

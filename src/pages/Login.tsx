@@ -4,6 +4,7 @@ import { authQueries } from '../features/auth/queries';
 import { FormEventHandler } from 'react';
 import { parseAuthRequestData } from '../features/auth/service/utils';
 import { useNavigate } from 'react-router-dom';
+import { isValidEmail } from '../utils/validator';
 
 export default function Login() {
   const { mutate: mutateLogin } = authQueries.useLogin();
@@ -17,13 +18,16 @@ export default function Login() {
     const authData = Object.fromEntries(formData.entries());
     const parsedAuthRequestData = parseAuthRequestData(authData);
 
+    if (!isValidEmail(parsedAuthRequestData.email)) {
+      return alert('유효한 이메일을 입력해주세요');
+    }
+
     mutateLogin(parsedAuthRequestData, {
-      onSettled: data => {
-        if (data?.status === 200) {
-          navigate('/');
-        } else {
-          alert('로그인 실패');
-        }
+      onSuccess: () => {
+        navigate('/');
+      },
+      onError: () => {
+        alert('로그인 실패');
       },
     });
   };
