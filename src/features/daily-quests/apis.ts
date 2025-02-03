@@ -2,11 +2,12 @@ import api from '../../axios/instance';
 import { DailyQuests } from './types';
 
 const dailyQuestsApis = {
-  getDailyQuests: async (): Promise<DailyQuests> => {
+  getDailyQuests: async (): Promise<DailyQuests[]> => {
     const response = await api.get('/daily-quests');
     return response.data;
   },
-  postDailyQuests: (): Promise<void> => api.post('/daily-quests'),
+  postDailyQuests: (params: Omit<DailyQuests, 'id'>): Promise<void> =>
+    api.post('/daily-quests', params),
   patchDailyQuests: (params: { id: DailyQuests['id'] }): Promise<void> =>
     api.patch(`/daily-quests${params}`),
   deleteDailyQuests: (params: { id: DailyQuests['id'] }): Promise<void> =>

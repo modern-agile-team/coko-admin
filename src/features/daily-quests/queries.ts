@@ -11,11 +11,11 @@ const useDailyQuestsQuery = {
       queryKey: dailyQuestsKeys.all,
       queryFn: dailyQuestsApis.getDailyQuests,
     }),
-  createDailyQuests: () =>
+  createDailyQuest: () =>
     useMutation({ mutationFn: dailyQuestsApis.postDailyQuests }),
-  updateDailyQuests: () =>
+  updateDailyQuest: () =>
     useMutation({ mutationFn: dailyQuestsApis.patchDailyQuests }),
-  deleteDailyQuests: () =>
+  deleteDailyQuest: () =>
     useMutation({ mutationFn: dailyQuestsApis.deleteDailyQuests }),
 };
 

@@ -1,14 +1,27 @@
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import Header from '../common/Header';
+import DailyQuestsContainer from '../features/daily-quests/ui/DailyQuestsContainer';
+import { Suspense } from 'react';
+import SkeletonLoader from '../common/SkeletonLoader';
+import useModal from '../hooks/useModal';
+import DailyQuestsForm from '../features/daily-quests/ui/DailyQuestsForm';
 
 export default function DailyQuests() {
+  const { isShow, closeModal, openModal, Modal } = useModal();
+
   return (
     <>
+      <Modal isShow={isShow} title="퀴즈 생성" closeModal={closeModal}>
+        <DailyQuestsForm closeModal={closeModal} />
+      </Modal>
+
       <Header />
       <Container>
         <Row className="justify-content-end mt-3 mb-2">
           <Col xs="auto">
-            <Button type="button">+ 퀴즈 추가</Button>
+            <Button type="button" onClick={openModal}>
+              + 일퀘 추가
+            </Button>
           </Col>
         </Row>
         <Row>
@@ -27,11 +40,11 @@ export default function DailyQuests() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>e</td>
-              </tr>
+              <Suspense
+                fallback={<SkeletonLoader columnsCount={5} rowsCount={4} />}
+              >
+                <DailyQuestsContainer />
+              </Suspense>
             </tbody>
           </Table>
         </Row>
