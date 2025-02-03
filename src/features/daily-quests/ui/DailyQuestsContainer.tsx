@@ -3,20 +3,16 @@ import useDailyQuestsQuery from '../queries';
 import useModal from '../../../hooks/useModal';
 import DailyQuestsForm from './DailyQuestsForm';
 import { useState } from 'react';
-import { DailyQuests } from '../types';
+import { DailyQuest } from '../types';
 
-interface DailyQuestsContainerProps {}
-
-export default function DailyQuestsContainer({}: DailyQuestsContainerProps) {
+export default function DailyQuestsContainer() {
   const { isShow, closeModal, openModal, Modal } = useModal();
   const { data: dailyQuests } = useDailyQuestsQuery.getDailyQuests();
   const { mutate: deleteDailyQuest } = useDailyQuestsQuery.deleteDailyQuest();
 
-  const [dailyQuest, setDailyQuest] = useState<DailyQuests | undefined>(
-    undefined
-  );
+  const [dailyQuest, setDailyQuest] = useState<DailyQuest>();
 
-  const handleEdit = (dailyQuest: DailyQuests) => {
+  const handleEdit = (dailyQuest: DailyQuest) => {
     openModal();
     setDailyQuest(dailyQuest);
   };
@@ -31,7 +27,7 @@ export default function DailyQuestsContainer({}: DailyQuestsContainerProps) {
         <DailyQuestsForm closeModal={closeModal} dailyQuest={dailyQuest} />
       </Modal>
       {dailyQuests.map(dailyQuest => (
-        <tr>
+        <tr key={dailyQuest.id}>
           <td>{dailyQuest.id}</td>
           <td>{dailyQuest.title}</td>
           <td>{dailyQuest.content}</td>

@@ -1,4 +1,9 @@
-import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
+import {
+  useMutation,
+  useSuspenseQuery,
+  QueryClient,
+  useQueryClient,
+} from '@tanstack/react-query';
 import dailyQuestsApis from './apis';
 
 const dailyQuestsKeys = {
@@ -11,12 +16,33 @@ const useDailyQuestsQuery = {
       queryKey: dailyQuestsKeys.all,
       queryFn: dailyQuestsApis.getDailyQuests,
     }),
-  createDailyQuest: () =>
-    useMutation({ mutationFn: dailyQuestsApis.postDailyQuests }),
-  updateDailyQuest: () =>
-    useMutation({ mutationFn: dailyQuestsApis.patchDailyQuests }),
-  deleteDailyQuest: () =>
-    useMutation({ mutationFn: dailyQuestsApis.deleteDailyQuests }),
+  createDailyQuest: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: dailyQuestsApis.postDailyQuests,
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: dailyQuestsKeys.all });
+      },
+    });
+  },
+  updateDailyQuest: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: dailyQuestsApis.patchDailyQuests,
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: dailyQuestsKeys.all });
+      },
+    });
+  },
+  deleteDailyQuest: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: dailyQuestsApis.deleteDailyQuests,
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: dailyQuestsKeys.all });
+      },
+    });
+  },
 };
 
 export default useDailyQuestsQuery;

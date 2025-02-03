@@ -2,11 +2,11 @@ import { FormEventHandler } from 'react';
 import { Button, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
 import { parseDailyQuestData } from '../utils';
 import useDailyQuestsQuery from '../queries';
-import { DailyQuests } from '../types';
+import { DailyQuest } from '../types';
 
 interface DailyQuestsFormProps {
   closeModal: () => void;
-  dailyQuest?: DailyQuests;
+  dailyQuest?: DailyQuest;
 }
 
 export default function DailyQuestsForm({
@@ -21,14 +21,16 @@ export default function DailyQuestsForm({
     const formData = new FormData(e.currentTarget);
     const DailyQuestData = Object.fromEntries(formData.entries());
     const parsedDailyQuestData = parseDailyQuestData(DailyQuestData);
+
     if (dailyQuest) {
-      updateDailyQuest({ id: dailyQuest.id });
+      updateDailyQuest({ id: dailyQuest.id, dailyQuest });
+    } else {
+      createDailyQuest(parsedDailyQuestData, {
+        onSuccess: () => {
+          closeModal();
+        },
+      });
     }
-    createDailyQuest(parsedDailyQuestData, {
-      onSuccess: () => {
-        closeModal();
-      },
-    });
   };
 
   return (
