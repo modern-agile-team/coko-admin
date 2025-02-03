@@ -11,10 +11,9 @@ export default function DailyQuests() {
 
   return (
     <>
-      <Modal isShow={isShow} title="퀴즈 생성" closeModal={closeModal}>
+      <Modal isShow={isShow} title="일퀘 생성" closeModal={closeModal}>
         <DailyQuestsForm closeModal={closeModal} />
       </Modal>
-
       <Header />
       <Container>
         <Row className="justify-content-end mt-3 mb-2">

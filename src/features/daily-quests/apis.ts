@@ -9,9 +9,9 @@ const dailyQuestsApis = {
   postDailyQuests: (params: Omit<DailyQuests, 'id'>): Promise<void> =>
     api.post('/daily-quests', params),
   patchDailyQuests: (params: { id: DailyQuests['id'] }): Promise<void> =>
-    api.patch(`/daily-quests${params}`),
+    api.patch(`/daily-quests/${params.id}`),
   deleteDailyQuests: (params: { id: DailyQuests['id'] }): Promise<void> =>
-    api.delete(`/daily-quests${params.id}`),
+    api.delete(`/daily-quests/${params.id}`),
 };
 
 export default dailyQuestsApis;
