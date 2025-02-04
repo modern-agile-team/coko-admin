@@ -22,13 +22,19 @@ export default function DailyQuestsForm({
     const DailyQuestData = Object.fromEntries(formData.entries());
     const parsedDailyQuestData = parseDailyQuestData(DailyQuestData);
 
+    const onSuccess = () => closeModal();
+
     if (dailyQuest) {
-      updateDailyQuest({ id: dailyQuest.id, dailyQuest });
+      console.log(parsedDailyQuestData);
+      updateDailyQuest(
+        { id: dailyQuest.id, ...parsedDailyQuestData },
+        {
+          onSuccess,
+        }
+      );
     } else {
       createDailyQuest(parsedDailyQuestData, {
-        onSuccess: () => {
-          closeModal();
-        },
+        onSuccess,
       });
     }
   };
@@ -43,7 +49,7 @@ export default function DailyQuestsForm({
               type="text"
               name="title"
               className="mb-3"
-              value={dailyQuest?.title}
+              defaultValue={dailyQuest?.title}
             />
           </FloatingLabel>
           <FloatingLabel label="콘텐츠">
@@ -51,7 +57,7 @@ export default function DailyQuestsForm({
               size="sm"
               type="text"
               name="content"
-              value={dailyQuest?.content}
+              defaultValue={dailyQuest?.content}
             />
           </FloatingLabel>
         </Col>
@@ -64,7 +70,7 @@ export default function DailyQuestsForm({
               size="sm"
               type="text"
               name="point"
-              value={dailyQuest?.point}
+              defaultValue={dailyQuest?.point}
             />
           </FloatingLabel>
         </Col>
@@ -73,8 +79,8 @@ export default function DailyQuestsForm({
             <Form.Control
               size="sm"
               type="text"
-              name="experience"
-              value={dailyQuest?.experience}
+              name="exp"
+              defaultValue={dailyQuest?.exp}
             />
           </FloatingLabel>
         </Col>
@@ -84,7 +90,7 @@ export default function DailyQuestsForm({
               size="sm"
               type="text"
               name="condition"
-              value={dailyQuest?.condition}
+              defaultValue={dailyQuest?.condition}
             />
           </FloatingLabel>
         </Col>

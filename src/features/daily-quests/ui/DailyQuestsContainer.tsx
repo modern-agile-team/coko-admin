@@ -18,7 +18,9 @@ export default function DailyQuestsContainer() {
   };
 
   const handleDelete = (id: number) => {
-    deleteDailyQuest({ id });
+    if (confirm('삭제할까요?')) {
+      deleteDailyQuest({ id });
+    }
   };
 
   return (

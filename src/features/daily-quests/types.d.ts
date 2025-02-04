@@ -3,6 +3,6 @@ export interface DailyQuest {
   title: string;
   content: string;
   point: number;
-  experience: number;
+  exp: number;
   condition: number;
 }

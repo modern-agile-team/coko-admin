@@ -1,13 +1,13 @@
-import { DailyQuests } from './types';
+import { DailyQuest } from './types';
 
 export const parseDailyQuestData = (
   DailyQuestFormData: Record<string, FormDataEntryValue>
-): Omit<DailyQuests, 'id'> => {
+): Omit<DailyQuest, 'id'> => {
   return {
     title: DailyQuestFormData.title.toString(),
     point: Number(DailyQuestFormData.point),
     content: DailyQuestFormData.content.toString(),
-    experience: Number(DailyQuestFormData.experience),
+    exp: Number(DailyQuestFormData.exp),
     condition: Number(DailyQuestFormData.condition),
   };
 };
