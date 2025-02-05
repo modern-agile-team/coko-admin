@@ -1,7 +1,7 @@
 import { FormEventHandler } from 'react';
 import { Button, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
 import { parseDailyQuestData } from '../utils';
-import useDailyQuestsQuery from '../queries';
+import useQuestsQuery from '../queries';
 import { DailyQuest } from '../types';
 
 interface DailyQuestsFormProps {
@@ -13,8 +13,8 @@ export default function DailyQuestsForm({
   closeModal,
   dailyQuest,
 }: DailyQuestsFormProps) {
-  const { mutate: createDailyQuest } = useDailyQuestsQuery.createDailyQuest();
-  const { mutate: updateDailyQuest } = useDailyQuestsQuery.updateDailyQuest();
+  const { mutate: createDailyQuest } = useQuestsQuery.createDailyQuest();
+  const { mutate: updateDailyQuest } = useQuestsQuery.updateDailyQuest();
 
   const handleMutate: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();

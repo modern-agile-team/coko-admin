@@ -1,5 +1,5 @@
 import { Button, ButtonGroup } from 'react-bootstrap';
-import useDailyQuestsQuery from '../queries';
+import useQuestsQuery from '../queries';
 import useModal from '../../../hooks/useModal';
 import DailyQuestsForm from './DailyQuestsForm';
 import { useState } from 'react';
@@ -7,8 +7,8 @@ import { DailyQuest } from '../types';
 
 export default function DailyQuestsContainer() {
   const { isShow, closeModal, openModal, Modal } = useModal();
-  const { data: dailyQuests } = useDailyQuestsQuery.getDailyQuests();
-  const { mutate: deleteDailyQuest } = useDailyQuestsQuery.deleteDailyQuest();
+  const { data: dailyQuests } = useQuestsQuery.getDailyQuests();
+  const { mutate: deleteDailyQuest } = useQuestsQuery.deleteDailyQuest();
 
   const [dailyQuest, setDailyQuest] = useState<DailyQuest>();
 

@@ -1,7 +1,8 @@
+import { AxiosResponse } from 'axios';
 import api from '../../axios/instance';
 import { DailyQuest } from './types';
 
-const dailyQuestsApis = {
+const questsApis = {
   getDailyQuests: async (): Promise<DailyQuest[]> => {
     const response = await api.get('/daily-quests');
     return response.data;
@@ -16,4 +17,4 @@ const dailyQuestsApis = {
     api.delete(`/daily-quests/${params.id}`),
 };
 
-export default dailyQuestsApis;
+export default questsApis;
