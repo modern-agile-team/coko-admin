@@ -7,13 +7,13 @@ import dailyQuestsApis from './apis';
 
 const questsKeys = {
   all: ['quests'] as const,
-  dailyQuests: () => [...questsKeys.all, 'daily'] as const,
+  daily: () => [...questsKeys.all, 'daily'] as const,
 };
 
 const useQuestsQuery = {
   getDailyQuests: () =>
     useSuspenseQuery({
-      queryKey: questsKeys.dailyQuests(),
+      queryKey: questsKeys.daily(),
       queryFn: dailyQuestsApis.getDailyQuests,
     }),
   createDailyQuest: () => {
@@ -21,7 +21,7 @@ const useQuestsQuery = {
     return useMutation({
       mutationFn: dailyQuestsApis.postDailyQuests,
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: questsKeys.dailyQuests() });
+        queryClient.invalidateQueries({ queryKey: questsKeys.daily() });
       },
     });
   },
@@ -30,7 +30,7 @@ const useQuestsQuery = {
     return useMutation({
       mutationFn: dailyQuestsApis.patchDailyQuests,
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: questsKeys.dailyQuests() });
+        queryClient.invalidateQueries({ queryKey: questsKeys.daily() });
       },
     });
   },
@@ -39,7 +39,7 @@ const useQuestsQuery = {
     return useMutation({
       mutationFn: dailyQuestsApis.deleteDailyQuests,
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: questsKeys.dailyQuests() });
+        queryClient.invalidateQueries({ queryKey: questsKeys.daily() });
       },
     });
   },
