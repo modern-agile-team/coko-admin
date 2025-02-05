@@ -25,7 +25,6 @@ export default function DailyQuestsForm({
     const onSuccess = () => closeModal();
 
     if (dailyQuest) {
-      console.log(parsedDailyQuestData);
       updateDailyQuest(
         { id: dailyQuest.id, ...parsedDailyQuestData },
         {
