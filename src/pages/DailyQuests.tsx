@@ -1,10 +1,10 @@
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import Header from '../common/Header';
-import DailyQuestsContainer from '../features/daily-quests/ui/DailyQuestsContainer';
+import DailyQuestsContainer from '../features/quest/ui/DailyQuestsContainer';
 import { Suspense } from 'react';
 import SkeletonLoader from '../common/SkeletonLoader';
 import useModal from '../hooks/useModal';
-import DailyQuestsForm from '../features/daily-quests/ui/DailyQuestsForm';
+import DailyQuestsForm from '../features/quest/ui/DailyQuestsForm';
 
 export default function DailyQuests() {
   const { isShow, closeModal, openModal, Modal } = useModal();
