@@ -4,17 +4,17 @@ import { DailyQuest } from './types';
 
 const questsApis = {
   getDailyQuests: async (): Promise<DailyQuest[]> => {
-    const response = await api.get('/daily-quests');
+    const response = await api.get('/quests/daily');
     return response.data;
   },
   postDailyQuests: (params: Omit<DailyQuest, 'id'>): Promise<void> =>
-    api.post('/daily-quests', params),
+    api.post('/quests/daily', params),
   patchDailyQuests: (params: DailyQuest): Promise<void> => {
     const { id, ...rest } = params;
-    return api.patch(`/daily-quests/${params.id}`, { ...rest });
+    return api.patch(`/quests/daily/${params.id}`, { ...rest });
   },
   deleteDailyQuests: (params: { id: DailyQuest['id'] }): Promise<void> =>
-    api.delete(`/daily-quests/${params.id}`),
+    api.delete(`/quests/daily/${params.id}`),
 };
 
 export default questsApis;
