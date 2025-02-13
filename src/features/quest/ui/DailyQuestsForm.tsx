@@ -2,19 +2,13 @@ import { FormEventHandler } from 'react';
 import { Button, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
 import { parseDailyQuestData } from '../utils';
 import useQuestsQuery from '../queries';
-import { DailyQuest } from '../types';
 
 interface DailyQuestsFormProps {
   closeModal: () => void;
-  dailyQuest?: DailyQuest;
 }
 
-export default function DailyQuestsForm({
-  closeModal,
-  dailyQuest,
-}: DailyQuestsFormProps) {
+export default function DailyQuestsForm({ closeModal }: DailyQuestsFormProps) {
   const { mutate: createDailyQuest } = useQuestsQuery.createDailyQuest();
-  const { mutate: updateDailyQuest } = useQuestsQuery.updateDailyQuest();
 
   const handleMutate: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
@@ -23,19 +17,9 @@ export default function DailyQuestsForm({
     const parsedDailyQuestData = parseDailyQuestData(DailyQuestData);
 
     const onSuccess = () => closeModal();
-
-    if (dailyQuest) {
-      updateDailyQuest(
-        { id: dailyQuest.id, ...parsedDailyQuestData },
-        {
-          onSuccess,
-        }
-      );
-    } else {
-      createDailyQuest(parsedDailyQuestData, {
-        onSuccess,
-      });
-    }
+    createDailyQuest(parsedDailyQuestData, {
+      onSuccess,
+    });
   };
 
   return (
@@ -43,21 +27,10 @@ export default function DailyQuestsForm({
       <Row className="mb-3">
         <Col>
           <FloatingLabel label="제목">
-            <Form.Control
-              size="sm"
-              type="text"
-              name="title"
-              className="mb-3"
-              defaultValue={dailyQuest?.title}
-            />
+            <Form.Control size="sm" type="text" name="title" className="mb-3" />
           </FloatingLabel>
           <FloatingLabel label="콘텐츠">
-            <Form.Control
-              size="sm"
-              type="text"
-              name="content"
-              defaultValue={dailyQuest?.content}
-            />
+            <Form.Control size="sm" type="text" name="content" />
           </FloatingLabel>
         </Col>
       </Row>
@@ -65,32 +38,17 @@ export default function DailyQuestsForm({
       <Row className="mb-3">
         <Col>
           <FloatingLabel label="포인트">
-            <Form.Control
-              size="sm"
-              type="text"
-              name="point"
-              defaultValue={dailyQuest?.point}
-            />
+            <Form.Control size="sm" type="text" name="point" />
           </FloatingLabel>
         </Col>
         <Col>
           <FloatingLabel label="획득 경험치">
-            <Form.Control
-              size="sm"
-              type="text"
-              name="exp"
-              defaultValue={dailyQuest?.exp}
-            />
+            <Form.Control size="sm" type="text" name="exp" />
           </FloatingLabel>
         </Col>
         <Col>
           <FloatingLabel label="컨디션">
-            <Form.Control
-              size="sm"
-              type="text"
-              name="condition"
-              defaultValue={dailyQuest?.condition}
-            />
+            <Form.Control size="sm" type="text" name="condition" />
           </FloatingLabel>
         </Col>
       </Row>

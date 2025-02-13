@@ -1,19 +1,32 @@
 import cosmeticItemApis from '@/features/item/apis';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 const cosmeticItemsKeys = {
   all: ['cosmeticItems'],
 };
-const cosmeticItemQueries = {
-  read: () => {
+
+export const useCosmeticItemQuery = {
+  getCosmeticItems: () => {
     return useQuery({
       queryKey: cosmeticItemsKeys.all,
       queryFn: cosmeticItemApis.getItems,
     });
   },
-  create: () => {
+  createCosmeticItem: () => {
+    const queryClient = useQueryClient();
     return useMutation({
       mutationFn: cosmeticItemApis.postItem,
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: cosmeticItemsKeys.all });
+      },
+    });
+  },
+  updateCosmeticItem: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: cosmeticItemApis.updateItem,
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: cosmeticItemsKeys.all });
+      },
     });
   },
 };
-export default cosmeticItemQueries;

@@ -25,15 +25,7 @@ const useQuestsQuery = {
       },
     });
   },
-  updateDailyQuest: () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-      mutationFn: dailyQuestsApis.patchDailyQuests,
-      onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: questsKeys.daily() });
-      },
-    });
-  },
+
   deleteDailyQuest: () => {
     const queryClient = useQueryClient();
     return useMutation({

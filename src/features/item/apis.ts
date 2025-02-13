@@ -6,8 +6,13 @@ const cosmeticItemApis = {
     const response = await api.get('/items');
     return response.data;
   },
-  postItem: async (cosmeticItem: CosmeticItem): Promise<void> => {
-    await api.post('/items', cosmeticItem);
+  postItem: async (cosmeticItem: Omit<CosmeticItem, 'id'>): Promise<void> => {
+    return await api.post('/items', cosmeticItem);
+  },
+  updateItem: async (params: CosmeticItem): Promise<void> => {
+    const { id, ...rest } = params;
+    return await api.patch(`items/${id}`, rest);
   },
 };
+
 export default cosmeticItemApis;
