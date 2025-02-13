@@ -1,43 +1,54 @@
-import getFormDataValue from '@/features/item/service/getFormDataValue';
-import cosmeticItemQueries from '@/queries/cosmeticItem';
-import CosmeticItem from '@/types/CosmeticlItem';
+import cosmeticItemQueries from '@/features/item/queries';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
-import uploadFile from '@/features/item/service/s3UploadFile';
+import {
+  parseCosmeticItemData,
+  s3uploadFile,
+} from '@/features/item/service/utils';
+import { MAIN_CATEGORY, SUB_CATEGORY } from '@/features/item/constants';
+import { FormEventHandler } from 'react';
 
 export default function CosmeticItemForm() {
   const { mutate: createMutation } = cosmeticItemQueries.create();
 
-  const handleMutate = (formData: FormData) => {
-    const name = getFormDataValue(formData, 'itemName');
-    const cost = getFormDataValue(formData, 'itemPrice');
-    const category = getFormDataValue(
-      formData,
-      'category'
-    ) as CosmeticItem['category'];
-    const image = formData.get('image') as File;
-    uploadFile(image);
-    createMutation({ category, cost: Number(cost), image: image.name, name });
+  const handleMutate: FormEventHandler<HTMLFormElement> = e => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const cosmeticItem = Object.fromEntries(formData.entries());
+    const parsedCosmeticItem = parseCosmeticItemData(cosmeticItem);
+    const image = formData.get('item_image') as File;
+    s3uploadFile(image);
+    createMutation({ ...parsedCosmeticItem, image: image.name });
   };
 
   return (
     <>
-      <Form action={handleMutate}>
+      <Form onSubmit={handleMutate}>
         <FloatingLabel label="아이템 이름" className="mx-2 mt-2">
-          <Form.Control type="text" name="itemName" />
+          <Form.Control type="text" name="item_name" />
         </FloatingLabel>
         <FloatingLabel label="아이템 가격" className="mx-2 mt-2">
-          <Form.Control type="text" name="itemPrice" />
+          <Form.Control type="text" name="item_price" />
         </FloatingLabel>
-        <Form.Select className="mx-2 mt-2" name="category">
-          <option>카테고리 선택</option>
-          <option>카테고리 선택</option>
-          <option>카테고리 선택</option>
-          <option>카테고리 선택</option>
+        <Form.Select className="mx-2 mt-2" name="mainCategory_id">
+          <option>메인 카테고리 선택</option>
+          {MAIN_CATEGORY.map(category => (
+            <option value={category.id} key={category.id}>
+              {category.label}
+            </option>
+          ))}
+        </Form.Select>
+        <Form.Select className="mx-2 mt-2" name="subCategory_id">
+          <option>메인 카테고리 선택</option>
+          {SUB_CATEGORY.map(category => (
+            <option value={category.id} key={category.id}>
+              {category.label}
+            </option>
+          ))}
         </Form.Select>
         <Form.Control
           type="file"
           className="mx-2 mt-2 pd-0"
-          name="image"
+          name="item_image"
           accept="image/*"
         />
         <Button type="submit" className="mx-2 mt-2">

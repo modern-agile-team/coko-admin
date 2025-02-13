@@ -1,15 +1,17 @@
-import CosmeticItemForm from '@/features/item/ui/CosmeticItemForm';
 import useModal from '@/hooks/useModal';
-import cosmeticItemQueries from '@/queries/cosmeticItem';
+import cosmeticItemQueries from '@/features/item/queries';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
+import CosmeticItemForm from '@/features/item/ui/cosmeticItemForm';
+import Header from '@/common/Header';
 
 export default function CosmeticItem() {
   const { Modal, closeModal, isShow, openModal } = useModal();
   const { data: CosmeticItems } = cosmeticItemQueries.read();
   return (
     <>
-      <Modal title="ㅎㅇㅇㅇ" isShow={isShow} closeModal={closeModal}>
-        <CosmeticItemForm></CosmeticItemForm>
+      <Header />
+      <Modal title="아이템 추가" isShow={isShow} closeModal={closeModal}>
+        <CosmeticItemForm />
       </Modal>
       <Container>
         <Row className="justify-content-end mt-3 mb-2">
@@ -31,10 +33,10 @@ export default function CosmeticItem() {
             </thead>
             <tbody>
               {CosmeticItems?.map(item => (
-                <tr>
+                <tr key={item.id}>
                   <td>{item.id}</td>
                   <td>{item.name}</td>
-                  <td>{item.cost}</td>
+                  <td>{item.price}</td>
                   <td>{item.image}</td>
                 </tr>
               ))}

@@ -19,3 +19,6 @@ export function isValidEmail(email: string) {
 
   return regex.test(email);
 }
+export const isImage = (file: File) => {
+  return file.type.startsWith('image/');
+};

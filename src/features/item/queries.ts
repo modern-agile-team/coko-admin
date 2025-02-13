@@ -1,4 +1,4 @@
-import cosmeticItemApis from '@/apis/cosmeticItems';
+import cosmeticItemApis from '@/features/item/apis';
 import { useMutation, useQuery } from '@tanstack/react-query';
 const cosmeticItemsKeys = {
   all: ['cosmeticItems'],

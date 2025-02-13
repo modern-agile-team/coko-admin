@@ -1,5 +1,5 @@
 import api from '@/axios/instance';
-import CosmeticItem from '@/types/CosmeticlItem';
+import { CosmeticItem } from '@/features/item/types';
 
 const cosmeticItemApis = {
   getItems: async (): Promise<CosmeticItem[]> => {
