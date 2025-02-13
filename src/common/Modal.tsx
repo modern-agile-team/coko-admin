@@ -6,7 +6,6 @@ interface ModalProps {
   isShow: boolean;
   closeModal: () => void;
   title: string;
-  submitEvent?: () => void;
   closeEvent?: () => void;
 }
 export default function Modal({
@@ -14,7 +13,6 @@ export default function Modal({
   closeModal,
   title,
   children,
-  submitEvent,
   closeEvent,
 }: PropsWithChildren<ModalProps>) {
   return (
@@ -33,20 +31,6 @@ export default function Modal({
           />
         </Overlay.Header>
         <Overlay.Body>{children}</Overlay.Body>
-        <Overlay.Footer>
-          <Button variant="secondary" onClick={closeModal}>
-            Close
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => {
-              submitEvent && submitEvent();
-              closeModal();
-            }}
-          >
-            Submit
-          </Button>
-        </Overlay.Footer>
       </Overlay>
     </ModalPortal>
   );

@@ -28,6 +28,11 @@ export default function Header() {
       label: 'item',
       isActive: location.pathname === '/item' ? 'active' : '',
     },
+    {
+      to: '/daily-quests',
+      label: 'daily-quests',
+      isActive: location.pathname === '/daily-quests' ? 'active' : '',
+    },
   ];
   return (
     <>

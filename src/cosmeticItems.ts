@@ -1,4 +1,4 @@
-import api from '@/apis/axios/instance';
+import api from '@/axios/instance';
 import CosmeticItem from '@/types/CosmeticlItem';
 
 const cosmeticItemApis = {

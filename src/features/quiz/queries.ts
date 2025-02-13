@@ -1,46 +1,53 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import Quiz from '../types/Quiz';
-import quizzesApis from '../apis/quizzes';
+import quizzesApis from './apis';
+import { Quiz, QuizFilters } from './types';
+
+const quizKeys = {
+  all: ['quizzes'] as const,
+  lists: () => [...quizKeys.all, 'list'] as const,
+  list: (filters?: QuizFilters) => [...quizKeys.lists(), filters] as const,
+};
+
 const quizzesQueries = {
-  read: (params?: { sectionId?: number; partId?: number }) => {
+  getQuizzes: (params: QuizFilters) => {
     return useQuery<Quiz[]>({
-      queryKey: ['quizzes', params],
+      queryKey: quizKeys.list(params),
       queryFn: () => quizzesApis.getQuizzes(params),
     });
   },
-  create: () => {
+  createQuiz: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: quizzesApis.postQuizzes,
+      mutationFn: quizzesApis.createQuiz,
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['quizzes'],
+          queryKey: quizKeys.lists(),
         });
       },
     });
   },
-  update: () => {
+  updateQuiz: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: quizzesApis.putQuiz,
+      mutationFn: quizzesApis.updateQuiz,
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['quizzes'],
+          queryKey: quizKeys.lists(),
         });
       },
     });
   },
-  delete: () => {
+  deleteQuiz: () => {
     const queryClient = useQueryClient();
-
     return useMutation({
       mutationFn: quizzesApis.deleteQuiz,
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['quizzes'],
+          queryKey: quizKeys.lists(),
         });
       },
     });
   },
 };
+
 export default quizzesQueries;

@@ -4,7 +4,7 @@ import {
   requestFunction,
   responseError,
   responseFunction,
-} from './intercepter';
+} from './interceptor';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -15,6 +15,7 @@ const api = axios.create({
       skipNull: true,
     });
   },
+  withCredentials: true,
 });
 
 api.interceptors.request.use(requestFunction);

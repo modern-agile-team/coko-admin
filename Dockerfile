@@ -2,13 +2,12 @@
 FROM node:18-alpine as build-stage
 
 ARG VITE_BASE_URL
-
-ENV VITE_BASE_URL=${VITE_BASE_URL}
-
+ARG VITE_IMAGE_URL
 # 작업 디렉토리 설정
 WORKDIR /app
 
 RUN echo "VITE_BASE_URL=${VITE_BASE_URL}" > /app/.env
+RUN echo "VITE_IMG_BASE_URL=${VITE_IMAGE_URL}" > /app/.env
 
 # 패키지 파일 복사
 COPY package.json package-lock.json ./
