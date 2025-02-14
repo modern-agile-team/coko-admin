@@ -2,10 +2,10 @@ import useModal from '@/hooks/useModal';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import Header from '@/common/Header';
 import { Suspense, useState } from 'react';
-import CosmeticItemForm from '@/features/item/ui/CosmeticItemForm';
 import type { CosmeticItem } from '@/features/item/types';
 import CosmeticItemConatiner from '@/features/item/ui/CosmeticItemContainer';
 import SkeletonLoader from '@/common/SkeletonLoader';
+import CosmeticItemForm from '@/features/item/ui/CosmeticItemForm';
 
 export default function CosmeticItem() {
   const { Modal, closeModal, isShow, openModal } = useModal();

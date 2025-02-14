@@ -47,12 +47,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.actor == 'bluetree7878' && secrets.bluetree7878_GHCR_TOKEN || secrets.rhehfl_ghcr_token }}
 
-      - name: Check build args
-        run: |
-          echo "VITE_REGION: $VITE_REGION"
-          echo "VITE_ACCESS_KEY_ID: $VITE_ACCESS_KEY_ID"
-          echo "VITE_SECRET_ACCESS_KEY: $VITE_SECRET_ACCESS_KEY"
-
       # Docker Build 및 Push
       - name: Build and push
         id: docker_build
