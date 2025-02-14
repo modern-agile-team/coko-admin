@@ -1,21 +1,15 @@
 import useModal from '@/hooks/useModal';
-import { useCosmeticItemQuery } from '@/features/item/queries';
-import {
-  Button,
-  ButtonGroup,
-  Col,
-  Container,
-  Row,
-  Table,
-} from 'react-bootstrap';
+import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import Header from '@/common/Header';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import CosmeticItemForm from '@/features/item/ui/CosmeticItemForm';
 import type { CosmeticItem } from '@/features/item/types';
+import CosmeticItemConatiner from '@/features/item/ui/CosmeticItemContainer';
+import SkeletonLoader from '@/common/SkeletonLoader';
 
 export default function CosmeticItem() {
   const { Modal, closeModal, isShow, openModal } = useModal();
-  const { data: CosmeticItems } = useCosmeticItemQuery.getCosmeticItems();
+
   const [cosmeticItem, setCosmeticItem] = useState<CosmeticItem | undefined>();
 
   const handleEdit = (cosmeticItem: CosmeticItem) => {
@@ -60,29 +54,11 @@ export default function CosmeticItem() {
               </tr>
             </thead>
             <tbody>
-              {CosmeticItems?.map(item => (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.price}</td>
-                  <td>{item.image}</td>
-
-                  <td>
-                    <ButtonGroup
-                      size="sm"
-                      className="w-100"
-                      aria-label="Basic example"
-                    >
-                      <Button
-                        variant="secondary"
-                        onClick={() => handleEdit(item)}
-                      >
-                        수정
-                      </Button>
-                    </ButtonGroup>
-                  </td>
-                </tr>
-              ))}
+              <Suspense
+                fallback={<SkeletonLoader rowsCount={50} columnsCount={5} />}
+              >
+                <CosmeticItemConatiner handleEdit={handleEdit} />
+              </Suspense>
             </tbody>
           </Table>
         </Row>

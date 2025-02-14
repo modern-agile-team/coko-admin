@@ -1,9 +1,6 @@
 import { useCosmeticItemQuery } from '@/features/item/queries';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
-import {
-  parseCosmeticItemData,
-  s3uploadFile,
-} from '@/features/item/service/utils';
+import { parseCosmeticItemData } from '@/features/item/service/utils';
 import { MAIN_CATEGORY, SUB_CATEGORY } from '@/features/item/constants';
 import { FormEventHandler } from 'react';
 import { CosmeticItem } from '@/features/item/types';
@@ -20,6 +17,7 @@ export default function CosmeticItemForm({
 }: CosmeticItemFormProps) {
   const { mutate: createMutation } = useCosmeticItemQuery.createCosmeticItem();
   const { mutate: updateMutation } = useCosmeticItemQuery.updateCosmeticItem();
+  const { mutate: upsertImage } = useCosmeticItemQuery.upsertImage();
 
   const handleMutate: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
@@ -30,10 +28,10 @@ export default function CosmeticItemForm({
       ...parseCosmeticItemData(formcosmeticItem),
       image: image.name,
     };
-
+    upsertImage(image);
     const onSuccess = () => {
       closeModal();
-      s3uploadFile(image);
+      upsertImage(image, {});
     };
 
     if (cosmeticItem) {
