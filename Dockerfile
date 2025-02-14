@@ -11,10 +11,7 @@ ARG VITE_SECRET_ACCESS_KEY
 WORKDIR /app
 
 RUN echo "VITE_BASE_URL=${VITE_BASE_URL}" \
-    "\nVITE_IMG_BASE_URL=${VITE_IMAGE_URL}" \
-    "\nVITE_AWS_REGION=${VITE_REGION}" \
-    "\nVITE_ACCESS_KEY_ID=${VITE_ACCESS_KEY_ID}" \
-    "\nVITE_SECRET_ACCESS_KEY=${VITE_SECRET_ACCESS_KEY}" > /app/.env
+    "\nVITE_IMG_BASE_URL=${VITE_IMAGE_URL}" > /app/.env
 
 # 패키지 파일 복사
 COPY package.json package-lock.json ./
