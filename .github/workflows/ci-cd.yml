@@ -58,6 +58,9 @@ jobs:
           build-args: |
             VITE_BASE_URL=${{ env.VITE_BASE_URL }}
             VITE_IMAGE_URL=${{ env.VITE_IMAGE_URL }}
+            VITE_REGION=${{ env.VITE_REGION }}
+            VITE_ACCESS_KEY_ID=${{ env.VITE_ACCESS_KEY_ID }}
+            VITE_SECRET_ACCESS_KEY=${{ env.VITE_SECRET_ACCESS_KEY }}
 
   # 배포 Job
   deploy:
