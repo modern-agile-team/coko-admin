@@ -12,9 +12,9 @@ env:
   NAME: go_cicd
   VITE_BASE_URL: ${{ secrets.SERVER }}
   VITE_IMAGE_URL: ${{ secrets.VITE_IMAGE_URL }}
-  VITE_REGION: ${secrets.REGION}
-  VITE_ACCESS_KEY_ID: ${secrets.ACCESS_KEY_ID}
-  VITE_SECRET_ACCESS_KEY: ${secrets.SECRET_ACCESS_KEY}
+  VITE_REGION: ${{secrets.REGION}}
+  VITE_ACCESS_KEY_ID: ${{secrets.ACCESS_KEY_ID}}
+  VITE_SECRET_ACCESS_KEY: ${{secrets.SECRET_ACCESS_KEY}}
 
 jobs:
   # 빌드 Job
