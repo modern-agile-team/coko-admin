@@ -26,9 +26,6 @@ export default function DailyQuestsForm({ closeModal }: DailyQuestsFormProps) {
     <Form onSubmit={handleMutate}>
       <Row className="mb-3">
         <Col>
-          <FloatingLabel label="제목">
-            <Form.Control size="sm" type="text" name="title" className="mb-3" />
-          </FloatingLabel>
           <FloatingLabel label="콘텐츠">
             <Form.Control size="sm" type="text" name="content" />
           </FloatingLabel>

@@ -22,8 +22,9 @@ export default function DailyQuestsContainer() {
       {dailyQuests.map(dailyQuest => (
         <tr key={dailyQuest.id}>
           <td>{dailyQuest.id}</td>
-          <td>{dailyQuest.title}</td>
           <td>{dailyQuest.content}</td>
+          <td>{dailyQuest.point}</td>
+          <td>{dailyQuest.experience}</td>
           <td className="d-flex justify-content-between">
             <ButtonGroup size="sm" className="w-100" aria-label="Basic example">
               <Button

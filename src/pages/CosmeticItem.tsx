@@ -1,6 +1,13 @@
 import useModal from '@/hooks/useModal';
 import { useCosmeticItemQuery } from '@/features/item/queries';
-import { Button, Col, Container, Row, Table } from 'react-bootstrap';
+import {
+  Button,
+  ButtonGroup,
+  Col,
+  Container,
+  Row,
+  Table,
+} from 'react-bootstrap';
 import Header from '@/common/Header';
 import { useState } from 'react';
 import CosmeticItemForm from '@/features/item/ui/CosmeticItemForm';
@@ -37,6 +44,13 @@ export default function CosmeticItem() {
         </Row>
         <Row>
           <Table striped="columns" bordered hover>
+            <colgroup>
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="30%" />
+              <col width="10%" />
+            </colgroup>
             <thead>
               <tr>
                 <th>id</th>
@@ -52,8 +66,20 @@ export default function CosmeticItem() {
                   <td>{item.name}</td>
                   <td>{item.price}</td>
                   <td>{item.image}</td>
+
                   <td>
-                    <Button onClick={() => handleEdit(item)}>수정</Button>
+                    <ButtonGroup
+                      size="sm"
+                      className="w-100"
+                      aria-label="Basic example"
+                    >
+                      <Button
+                        variant="secondary"
+                        onClick={() => handleEdit(item)}
+                      >
+                        수정
+                      </Button>
+                    </ButtonGroup>
                   </td>
                 </tr>
               ))}
