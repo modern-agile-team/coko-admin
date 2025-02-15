@@ -15,3 +15,5 @@ export const SUB_CATEGORY: category[] = [
   { label: '프로필', id: 7 },
   { label: '색상', id: 8 },
 ];
+
+export const LIMIT = 100 as const;

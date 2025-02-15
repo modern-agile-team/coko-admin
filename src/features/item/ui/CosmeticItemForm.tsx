@@ -22,10 +22,10 @@ export default function CosmeticItemForm({
   const handleMutate: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const formcosmeticItem = Object.fromEntries(formData.entries());
+    const formCosmeticItem = Object.fromEntries(formData.entries());
     const image = formData.get('item_image') as File;
     const parsedCosmeticItem = {
-      ...parseCosmeticItemData(formcosmeticItem),
+      ...parseCosmeticItemData(formCosmeticItem),
       image: image.name,
     };
     upsertImage(image);
@@ -88,7 +88,7 @@ export default function CosmeticItemForm({
           name="subCategory_id"
           defaultValue={cosmeticItem?.subCategoryId}
         >
-          <option>메인 카테고리 선택</option>
+          <option>서브 카테고리 선택</option>
           {SUB_CATEGORY.map(category => (
             <option value={category.id} key={category.id}>
               {category.label}

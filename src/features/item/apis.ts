@@ -1,5 +1,6 @@
 import api from '@/axios/instance';
-import { CosmeticItem } from '@/features/item/types';
+import { LIMIT } from '@/features/item/constants';
+import { CosmeticItem, CosmeticItemQuery } from '@/features/item/types';
 import {
   PutObjectCommand,
   PutObjectCommandOutput,
@@ -7,9 +8,11 @@ import {
 } from '@aws-sdk/client-s3';
 
 const cosmeticItemApis = {
-  getItems: async (): Promise<CosmeticItem[]> => {
-    const response = await api.get('/items');
-    return response.data;
+  getItems: async (params?: CosmeticItemQuery): Promise<CosmeticItem[]> => {
+    const response = await api.get('/items', {
+      params: { ...params, limit: LIMIT },
+    });
+    return response.data.contents;
   },
   postItem: async (cosmeticItem: Omit<CosmeticItem, 'id'>): Promise<void> => {
     return await api.post('/items', cosmeticItem);

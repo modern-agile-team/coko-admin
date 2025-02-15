@@ -1,18 +1,22 @@
 import cosmeticItemApis from '@/features/item/apis';
+import { CosmeticItemQuery } from '@/features/item/types';
 import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from '@tanstack/react-query';
-const cosmeticItemsKeys = {
+const cosmeticItemKeys = {
   all: ['cosmeticItems'],
+  categoryOnly: () => [...cosmeticItemKeys.all, 'category'] as const,
+  category: (category?: CosmeticItemQuery) =>
+    [...cosmeticItemKeys.categoryOnly(), category] as const,
 };
 
 export const useCosmeticItemQuery = {
-  getCosmeticItems: () => {
+  getCosmeticItems: (params?: CosmeticItemQuery) => {
     return useSuspenseQuery({
-      queryKey: cosmeticItemsKeys.all,
-      queryFn: cosmeticItemApis.getItems,
+      queryKey: cosmeticItemKeys.category(params),
+      queryFn: () => cosmeticItemApis.getItems(params),
     });
   },
   createCosmeticItem: () => {
@@ -20,7 +24,7 @@ export const useCosmeticItemQuery = {
     return useMutation({
       mutationFn: cosmeticItemApis.postItem,
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: cosmeticItemsKeys.all });
+        queryClient.invalidateQueries({ queryKey: cosmeticItemKeys.all });
       },
     });
   },
@@ -29,12 +33,11 @@ export const useCosmeticItemQuery = {
     return useMutation({
       mutationFn: cosmeticItemApis.updateItem,
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: cosmeticItemsKeys.all });
+        queryClient.invalidateQueries({ queryKey: cosmeticItemKeys.all });
       },
     });
   },
   upsertImage: () => {
-    const queryClient = useQueryClient();
     return useMutation({
       mutationFn: cosmeticItemApis.putImage,
     });

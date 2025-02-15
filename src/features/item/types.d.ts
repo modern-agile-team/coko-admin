@@ -6,3 +6,8 @@ export interface CosmeticItem {
   mainCategoryId: number;
   subCategoryId: number;
 }
+
+export type CosmeticItemQuery = {
+  mainCategoryId?: number;
+  subCategoryId?: number | null;
+};

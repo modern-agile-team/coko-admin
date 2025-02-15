@@ -1,15 +1,17 @@
 import { useCosmeticItemQuery } from '@/features/item/queries';
-import { CosmeticItem } from '@/features/item/types';
+import { CosmeticItem, CosmeticItemQuery } from '@/features/item/types';
 import { getImageUrl } from '@/utils/utils';
 import { Button, ButtonGroup } from 'react-bootstrap';
 
-interface CosmeticItemConatinerProps {
+interface CosmeticItemContainerProps {
   handleEdit: (cosmeticItem: CosmeticItem) => void;
+  query?: CosmeticItemQuery;
 }
-export default function CosmeticItemConatiner({
+export default function CosmeticItemContainer({
   handleEdit,
-}: CosmeticItemConatinerProps) {
-  const { data: CosmeticItems } = useCosmeticItemQuery.getCosmeticItems();
+  query,
+}: CosmeticItemContainerProps) {
+  const { data: CosmeticItems } = useCosmeticItemQuery.getCosmeticItems(query);
 
   return (
     <>
@@ -21,7 +23,6 @@ export default function CosmeticItemConatiner({
           <td>
             <img
               src={getImageUrl(item.image)}
-              alt="설명 텍스트"
               style={{ width: '80px', height: '50px' }}
             />
             {item.image}
