@@ -17,7 +17,7 @@ const cosmeticItemApis = {
   postItem: async (cosmeticItem: Omit<CosmeticItem, 'id'>): Promise<void> => {
     return await api.post('/items', cosmeticItem);
   },
-  updateItem: async (params: CosmeticItem): Promise<void> => {
+  patchItem: async (params: CosmeticItem): Promise<void> => {
     const { id, ...rest } = params;
     return await api.patch(`items/${id}`, rest);
   },

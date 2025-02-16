@@ -6,7 +6,7 @@ import {
   useSuspenseQuery,
 } from '@tanstack/react-query';
 const cosmeticItemKeys = {
-  all: ['cosmeticItems'],
+  all: ['cosmeticItems'] as const,
   categoryOnly: () => [...cosmeticItemKeys.all, 'category'] as const,
   category: (category?: CosmeticItemQuery) =>
     [...cosmeticItemKeys.categoryOnly(), category] as const,
@@ -31,7 +31,7 @@ export const useCosmeticItemQuery = {
   updateCosmeticItem: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: cosmeticItemApis.updateItem,
+      mutationFn: cosmeticItemApis.patchItem,
       onSettled: () => {
         queryClient.invalidateQueries({ queryKey: cosmeticItemKeys.all });
       },

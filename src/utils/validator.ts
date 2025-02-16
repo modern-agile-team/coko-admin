@@ -1,4 +1,3 @@
-import { ObjectKey } from 'aws-sdk/clients/s3';
 type Falsy = false | null | undefined | 0 | '' | [] | Record<string, never>;
 
 type FilterFalsy<T> = {
