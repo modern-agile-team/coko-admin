@@ -1,5 +1,5 @@
 import { Col, Form, Row, Container, Button, Image } from 'react-bootstrap';
-import { getImageUrl } from '../utils';
+import { getImageUrl } from '../utils/utils';
 import { authQueries } from '../features/auth/queries';
 import { FormEventHandler } from 'react';
 import { parseAuthRequestData } from '../features/auth/service/utils';

@@ -27,15 +27,17 @@ export default function DailyQuests() {
           <Table striped="columns" bordered hover>
             <colgroup>
               <col width="10%" />
+              <col width="60%" />
               <col width="10%" />
-              <col width="70%" />
+              <col width="10%" />
               <col width="10%" />
             </colgroup>
             <thead>
               <tr>
                 <th>id</th>
-                <th>title</th>
                 <th>content</th>
+                <th>point</th>
+                <th>exp</th>
               </tr>
             </thead>
             <tbody>

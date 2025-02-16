@@ -24,6 +24,12 @@ export default function Header() {
     },
     {
       id: 4,
+      to: '/item',
+      label: 'item',
+      isActive: location.pathname === '/item' ? 'active' : '',
+    },
+    {
+      id: 5,
       to: '/daily-quests',
       label: 'daily-quests',
       isActive: location.pathname === '/daily-quests' ? 'active' : '',

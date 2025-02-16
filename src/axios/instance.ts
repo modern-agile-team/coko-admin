@@ -17,6 +17,7 @@ const api = axios.create({
   },
   withCredentials: true,
 });
+
 api.interceptors.request.use(requestFunction);
 api.interceptors.response.use(responseFunction, responseError);
 export default api;

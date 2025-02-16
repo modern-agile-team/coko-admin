@@ -3,11 +3,19 @@ FROM node:18-alpine as build-stage
 
 ARG VITE_BASE_URL
 ARG VITE_IMAGE_URL
+ARG VITE_REGION
+ARG VITE_ACCESS_KEY_ID
+ARG VITE_SECRET_ACCESS_KEY
+
 # 작업 디렉토리 설정
 WORKDIR /app
 
-RUN echo "VITE_BASE_URL=${VITE_BASE_URL}" > /app/.env
-RUN echo "VITE_IMG_BASE_URL=${VITE_IMAGE_URL}" > /app/.env
+RUN echo "VITE_BASE_URL=${VITE_BASE_URL}" >> /app/.env \
+    && echo "VITE_IMG_BASE_URL=${VITE_IMAGE_URL}" >> /app/.env \
+    && echo "VITE_AWS_REGION=${VITE_REGION}" >> /app/.env \
+    && echo "VITE_ACCESS_KEY_ID=${VITE_ACCESS_KEY_ID}" >> /app/.env \
+    && echo "VITE_SECRET_ACCESS_KEY=${VITE_SECRET_ACCESS_KEY}" >> /app/.env
+
 
 # 패키지 파일 복사
 COPY package.json package-lock.json ./
