@@ -36,6 +36,7 @@ export default function QuizSearchBar({
             }));
           }}
         >
+          <option value="0">섹션</option>
           {sections?.map(section => (
             <option key={section.id} value={section.id}>
               {section.name}
