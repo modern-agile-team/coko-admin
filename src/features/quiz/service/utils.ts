@@ -6,11 +6,10 @@ export const isString = (value: FormDataEntryValue): value is string => {
 
 export const parseQuizData = (
   quizFormData: Record<string, FormDataEntryValue>
-): Omit<Quiz, 'id' | 'sectionId'> => {
+): Omit<Quiz, 'id' | 'sectionId' | 'partId'> => {
   return {
     title: quizFormData.title.toString(),
     category: quizFormData.category as Category,
-    partId: Number(quizFormData.partId),
     question: quizFormData.question.toString(),
     answer: isString(quizFormData.answer) ? quizFormData.answer.split(',') : [],
     answerChoice: isString(quizFormData.answerChoice)
