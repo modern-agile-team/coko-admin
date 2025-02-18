@@ -19,8 +19,8 @@ export interface Quiz {
 }
 
 export interface QuizFilters {
-  sectionId?: number;
-  partId?: number;
+  sectionId: number;
+  partId: number;
 }
 
 export type Mod = 'create' | 'update';

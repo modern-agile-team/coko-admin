@@ -1,10 +1,10 @@
 import { Alert, Button, FloatingLabel, Form } from 'react-bootstrap';
-import partsQueries from '../../part/queries';
-import { Category, Mod, Quiz } from '../types';
+import { Category, Mod, Quiz, QuizFilters } from '../types';
 import { FormEventHandler, useState } from 'react';
 import quizzesQueries from '../queries';
-import { category, validCategories } from './../constants';
+import { CATEGORY, VAILD_CATEGORIES } from './../constants';
 import { parseQuizData } from '../service/utils';
+import QuizSearchBar from '@/features/quiz/ui/QuizSearchBar';
 
 interface QuizFormProps {
   prevQuiz: Omit<Quiz, 'sectionId'> | null;
@@ -14,9 +14,13 @@ interface QuizFormProps {
 
 export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
   const [selectedCategory, setSelectedCategory] = useState<Category>();
-  const [errorMessage, setErrorMessage] = useState('');
 
-  const { data: parts } = partsQueries.getParts();
+  const [quizFilters, setQuizFilters] = useState<QuizFilters>({
+    partId: 0,
+    sectionId: 0,
+  });
+
+  const [errorMessage, setErrorMessage] = useState('');
   const { mutate: createQuiz } = quizzesQueries.createQuiz();
   const { mutate: updateQuiz } = quizzesQueries.updateQuiz();
 
@@ -28,19 +32,23 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
     const parsedQuizData = parseQuizData(quizData);
 
     if (mod === 'create') {
-      createQuiz(parsedQuizData, {
-        onError: error => {
-          setErrorMessage(error.message);
-        },
-        onSuccess: () => {
-          closeModal();
-        },
-      });
+      createQuiz(
+        { ...parsedQuizData, partId: quizFilters.partId },
+        {
+          onError: error => {
+            setErrorMessage(error.message);
+          },
+          onSuccess: () => {
+            closeModal();
+          },
+        }
+      );
     } else if (mod === 'update' && prevQuiz) {
       updateQuiz(
         {
           id: prevQuiz.id,
           ...parsedQuizData,
+          partId: quizFilters.partId,
         },
         {
           onError: error => {
@@ -55,26 +63,17 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
   };
 
   const isChoiceRequired =
-    validCategories.includes(prevQuiz?.category ?? '') ||
-    validCategories.includes(selectedCategory ?? '');
+    VAILD_CATEGORIES.includes(prevQuiz?.category ?? '') ||
+    VAILD_CATEGORIES.includes(selectedCategory ?? '');
 
   return (
     <Form onSubmit={handleMutate}>
       {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
       <Form.Group className="d-flex justify-content-between">
-        <Form.Select
-          id="partId"
-          className="mx-2"
-          defaultValue={prevQuiz?.partId}
-          name="partId"
-        >
-          <option>파트 선택</option>
-          {parts?.map(part => (
-            <option key={part.id} value={part.id}>
-              {part.name}
-            </option>
-          ))}
-        </Form.Select>
+        <QuizSearchBar
+          quizFilters={quizFilters}
+          setQuizFilters={setQuizFilters}
+        />
         <Form.Select
           className="mx-2"
           id="category"
@@ -85,9 +84,9 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
           }}
         >
           <option>문제 유형 선택</option>
-          {category.map(item => (
-            <option key={item} value={item}>
-              {item}
+          {CATEGORY.map(item => (
+            <option key={item.value} value={item.value}>
+              {item.label}
             </option>
           ))}
         </Form.Select>

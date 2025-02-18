@@ -6,33 +6,33 @@ export default function Header() {
   const headerItems = [
     {
       id: 1,
-      to: '/quiz',
-      label: 'quiz',
-      isActive: location.pathname === '/quiz' ? 'active' : '',
-    },
-    {
-      id: 2,
-      to: '/section',
-      label: 'section',
-      isActive: location.pathname === '/section' ? 'active' : '',
-    },
-    {
-      id: 3,
-      to: '/part',
-      label: 'part',
-      isActive: location.pathname === '/part' ? 'active' : '',
-    },
-    {
-      id: 4,
       to: '/item',
       label: 'item',
       isActive: location.pathname === '/item' ? 'active' : '',
     },
     {
-      id: 5,
+      id: 2,
       to: '/daily-quests',
       label: 'daily-quests',
       isActive: location.pathname === '/daily-quests' ? 'active' : '',
+    },
+    {
+      id: 3,
+      to: '/section',
+      label: 'section',
+      isActive: location.pathname === '/section' ? 'active' : '',
+    },
+    {
+      id: 4,
+      to: '/part',
+      label: 'part',
+      isActive: location.pathname === '/part' ? 'active' : '',
+    },
+    {
+      id: 5,
+      to: '/quiz',
+      label: 'quiz',
+      isActive: location.pathname === '/quiz' ? 'active' : '',
     },
   ];
   return (
