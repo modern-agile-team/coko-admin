@@ -19,7 +19,6 @@ export default function QuizSearchBar({
     return parts.filter(part => part.sectionId === quizFilters.sectionId);
   });
   const { data: sections } = sectionsQueries.getSections();
-  console.log(parts);
 
   return (
     <>

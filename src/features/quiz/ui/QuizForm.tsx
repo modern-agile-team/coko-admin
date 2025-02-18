@@ -2,7 +2,7 @@ import { Alert, Button, FloatingLabel, Form } from 'react-bootstrap';
 import { Category, Mod, Quiz, QuizFilters } from '../types';
 import { FormEventHandler, useState } from 'react';
 import quizzesQueries from '../queries';
-import { CATEGORY, validCategories } from './../constants';
+import { CATEGORY, VAILD_CATEGORIES } from './../constants';
 import { parseQuizData } from '../service/utils';
 import QuizSearchBar from '@/features/quiz/ui/QuizSearchBar';
 
@@ -63,8 +63,8 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
   };
 
   const isChoiceRequired =
-    validCategories.includes(prevQuiz?.category ?? '') ||
-    validCategories.includes(selectedCategory ?? '');
+    VAILD_CATEGORIES.includes(prevQuiz?.category ?? '') ||
+    VAILD_CATEGORIES.includes(selectedCategory ?? '');
 
   return (
     <Form onSubmit={handleMutate}>
