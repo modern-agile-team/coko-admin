@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import ModalPortal from '../ModalPortal';
 import { Button, Modal as Overlay } from 'react-bootstrap';
 
@@ -15,6 +15,12 @@ export default function Modal({
   children,
   closeEvent,
 }: PropsWithChildren<ModalProps>) {
+  useEffect(() => {
+    if (!isShow) {
+      closeEvent && closeEvent();
+    }
+  }, [isShow]);
+
   return (
     <ModalPortal>
       <Overlay show={isShow} size="lg">
@@ -24,7 +30,6 @@ export default function Modal({
             size="lg"
             variant="close"
             onClick={() => {
-              closeEvent && closeEvent();
               closeModal();
             }}
             aria-label="Close lg"
