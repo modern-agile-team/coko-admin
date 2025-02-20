@@ -7,16 +7,18 @@ import { parseQuizData } from '../service/utils';
 import QuizSearchBar from '@/features/quiz/ui/QuizSearchBar';
 
 interface QuizFormProps {
-  prevQuiz: Quiz | null;
+  prevQuiz: Omit<Quiz, 'sectionId'> | null;
   closeModal: () => void;
   mod: Mod;
 }
 
 export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
-  const [selectedCategory, setSelectedCategory] = useState<Category>();
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    prevQuiz && prevQuiz.category
+  );
 
   const [quizFilters, setQuizFilters] = useState<QuizFilters>({
-    partId: prevQuiz ? prevQuiz.partId : 0,
+    partId: 0,
     sectionId: 0,
   });
 
@@ -63,8 +65,7 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
   };
 
   const isChoiceRequired =
-    VAILD_CATEGORIES.includes(prevQuiz?.category ?? '') ||
-    VAILD_CATEGORIES.includes(selectedCategory ?? '');
+    selectedCategory && VAILD_CATEGORIES.includes(selectedCategory);
 
   return (
     <Form onSubmit={handleMutate}>
