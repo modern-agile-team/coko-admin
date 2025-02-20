@@ -11,9 +11,9 @@ export const parseQuizData = (
     title: quizFormData.title.toString(),
     category: quizFormData.category as Category,
     question: quizFormData.question.toString(),
-    answer: isString(quizFormData.answer) ? quizFormData.answer.split(',') : [],
+    answer: isString(quizFormData.answer) ? quizFormData.answer.split('#') : [],
     answerChoice: isString(quizFormData.answerChoice)
-      ? quizFormData.answerChoice.split(',')
+      ? quizFormData.answerChoice.split('#')
       : [],
   };
 };

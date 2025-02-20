@@ -66,6 +66,8 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
 
   const isChoiceRequired =
     selectedCategory && VAILD_CATEGORIES.includes(selectedCategory);
+  const parsedAnswerChoice = prevQuiz && prevQuiz.answerChoice.join('#');
+  const parsedAnswer = prevQuiz && prevQuiz.answer.join('#');
 
   return (
     <Form onSubmit={handleMutate}>
@@ -127,7 +129,7 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
             size="sm"
             type="text"
             style={{ height: '150px' }}
-            defaultValue={prevQuiz?.answer}
+            defaultValue={parsedAnswer ?? ''}
           />
         </FloatingLabel>
         {isChoiceRequired && (
@@ -138,7 +140,7 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
               type="text"
               as="textarea"
               name="answerChoice"
-              defaultValue={prevQuiz?.answerChoice}
+              defaultValue={parsedAnswerChoice ?? ''}
               style={{ height: '150px' }}
             />
           </FloatingLabel>
