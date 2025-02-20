@@ -18,7 +18,7 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
   );
 
   const [quizFilters, setQuizFilters] = useState<QuizFilters>({
-    partId: 0,
+    partId: prevQuiz?.partId ?? 0,
     sectionId: 0,
   });
 
