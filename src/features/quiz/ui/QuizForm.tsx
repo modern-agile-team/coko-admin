@@ -7,7 +7,7 @@ import { parseQuizData } from '../service/utils';
 import QuizSearchBar from '@/features/quiz/ui/QuizSearchBar';
 
 interface QuizFormProps {
-  prevQuiz: Omit<Quiz, 'sectionId'> | null;
+  prevQuiz: Quiz | null;
   closeModal: () => void;
   mod: Mod;
 }
@@ -16,7 +16,7 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
   const [selectedCategory, setSelectedCategory] = useState<Category>();
 
   const [quizFilters, setQuizFilters] = useState<QuizFilters>({
-    partId: 0,
+    partId: prevQuiz ? prevQuiz.partId : 0,
     sectionId: 0,
   });
 
