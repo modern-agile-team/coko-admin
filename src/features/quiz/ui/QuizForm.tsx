@@ -119,7 +119,7 @@ export function QuizForm({ prevQuiz, closeModal, mod }: QuizFormProps) {
       </Form.Group>
       <Form.Group className="d-flex">
         <FloatingLabel
-          label="정답 (,로 구분해서 작성 띄어쓰기 노노/ ex : a,b...)"
+          label="정답 (#로 구분해서 작성 띄어쓰기 노노/ ex : a#b...)"
           className="mx-2 mt-4 w-50"
         >
           <Form.Control

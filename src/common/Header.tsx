@@ -7,32 +7,38 @@ export default function Header() {
     {
       id: 1,
       to: '/item',
-      label: 'item',
+      label: '상점 아이템',
       isActive: location.pathname === '/item' ? 'active' : '',
     },
     {
       id: 2,
       to: '/daily-quests',
-      label: 'daily-quests',
+      label: '일일 퀘스트',
       isActive: location.pathname === '/daily-quests' ? 'active' : '',
     },
     {
       id: 3,
       to: '/section',
-      label: 'section',
+      label: '섹션',
       isActive: location.pathname === '/section' ? 'active' : '',
     },
     {
       id: 4,
       to: '/part',
-      label: 'part',
+      label: '파트',
       isActive: location.pathname === '/part' ? 'active' : '',
     },
     {
       id: 5,
       to: '/quiz',
-      label: 'quiz',
+      label: '퀴즈',
       isActive: location.pathname === '/quiz' ? 'active' : '',
+    },
+    {
+      id: 6,
+      to: '/opinions',
+      label: '문의사항',
+      isActive: location.pathname === '/opinions' ? 'active' : '',
     },
   ];
   return (

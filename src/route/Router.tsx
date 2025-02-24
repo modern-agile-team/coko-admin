@@ -6,6 +6,7 @@ import CosmeticItem from '../pages/CosmeticItem';
 import Login from '../pages/Login';
 import ProtectedRoutes from '../features/auth/service/ProtectedRoute';
 import DailyQuests from '../pages/DailyQuests';
+import Opinions from '@/pages/Opinions';
 
 const Router = () => {
   return (
@@ -18,6 +19,7 @@ const Router = () => {
           <Route path="/part" element={<Part />} />
           <Route path="/daily-quests" element={<DailyQuests />} />
           <Route path="/item" element={<CosmeticItem />} />
+          <Route path="/opinions" element={<Opinions />} />
         </Route>
         <Route path="/login" element={<Login />} />
       </Routes>
